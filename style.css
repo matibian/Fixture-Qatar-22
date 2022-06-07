@@ -1,0 +1,11 @@
+.titulo {
+    color: red;
+    margin: 5vh 0;
+}
+
+.grupos{
+    display: inline-block;
+    margin: 0 15px
+
+}
+
