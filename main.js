@@ -1,6 +1,11 @@
-const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "Estado Unidos", "Gales", "Argentina", "Arabia Saudita", "México", "Polonia", "Francia", "Clasificado 1", "Dinamarca", "Tunez", "España", "Clasificado 2", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
+const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "Estado Unidos", "Gales", "Argentina", "Arabia Saudita", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Clasificado 2", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
 
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
+
+const FASES = ["Fase de grupos", "Octavos de final", "Cuartos de final", "Semifinal", "Final"]
+
+
+
 
 
 function armarpartido (eq1, eq2) {
@@ -53,7 +58,9 @@ for (let i = 0; i < GRUPOS.length; i++) {
     document.write(`</ul></div>`)
 }
 
-document.write(`<h2 class="titulo"><center>Partidos de grupo </center></h2>`)
+document.write(`<h2 class="titulo"><center> ${FASES[0]} </center></h2>`)
+
+
 
 
 
