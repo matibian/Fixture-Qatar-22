@@ -1,5 +1,11 @@
+body {
+    background-image: url(./assets/23-6-2021-7ss_generated.jpg);
+    /* background: linear-gradient(to right top, #8f0b31,#3c0014); */
+    color: white
+}
+
 .titulo {
-    color: red;
+    color: white;
     margin: 5vh 0;
 }
 
@@ -17,8 +23,74 @@ ul{
 }
 
 div.grupos {
-    border: 1px solid;
-    width: 25vh;
+    /* border: 2px solid white; */
+    width: 22vh;
     margin: 5vh 1vh;
 
+}
+
+
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: inline-block;
+
+}
+th, td{
+    padding: 5px 10px;
+    border: 1px solid white;
+    justify-content: center;
+    font-size: 13px;
+
+}
+
+.tablaGrupos {
+    display: inline-block;
+    padding: 5vh
+}
+
+.grupo {
+    display: inline-block;
+    padding: 5vh;
+
+}
+
+.tablasPartidos {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.goles {
+    width: 40px;
+}
+
+section tr {
+    width: 50vh;
+}
+
+h3 {
+    background-color: white;
+    border-radius: 20px;
+    color: #8f0b31;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+
+
+.grupos li {
+    text-align: center;
+    border-bottom: 1px solid white;
+    border-width: 1px 10px 1px;
+
+}
+
+a {
+    color: white;
+}
+
+.navbar-nav {
+    color: white 
 }
