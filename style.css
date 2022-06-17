@@ -11,8 +11,6 @@ body {
 
 .grupos{
     display: inline-block;
-    margin: 0 15px
-
 }
 
 ul{
@@ -24,7 +22,7 @@ ul{
 
 div.grupos {
     /* border: 2px solid white; */
-    width: 22vh;
+    width: 21vh;
     margin: 5vh 1vh;
 
 }
@@ -51,7 +49,7 @@ th, td{
 
 .grupo {
     display: inline-block;
-    padding: 5vh;
+    padding: 4vh;
 
 }
 
