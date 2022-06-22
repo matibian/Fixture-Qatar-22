@@ -7,6 +7,7 @@ const FASES = ["Fase de grupos", "Octavos de final", "Cuartos de final", "Semifi
 
 
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
+
 class Equipo {
     constructor(nombre, puntos, golesFavor, golesContra, partidosGanados, partidosPerdidos, partidosJugados, partidosEmpatados, difGol) {
         this.nombre = nombre;
@@ -34,8 +35,6 @@ EQUIPOS.forEach((nombre) => {
 
 
 ///////////////////////////////ARMADO DE GRUPOS //////////////////////////////
-let partido1 = 0 //
-let partido2 = 0 //
 
 class Grupo {
     constructor(nombre, equipos, partidos) {
@@ -97,107 +96,145 @@ GRUPO.forEach((grupo) => {
 
 });
 
-console.log(GRUPO)
 
-
-function calcularPuntos(ge1,ge2) {
-    let puntos
-    if (ge1>ge2) {
-        puntos = [3,0]
-    } else if(ge1<ge2) {
-        puntos = [0,3]
-    } else {
-        puntos = [1,1]
-    }
-
-    return puntos
+function random(min, max) {
+    return Math.floor((Math.random() * (max - min + 1)) + min);
 }
 
+GRUPO.forEach((grupo) => {
+    grupo.partido.forEach((partido) => {
+        partido.geq1 = random(0,5)
+        partido.geq2 = random(0,5)
 
-
-GRUPO[2].equipo[0].puntos = 6
-GRUPO[2].equipo[1].puntos = 1
-GRUPO[2].equipo[2].puntos = 5
-GRUPO[2].equipo[3].puntos = 3
-
-
-
-
-GRUPO.forEach(grupo => {
-    grupo.equipo.sort((a, b) => {
-        if (b.puntos > a.puntos) {
-            return 1;
-        }
-        if (b.puntos < a.puntos) {
-            return -1;
-        }
-        return 0;
-    })
     
+});
 });
 
 
 
+function calcularPuntos(ge1,ge2) {
+    let puntos
+    let ganador = ""
+
+    if (ge1>ge2) {
+        puntos = [3,0]
+        ganador = 1
+
+    } else if(ge1<ge2) {
+        puntos = [0,3]
+        ganador = 2
+    } else {
+        puntos = [1,1]
+        ganador = 0
+    }
+    return [puntos, ganador]
+}
+
+console.log(GRUPO)
+
+GRUPO.forEach((grupo) => {
+    grupo.partido.forEach((partido) => {
+        let resultado = calcularPuntos (partido.geq1, partido.geq2)
+        partido.eq1.partidosJugados ++
+        partido.eq2.partidosJugados ++
+        partido.eq1.puntos =  partido.eq1.puntos + resultado[0][0]
+        partido.eq2.puntos =  partido.eq2.puntos + resultado[0][1]
+
+        switch (resultado[1]) {
+            case 0:
+                partido.eq1.partidosEmpatados ++
+                partido.eq2.partidosEmpatados ++
+                break
+            case 1 : 
+                partido.eq1.partidosGanados ++
+                partido.eq2.partidosPerdidos ++
+                break
+            case 2 : 
+                partido.eq2.partidosGanados ++
+                partido.eq1.partidosPerdidos ++
+                break
+
+                ;
+            }
+        partido.eq1.golesFavor += partido.geq1
+        partido.eq2.golesFavor += partido.geq2
+        partido.eq1.difGol += partido.geq1
+        partido.eq1.difGol -= partido.geq2
+        partido.eq2.difGol += partido.geq2
+        partido.eq2.difGol -= partido.geq1
+        partido.eq1.golesContra += partido.geq2
+        partido.eq2.golesContra += partido.geq1
 
 
+        });
 
 
+    
+});
+    
 
 
-document.write(`<h1 class="titulo"><center>Fixture Mundial Qatar 2022 </center></h1>`)
-
-
-document.write(`<section class="gruposPrin">`)
+// GRUPO.forEach(grupo => {
+//     grupo.equipo.sort((a, b) => {
+//         if (b.puntos > a.puntos) {
+//             return 1;
+//         }
+//         if (b.puntos < a.puntos) {
+//             return -1;
+//         }
+//         return 0;
+//     })
+// });
 
 
 
 ////////////////////// TABLAS EQUIPOS POR GRUPO/////////////////////////
 
-for (let i = 0; i < GRUPOS.length; i++) {
-    document.write(`<div class="grupos"> <h3>Grupo ${GRUPOS[i]}</h3><ul>`)
-    for (let j = 0; j < 4; j++) {
-        document.write(
-        `
-            <li>${EQUIPOS[j+4*i]}</li>`
-        )
-        
-        
-    }
-    document.write(`</ul></div>`)
-}
-// GRUPOS.forEach((grupo) => {
+
+function tablaEquipos (grupo) { 
+
+
+    let ul = document.createElement("ul")
     
-//     document.write(`<div class="grupos"> <h3>Grupo ${grupo}</h3><ul>`)
-//     for (let j = 0; j < 4; j++) {
-//         document.write(
-//         `
-//             <li>${EQUIPOS[j]}</li>`
-//         )
+    document.getElementById('grup'+ grupo.nombre).appendChild(ul);
+
+    grupo.equipo.forEach(equipo => {
         
-        
-//     }
-//     document.write(`</ul></div>`)
-// })
+    let eq = document.createElement('li');
+    eq.innerHTML = equipo.nombre
+    // ul.innerHTML = `
+    //     <li> ${grupo.equipo[0].nombre}</li>
+    //     <li> ${grupo.equipo[1].nombre}</li>
+    //     <li> ${grupo.equipo[2].nombre}</li>
+    //     <li> ${grupo.equipo[3].nombre}</li>`
+    ul.appendChild(eq)
+
+    
+    });
+}
 
 
 
-document.write(`</section>`)
+let tablaEq = document.getElementById("gruposPrin");
+
+GRUPO.forEach((grupo) => {
+
+tablaEq.innerHTML += `<div class="grupos" id="grup${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
+tablaEquipos(grupo)
+
+tablaEq.innerHTML += `</div>`
+})
 
 
 
-document.write(`<h2 class="titulo"><center> ${FASES[0]} </center></h2>`)
-
-
+GRUPO.forEach(grupo => {
+    grupo.equipo.sort((a, b) => b.puntos - a.puntos || b.difGol - a.difGol);
+});
 
 
 
 
 ////////////////////// TABLAS PARTIDOS POR GRUPO/////////////////////////
-
-
-
-document.write(`<section class="tablasPartidos">`)
-
 
 function crearTablaPartidos(grupo) {
 
@@ -209,163 +246,43 @@ function crearTablaPartidos(grupo) {
     table.appendChild(thead);
     table.appendChild(tbody);
     
-    // Adding the entire table to the body tag
+
     document.getElementById('partidoGrupo'+ grupo.nombre).appendChild(table);
 
-
-
+    grupo.partido.forEach(partido => {
+        
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
-    row_1_data_1.innerHTML = grupo.partido[0].eq1.nombre;
+    row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
-    row_1_data_2.innerHTML = `<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
     let row_1_data_3 = document.createElement('td');
-    row_1_data_3.innerHTML = `<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
     let row_1_data_4 = document.createElement('td');
-    row_1_data_4.innerHTML = grupo.partido[0].eq2.nombre;
+    row_1_data_4.innerHTML = partido.eq2.nombre;
 
-    
     row_1.appendChild(row_1_data_1);
     row_1.appendChild(row_1_data_2);
     row_1.appendChild(row_1_data_3);
     row_1.appendChild(row_1_data_4);
     tbody.appendChild(row_1);
-    
-    let row_2 = document.createElement('tr');
-    let row_2_data_1 = document.createElement('td');
-    row_2_data_1.innerHTML = grupo.partido[1].eq1.nombre;
-    let row_2_data_2 = document.createElement('td');
-    row_2_data_2.innerHTML = `<input type="number" class="goles">`;
-    let row_2_data_3 = document.createElement('td');
-    row_2_data_3.innerHTML = `<input type="number" class="goles">`;
-    let row_2_data_4 = document.createElement('td');
-    row_2_data_4.innerHTML = grupo.partido[1].eq2.nombre;
-
-
-    row_2.appendChild(row_2_data_1);
-    row_2.appendChild(row_2_data_2);
-    row_2.appendChild(row_2_data_3);
-    row_2.appendChild(row_2_data_4);
-
-    tbody.appendChild(row_2);
-
-
-    // Creating and adding data to third row of the table
-    let row_3 = document.createElement('tr');
-    let row_3_data_1 = document.createElement('td');
-    row_3_data_1.innerHTML = grupo.partido[2].eq1.nombre;
-    let row_3_data_2 = document.createElement('td');
-    row_3_data_2.innerHTML = `<input type="number" class="goles">`;
-    let row_3_data_3 = document.createElement('td');
-    row_3_data_3.innerHTML = `<input type="number" class="goles">`;
-    let row_3_data_4 = document.createElement('td');
-    row_3_data_4.innerHTML = grupo.partido[2].eq2.nombre;
-
-    
-    
-    row_3.appendChild(row_3_data_1);
-    row_3.appendChild(row_3_data_2);
-    row_3.appendChild(row_3_data_3);
-    row_3.appendChild(row_3_data_4);
-
-    tbody.appendChild(row_3);
-    
-    
-    
-    let row_4 = document.createElement('tr');
-    let row_4_data_1 = document.createElement('td');
-    row_4_data_1.innerHTML = grupo.partido[3].eq1.nombre;
-    let row_4_data_2 = document.createElement('td');
-    row_4_data_2.innerHTML = `<input type="number" class="goles">`;
-    let row_4_data_3 = document.createElement('td');
-    row_4_data_3.innerHTML = `<input type="number" class="goles">`;
-    let row_4_data_4 = document.createElement('td');
-    row_4_data_4.innerHTML = grupo.partido[3].eq2.nombre;
-
-    
-    
-    row_4.appendChild(row_4_data_1);
-    row_4.appendChild(row_4_data_2);
-    row_4.appendChild(row_4_data_3);
-    row_4.appendChild(row_4_data_4);
-    tbody.appendChild(row_4);
-    
-    
- 
-    let row_5 = document.createElement('tr');
-    let row_5_data_1 = document.createElement('td');
-    row_5_data_1.innerHTML = grupo.partido[4].eq1.nombre;
-    let row_5_data_2 = document.createElement('td');
-    row_5_data_2.innerHTML = `<input type="number" class="goles">`;
-    let row_5_data_3 = document.createElement('td');
-    row_5_data_3.innerHTML = `<input type="number" class="goles">`;
-    let row_5_data_4 = document.createElement('td');
-    row_5_data_4.innerHTML = grupo.partido[4].eq2.nombre;
-
-    
-    
-    row_5.appendChild(row_5_data_1);
-    row_5.appendChild(row_5_data_2);
-    row_5.appendChild(row_5_data_3);
-    row_5.appendChild(row_5_data_4);
-
-    tbody.appendChild(row_5);
-
-    let row_6 = document.createElement('tr');
-    let row_6_data_1 = document.createElement('td');
-    row_6_data_1.innerHTML = grupo.partido[5].eq1.nombre;
-    let row_6_data_2 = document.createElement('td');
-    row_6_data_2.innerHTML = `<input type="number" class="goles">`;
-    let row_6_data_3 = document.createElement('td');
-    row_6_data_3.innerHTML = `<input type="number" class="goles">`;
-    let row_6_data_4 = document.createElement('td');
-    row_6_data_4.innerHTML = grupo.partido[5].eq2.nombre;
-
-
-    row_6.appendChild(row_6_data_1);
-    row_6.appendChild(row_6_data_2);
-    row_6.appendChild(row_6_data_3);
-    row_6.appendChild(row_6_data_4);
-
-    tbody.appendChild(row_6);
-
+    });
 }
 
 
-
-
-// GRUPO.forEach(grupo => {
-    
-
-
-// let eq1 = grupo.equipo[0].nombre;
-// let eq2 = grupo.equipo[1].nombre;
-// let eq3 = grupo.equipo[2].nombre;
-// let eq4 = grupo.equipo[3].nombre;
-
-
-// document.write(`<div class="grupo" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`)
-// crearTablaPartidos(grupo,eq1, eq2, eq3, eq4)
-// document.write(`</div>`)
-
-// });
-
+let tabla = document.getElementById ('tablasPartidos');
 GRUPO.forEach((grupo) => {
-    document.write(`<div class="grupo" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`)
+
+    tabla.innerHTML += `<div class="grupo" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
     crearTablaPartidos(grupo)
-    document.write(`</div>`)
+    tabla.innerHTML += `</div>`
+
 });
 
-document.write(`</section>`)
+// ////////////////////////////////// TABLAS DE PUNTOS POR GRUPO //////////////////
 
-
-document.write(`<h2 class="titulo"><center> PUNTOS POR GRUPO </center></h2>`)
-
-
-////////////////////////////////// TABLAS DE PUNTOS POR GRUPO //////////////////
 
 function crearTabla(grupo) {
-
 
 let table = document.createElement('table');
 let thead = document.createElement('thead');
@@ -405,134 +322,135 @@ row_1.appendChild(heading_7);
 thead.appendChild(row_1);
 
 
+grupo.equipo.forEach(equipo => {
 
-let row_2 = document.createElement('tr');
-let row_2_data_1 = document.createElement('td');
-row_2_data_1.innerHTML = grupo.equipo[0].nombre;
-let row_2_data_2 = document.createElement('td');
-row_2_data_2.innerHTML = grupo.equipo[0].puntos;
-let row_2_data_3 = document.createElement('td');
-row_2_data_3.innerHTML = grupo.equipo[0].partidosJugados;
-let row_2_data_4 = document.createElement('td');
-row_2_data_4.innerHTML = grupo.equipo[0].partidosGanados;
-let row_2_data_5 = document.createElement('td');
-row_2_data_5.innerHTML = grupo.equipo[0].partidosEmpatados;
-let row_2_data_6 = document.createElement('td');
-row_2_data_6.innerHTML = grupo.equipo[0].partidosPerdidos;
-let row_2_data_7 = document.createElement('td');
-row_2_data_7.innerHTML = grupo.equipo[0].difGol;
+let row = document.createElement('tr');
+let row_data_1 = document.createElement('td');
+row_data_1.innerHTML = equipo.nombre;
+let row_data_2 = document.createElement('td');
+row_data_2.innerHTML = equipo.puntos;
+let row_data_3 = document.createElement('td');
+row_data_3.innerHTML = equipo.partidosJugados;
+let row_data_4 = document.createElement('td');
+row_data_4.innerHTML = equipo.partidosGanados;
+let row_data_5 = document.createElement('td');
+row_data_5.innerHTML = equipo.partidosEmpatados;
+let row_data_6 = document.createElement('td');
+row_data_6.innerHTML = equipo.partidosPerdidos;
+let row_data_7 = document.createElement('td');
+row_data_7.innerHTML = equipo.difGol;
 
-row_2.appendChild(row_2_data_1);
-row_2.appendChild(row_2_data_2);
-row_2.appendChild(row_2_data_3);
-row_2.appendChild(row_2_data_4);
-row_2.appendChild(row_2_data_5);
-row_2.appendChild(row_2_data_6);
-row_2.appendChild(row_2_data_7);
-tbody.appendChild(row_2);
+row.appendChild(row_data_1);
+row.appendChild(row_data_2);
+row.appendChild(row_data_3);
+row.appendChild(row_data_4);
+row.appendChild(row_data_5);
+row.appendChild(row_data_6);
+row.appendChild(row_data_7);
+tbody.appendChild(row);
 
+});
 
-// Creating and adding data to third row of the table
-let row_3 = document.createElement('tr');
-let row_3_data_1 = document.createElement('td');
-row_3_data_1.innerHTML = grupo.equipo[1].nombre;
-let row_3_data_2 = document.createElement('td');
-row_3_data_2.innerHTML = grupo.equipo[1].puntos;
-let row_3_data_3 = document.createElement('td');
-row_3_data_3.innerHTML = grupo.equipo[1].partidosJugados;
-let row_3_data_4 = document.createElement('td');
-row_3_data_4.innerHTML = grupo.equipo[1].partidosGanados;
-let row_3_data_5 = document.createElement('td');
-row_3_data_5.innerHTML = grupo.equipo[1].partidosEmpatados;
-let row_3_data_6 = document.createElement('td');
-row_3_data_6.innerHTML = grupo.equipo[1].partidosPerdidos;
-let row_3_data_7 = document.createElement('td');
-row_3_data_7.innerHTML = grupo.equipo[1].difGol;
+}
 
-row_3.appendChild(row_3_data_1);
-row_3.appendChild(row_3_data_2);
-row_3.appendChild(row_3_data_3);
-row_3.appendChild(row_3_data_4);
-row_3.appendChild(row_3_data_5);
-row_3.appendChild(row_3_data_6);
-row_3.appendChild(row_3_data_7);
-tbody.appendChild(row_3);
+let tabla2 = document.getElementById ('tablasClasifGrupos');
+GRUPO.forEach((grupo) => {
+
+    tabla2.innerHTML += `<div class="tablaGrupos" id="grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
+    crearTabla(grupo)
+    tabla2.innerHTML += `</div>`
+
+});
 
 
 
-let row_4 = document.createElement('tr');
-let row_4_data_1 = document.createElement('td');
-row_4_data_1.innerHTML = grupo.equipo[2].nombre;
-let row_4_data_2 = document.createElement('td');
-row_4_data_2.innerHTML = grupo.equipo[2].puntos;
-let row_4_data_3 = document.createElement('td');
-row_4_data_3.innerHTML = grupo.equipo[2].partidosJugados;
-let row_4_data_4 = document.createElement('td');
-row_4_data_4.innerHTML = grupo.equipo[2].partidosGanados;
-let row_4_data_5 = document.createElement('td');
-row_4_data_5.innerHTML = grupo.equipo[2].partidosEmpatados;
-let row_4_data_6 = document.createElement('td');
-row_4_data_6.innerHTML = grupo.equipo[2].partidosPerdidos;
-let row_4_data_7 = document.createElement('td');
-row_4_data_7.innerHTML = grupo.equipo[2].difGol;
+
+//////////////////////////// PLAYOFFS ///////////////////////////////////
 
 
-row_4.appendChild(row_4_data_1);
-row_4.appendChild(row_4_data_2);
-row_4.appendChild(row_4_data_3);
-row_4.appendChild(row_4_data_4);
-row_4.appendChild(row_4_data_5);
-row_4.appendChild(row_4_data_6);
-row_4.appendChild(row_4_data_7);
-tbody.appendChild(row_4);
-
-
-let row_5 = document.createElement('tr');
-let row_5_data_1 = document.createElement('td');
-row_5_data_1.innerHTML = grupo.equipo[3].nombre;
-let row_5_data_2 = document.createElement('td');
-row_5_data_2.innerHTML = grupo.equipo[3].puntos;
-let row_5_data_3 = document.createElement('td');
-row_5_data_3.innerHTML = grupo.equipo[3].partidosJugados;
-let row_5_data_4 = document.createElement('td');
-row_5_data_4.innerHTML = grupo.equipo[3].partidosGanados;
-let row_5_data_5 = document.createElement('td');
-row_5_data_5.innerHTML = grupo.equipo[3].partidosEmpatados;
-let row_5_data_6 = document.createElement('td');
-row_5_data_6.innerHTML = grupo.equipo[3].partidosPerdidos;
-let row_5_data_7 = document.createElement('td');
-row_5_data_7.innerHTML = grupo.equipo[3].difGol;
-
-
-row_5.appendChild(row_5_data_1);
-row_5.appendChild(row_5_data_2);
-row_5.appendChild(row_5_data_3);
-row_5.appendChild(row_5_data_4);
-row_5.appendChild(row_5_data_5);
-row_5.appendChild(row_5_data_6);
-row_5.appendChild(row_5_data_7);
-tbody.appendChild(row_5);
-
-
-
+class PartidoPlayoff {
+    constructor(eq1, eq2, geq1, geq2, pen1, pen2, terminado, id){
+        this.eq1 = eq1;
+        this.eq2 = eq2;
+        this.geq1 = geq1;
+        this.geq2 = geq2;
+        this.pen1 = pen1;
+        this.pen2 = pen2;
+        this.terminado = terminado;
+        this.id = id;
+    }
 }
 
 
 
+//////////////////////////// OCTAVOS ///////////////////////////////////
+const partidosOctavos = []
+let i = 0
+for (let j = 0; j < 4; j++) {
+    id++
+    const partido1 = new PartidoPlayoff (GRUPO[i].equipo[0],GRUPO[i+1].equipo[1],0 ,0 , 0, 0 , false, id);
+    partidosOctavos.push(partido1)
+    id++
+    const partido2 = new PartidoPlayoff (GRUPO[i+1].equipo[0],GRUPO[i].equipo[1],0 ,0 , 0, 0 , false, id);
+    partidosOctavos.push(partido2)
+    i += 2
+
+};
 
 
+function crearTablaPartidosOctavos() {
 
 
-//for (let i = 0; i < GRUPOS.length; i++) {
-
-GRUPO.forEach((grupo) => {
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
     
 
+    document.getElementById('partidosOctavos').appendChild(table);
 
-    document.write(`<div class="tablaGrupos" id="grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`)
-    crearTabla(grupo)
-    document.write(`</div>`)
+    partidosOctavos.forEach(partido => {
 
+    
+        
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partido.eq1.nombre;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+    if (partido.geq1 == partido.geq2) {
+        row_1_data_2.innerHTML = partido.geq1 + `(${partido.pen1})` //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 + `(${partido.pen2})` //`<input type="number" class="goles">`;
+    } else {
+        row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
+    }
+    let row_1_data_4 = document.createElement('td');
+        row_1_data_4.innerHTML = partido.eq2.nombre;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    });
+}
+
+// function random(min, max) {
+//     return Math.floor((Math.random() * (max - min + 1)) + min);
+// }
+
+partidosOctavos.forEach((partido) => {
+    partido.geq1 = random(0,5)
+    partido.geq2 = random(0,5)
+    if (partido.geq2 == partido.geq1) {
+        while (partido.pen1 == partido.pen2) {
+            partido.pen1 = random(0,5)
+            partido.pen2 = random(0,5)
+            }
+    }
 });
 
 
@@ -540,3 +458,305 @@ GRUPO.forEach((grupo) => {
 
 
 
+
+//////////////////////////// CUARTOS ///////////////////////////////////
+
+const Cuartos = []
+
+function partidosPlayoff(partido,Instancia) {
+    if (partido.geq2<partido.geq1) {
+        ganador = partido.eq1
+    } else if (partido.geq2>partido.geq1 ) {
+        ganador = partido.eq2
+    } else if (partido.pen1>partido.pen2 ) {
+        ganador = partido.eq1
+    } else {
+        ganador = partido.eq2}
+    Instancia.push(ganador)
+
+}
+
+partidosOctavos.forEach(partido => {
+    partidosPlayoff(partido,Cuartos)
+})
+
+// partidosOctavos.forEach(partido => {
+//     if (partido.geq2<partido.geq1) {
+//         ganador = partido.eq1
+//     } else if (partido.geq2>partido.geq1 ) {
+//         ganador = partido.eq2
+//     } else if (partido.pen1>partido.pen2 ) {
+//         ganador = partido.eq1
+//     } else if (partido.pen1<partido.pen2 ) {
+//         ganador = partido.eq2}
+//     Cuartos.push(ganador)
+// });
+
+
+
+const partidosCuartos = [];
+
+let n = 0
+for (let j = 0; j < 4; j++) {
+    id++
+    const partido1 = new PartidoPlayoff (Cuartos[n],Cuartos[n+1], 0, 0, 0, 0 , false, id);
+    partidosCuartos.push(partido1)
+    id++
+
+    n += 2
+
+};
+
+
+
+
+function crearTablaPartidosCuartos() {
+
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+
+    document.getElementById('partidosCuartos').appendChild(table);
+
+    partidosCuartos.forEach(partido => {
+        
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partido.eq1.nombre;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+    if (partido.geq1 == partido.geq2) {
+        row_1_data_2.innerHTML = partido.geq1 + `(${partido.pen1})` //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 + `(${partido.pen2})` //`<input type="number" class="goles">`;
+    } else {
+        row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
+    }
+    let row_1_data_4 = document.createElement('td');
+        row_1_data_4.innerHTML = partido.eq2.nombre;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    });
+}
+
+// function random(min, max) {
+//     return Math.floor((Math.random() * (max - min + 1)) + min);
+// }
+
+partidosCuartos.forEach((partido) => {
+    partido.geq1 = random(0,5)
+    partido.geq2 = random(0,5)
+    if (partido.geq2 == partido.geq1) {
+        while (partido.pen1 == partido.pen2) {
+        partido.pen1 = random(0,5)
+        partido.pen2 = random(0,5)
+        }
+    }
+});
+
+
+
+
+
+
+//////////////////////////// SEMIFINAL ///////////////////////////////////
+
+const Semifinal = []
+
+
+partidosCuartos.forEach(partido => {
+    partidosPlayoff(partido,Semifinal)
+})
+
+// partidosCuartos.forEach(partido => {
+//     if (partido.geq2<partido.geq1) {
+//         ganador = partido.eq1
+//     } else  {
+//         ganador = partido.eq2
+//     }   
+//     Semifinal.push(ganador)
+// });
+
+console.log(GRUPO)
+
+const partidosSemi = [];
+
+let o = 0
+for (let j = 0; j < 2; j++) {
+    id++
+    const partido1 = new PartidoPlayoff (Semifinal[o],Semifinal[o+1], 0, 0, 0, 0 , false, id);
+    partidosSemi.push(partido1)
+    id++
+
+    o += 2
+
+};
+
+
+
+function crearTablaPartidosSemi() {
+
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+
+    document.getElementById('partidosSemi').appendChild(table);
+
+    partidosSemi.forEach(partido => {
+        
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partido.eq1.nombre;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+    if (partido.geq1 == partido.geq2) {
+        row_1_data_2.innerHTML = partido.geq1 + `(${partido.pen1})` //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 + `(${partido.pen2})` //`<input type="number" class="goles">`;
+    } else {
+        row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
+    }
+    let row_1_data_4 = document.createElement('td');
+        row_1_data_4.innerHTML = partido.eq2.nombre;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    });
+}
+
+// function random(min, max) {
+//     return Math.floor((Math.random() * (max - min + 1)) + min);
+// }
+
+partidosSemi.forEach((partido) => {
+    partido.geq1 = random(0,5)
+    partido.geq2 = random(0,5)
+    if (partido.geq2 == partido.geq1) {
+        while (partido.pen1 == partido.pen2) {
+            partido.pen1 = random(0,5)
+            partido.pen2 = random(0,5)
+            }
+    }
+});
+
+
+
+
+
+//////////////////////////// FINAL ///////////////////////////////////
+
+const FINAL = []
+
+partidosSemi.forEach(partido => {
+    if (partido.geq2<partido.geq1) {
+        ganador = partido.eq1
+    } else  {
+        ganador = partido.eq2
+    }   
+    FINAL.push(ganador)
+});
+
+
+
+const partidoFinal = [];
+
+
+id++
+const partido1 = new PartidoPlayoff (FINAL[0],FINAL[1], 0, 0, 0, 0 , false, id);
+partidoFinal.push(partido1)
+
+
+
+
+
+function crearTablaPartidoFinal() {
+
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+
+    document.getElementById('partidoFinal').appendChild(table);
+
+    partidoFinal.forEach(partido => {
+        
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partido.eq1.nombre;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+    if (partido.geq1 == partido.geq2) {
+        row_1_data_2.innerHTML = partido.geq1 + `(${partido.pen1})` //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 + `(${partido.pen2})` //`<input type="number" class="goles">`;
+    } else {
+        row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+        row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
+    }
+    let row_1_data_4 = document.createElement('td');
+        row_1_data_4.innerHTML = partido.eq2.nombre;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    });
+}
+
+// function random(min, max) {
+//     return Math.floor((Math.random() * (max - min + 1)) + min);
+// }
+
+partidoFinal.forEach((partido) => {
+    partido.geq1 = random(0,5)
+    partido.geq2 = random(0,5)
+    if (partido.geq2 == partido.geq1) {
+        while (partido.pen1 == partido.pen2) {
+            partido.pen1 = random(0,5)
+            partido.pen2 = random(0,5)
+            }
+    }
+});
+
+
+
+let tablaOctavos = document.getElementById ('tablasPartidosPlayoff');
+tablaOctavos.innerHTML += `<div class="grupo" id="partidosOctavos"> <h3>${FASES[1]}</h3>`
+crearTablaPartidosOctavos()
+tablaOctavos.innerHTML += `</div>`
+
+let tablaCuartos = document.getElementById ('tablasPartidosPlayoff');
+tablaCuartos.innerHTML += `<div class="grupo" id="partidosCuartos"> <h3>${FASES[2]}</h3>`
+crearTablaPartidosCuartos()
+tablaCuartos.innerHTML += `</div>`
+
+let tablaSemi = document.getElementById ('tablasPartidosPlayoff');
+tablaSemi.innerHTML += `<div class="grupo" id="partidosSemi"> <h3>${FASES[3]}</h3>`
+crearTablaPartidosSemi()
+tablaSemi.innerHTML += `</div>`
+
+let tablaFinal = document.getElementById ('tablasPartidosPlayoff');
+tablaFinal.innerHTML += `<div class="grupo" id="partidoFinal"> <h3>${FASES[4]}</h3>`
+crearTablaPartidoFinal()
+tablaFinal.innerHTML += `</div>`

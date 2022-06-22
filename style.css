@@ -1,5 +1,6 @@
 body {
     background-image: url(./assets/23-6-2021-7ss_generated.jpg);
+    background-size: cover;
     /* background: linear-gradient(to right top, #8f0b31,#3c0014); */
     color: white
 }
@@ -22,9 +23,10 @@ ul{
 
 div.grupos {
     /* border: 2px solid white; */
-    width: 21vh;
+    width: 15vh;
     margin: 5vh 1vh;
-
+    display: inline-block;
+    justify-items: center
 }
 
 
@@ -81,8 +83,11 @@ h3 {
 .grupos li {
     text-align: center;
     border-bottom: 1px solid white;
-    border-width: 1px 10px 1px;
 
+}
+
+.grupos ul {
+    padding: 0 7px
 }
 
 a {
@@ -91,4 +96,36 @@ a {
 
 .navbar-nav {
     color: white 
+}
+
+.navbar-brand {
+    color: white;
+}
+
+#tablasPartidosPlayoff {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#tablasClasifGrupos {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#tablasPartidos {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 5vh;
+    column-gap: 5vh;
+}
+
+#gruposPrin {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 10vh;
 }
