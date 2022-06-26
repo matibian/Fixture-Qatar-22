@@ -4,12 +4,12 @@ const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
 const FASES = ["Fase de grupos", "Octavos de final", "Cuartos de final", "Semifinal", "Final"]
 
-
+const RANKING = [1441, 1464, 1593, 1679, 1737, 1559, 1635, 1582, 1770, 1435, 1650, 1546, 1765, 1484, 1665, 1508, 1717, 1500, 1659, 1553, 1822, 1474, 1559, 1632, 1838, 1550, 1621, 1485, 1679, 1390, 1644, 1526]
 
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
 
 class Equipo {
-    constructor(nombre, puntos, golesFavor, golesContra, partidosGanados, partidosPerdidos, partidosJugados, partidosEmpatados, difGol) {
+    constructor(nombre, puntos, golesFavor, golesContra, partidosGanados, partidosPerdidos, partidosJugados, partidosEmpatados, difGol, ranking) {
         this.nombre = nombre;
         this.puntos = puntos;
         this.golesFavor = golesFavor;
@@ -19,16 +19,17 @@ class Equipo {
         this.partidosJugados = partidosJugados;
         this.partidosEmpatados = partidosEmpatados;
         this.difGol = difGol;
+        this.ranking = ranking
     }
 }
 
 const EQUIPO = [];
-
+rank = 0
 EQUIPOS.forEach((nombre) => {
     
-    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0)
+    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0, RANKING[rank])
     EQUIPO.push(equipox)
-
+    rank ++
 });
 
 
@@ -97,22 +98,60 @@ GRUPO.forEach((grupo) => {
 });
 
 
+/////////////////////////////RANDOM CON RANKING///////////////////////////
+
+// Probabilidad sobre goles
+function weightedRandom(prob) {
+    let i, sum=0, r=Math.random();
+    for (i in prob){
+        sum += prob[i];
+        if (r<=sum) return i
+    }
+}
+
+// Itero 5 veces la posibilidad de gol
+function randomG(w){ 
+    var r = 0;
+    for(var i = 5; i > 0; i --){
+        r += Math.round(weightedRandom(w));
+    }
+    return r;
+}
+
+
 function random(min, max) {
     return Math.floor((Math.random() * (max - min + 1)) + min);
 }
 
-GRUPO.forEach((grupo) => {
-    grupo.partido.forEach((partido) => {
-        partido.geq1 = random(0,5)
-        partido.geq2 = random(0,5)
+// GRUPO.forEach((grupo) => {
+//     grupo.partido.forEach((partido) => {
+//         partido.geq1 = random(0,5)
+//         partido.geq2 = random(0,5)
 
     
+// });
+// });
+GRUPO.forEach((grupo) => {
+    grupo.partido.forEach((partido) => {        
+        // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
+        let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+        console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
+        let porceq1 = (50 + 0.5*dif)*.01
+        let porceq2 = (50 - 0.5*dif)*.01
+        
+        partido.geq1 = randomG({0:porceq2, 1:porceq1})
+        partido.geq2 = randomG({0:porceq1, 1:porceq2})
+        console.log(partido.geq1, partido.geq2)
+
 });
 });
 
 
 
-function calcularPuntos(ge1,ge2) {
+
+
+
+function calcularPuntos(ge1,ge2,terminado) {
     let puntos
     let ganador = ""
 
@@ -130,11 +169,10 @@ function calcularPuntos(ge1,ge2) {
     return [puntos, ganador]
 }
 
-console.log(GRUPO)
 
 GRUPO.forEach((grupo) => {
     grupo.partido.forEach((partido) => {
-        let resultado = calcularPuntos (partido.geq1, partido.geq2)
+        let resultado = calcularPuntos (partido.geq1, partido.geq2,partido.terminado)
         partido.eq1.partidosJugados ++
         partido.eq2.partidosJugados ++
         partido.eq1.puntos =  partido.eq1.puntos + resultado[0][0]
@@ -174,19 +212,6 @@ GRUPO.forEach((grupo) => {
     
 
 
-// GRUPO.forEach(grupo => {
-//     grupo.equipo.sort((a, b) => {
-//         if (b.puntos > a.puntos) {
-//             return 1;
-//         }
-//         if (b.puntos < a.puntos) {
-//             return -1;
-//         }
-//         return 0;
-//     })
-// });
-
-
 
 ////////////////////// TABLAS EQUIPOS POR GRUPO/////////////////////////
 
@@ -202,11 +227,6 @@ function tablaEquipos (grupo) {
         
     let eq = document.createElement('li');
     eq.innerHTML = equipo.nombre
-    // ul.innerHTML = `
-    //     <li> ${grupo.equipo[0].nombre}</li>
-    //     <li> ${grupo.equipo[1].nombre}</li>
-    //     <li> ${grupo.equipo[2].nombre}</li>
-    //     <li> ${grupo.equipo[3].nombre}</li>`
     ul.appendChild(eq)
 
     
@@ -219,7 +239,7 @@ let tablaEq = document.getElementById("gruposPrin");
 
 GRUPO.forEach((grupo) => {
 
-tablaEq.innerHTML += `<div class="grupos" id="grup${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
+tablaEq.innerHTML += `<div  onclick="funcToggle('Grupo${grupo.nombre}')" class="grupos" id="grup${grupo.nombre}"> <h3> Grupo ${grupo.nombre}</h3>`
 tablaEquipos(grupo)
 
 tablaEq.innerHTML += `</div>`
@@ -279,6 +299,8 @@ GRUPO.forEach((grupo) => {
 
 });
 
+
+
 // ////////////////////////////////// TABLAS DE PUNTOS POR GRUPO //////////////////
 
 
@@ -292,7 +314,7 @@ table.appendChild(thead);
 table.appendChild(tbody);
 
 
-document.getElementById('grupo'+ grupo.nombre).appendChild(table);
+document.getElementById('Grupo'+ grupo.nombre).appendChild(table);
 
 
 let row_1 = document.createElement('tr');
@@ -356,7 +378,7 @@ tbody.appendChild(row);
 let tabla2 = document.getElementById ('tablasClasifGrupos');
 GRUPO.forEach((grupo) => {
 
-    tabla2.innerHTML += `<div class="tablaGrupos" id="grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
+    tabla2.innerHTML += `<div class="tablaGrupos" id="Grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
     crearTabla(grupo)
     tabla2.innerHTML += `</div>`
 
@@ -438,13 +460,15 @@ function crearTablaPartidosOctavos() {
     });
 }
 
-// function random(min, max) {
-//     return Math.floor((Math.random() * (max - min + 1)) + min);
-// }
 
 partidosOctavos.forEach((partido) => {
-    partido.geq1 = random(0,5)
-    partido.geq2 = random(0,5)
+    let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
+    let porceq1 = (50 + 0.5*dif)*.01
+    let porceq2 = (50 - 0.5*dif)*.01
+    
+    partido.geq1 = randomG({0:porceq2, 1:porceq1})
+    partido.geq2 = randomG({0:porceq1, 1:porceq2})
     if (partido.geq2 == partido.geq1) {
         while (partido.pen1 == partido.pen2) {
             partido.pen1 = random(0,5)
@@ -480,19 +504,6 @@ partidosOctavos.forEach(partido => {
     partidosPlayoff(partido,Cuartos)
 })
 
-// partidosOctavos.forEach(partido => {
-//     if (partido.geq2<partido.geq1) {
-//         ganador = partido.eq1
-//     } else if (partido.geq2>partido.geq1 ) {
-//         ganador = partido.eq2
-//     } else if (partido.pen1>partido.pen2 ) {
-//         ganador = partido.eq1
-//     } else if (partido.pen1<partido.pen2 ) {
-//         ganador = partido.eq2}
-//     Cuartos.push(ganador)
-// });
-
-
 
 const partidosCuartos = [];
 
@@ -502,12 +513,9 @@ for (let j = 0; j < 4; j++) {
     const partido1 = new PartidoPlayoff (Cuartos[n],Cuartos[n+1], 0, 0, 0, 0 , false, id);
     partidosCuartos.push(partido1)
     id++
-
     n += 2
 
 };
-
-
 
 
 function crearTablaPartidosCuartos() {
@@ -520,7 +528,6 @@ function crearTablaPartidosCuartos() {
     table.appendChild(thead);
     table.appendChild(tbody);
     
-
     document.getElementById('partidosCuartos').appendChild(table);
 
     partidosCuartos.forEach(partido => {
@@ -548,13 +555,14 @@ function crearTablaPartidosCuartos() {
     });
 }
 
-// function random(min, max) {
-//     return Math.floor((Math.random() * (max - min + 1)) + min);
-// }
-
 partidosCuartos.forEach((partido) => {
-    partido.geq1 = random(0,5)
-    partido.geq2 = random(0,5)
+    let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
+    let porceq1 = (50 + 0.5*dif)*.01
+    let porceq2 = (50 - 0.5*dif)*.01
+    
+    partido.geq1 = randomG({0:porceq2, 1:porceq1})
+    partido.geq2 = randomG({0:porceq1, 1:porceq2})
     if (partido.geq2 == partido.geq1) {
         while (partido.pen1 == partido.pen2) {
         partido.pen1 = random(0,5)
@@ -576,15 +584,6 @@ const Semifinal = []
 partidosCuartos.forEach(partido => {
     partidosPlayoff(partido,Semifinal)
 })
-
-// partidosCuartos.forEach(partido => {
-//     if (partido.geq2<partido.geq1) {
-//         ganador = partido.eq1
-//     } else  {
-//         ganador = partido.eq2
-//     }   
-//     Semifinal.push(ganador)
-// });
 
 console.log(GRUPO)
 
@@ -641,13 +640,15 @@ function crearTablaPartidosSemi() {
     });
 }
 
-// function random(min, max) {
-//     return Math.floor((Math.random() * (max - min + 1)) + min);
-// }
 
 partidosSemi.forEach((partido) => {
-    partido.geq1 = random(0,5)
-    partido.geq2 = random(0,5)
+    let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
+    let porceq1 = (50 + 0.5*dif)*.01
+    let porceq2 = (50 - 0.5*dif)*.01
+    
+    partido.geq1 = randomG({0:porceq2, 1:porceq1})
+    partido.geq2 = randomG({0:porceq1, 1:porceq2})
     if (partido.geq2 == partido.geq1) {
         while (partido.pen1 == partido.pen2) {
             partido.pen1 = random(0,5)
@@ -724,13 +725,14 @@ function crearTablaPartidoFinal() {
     });
 }
 
-// function random(min, max) {
-//     return Math.floor((Math.random() * (max - min + 1)) + min);
-// }
-
 partidoFinal.forEach((partido) => {
-    partido.geq1 = random(0,5)
-    partido.geq2 = random(0,5)
+    let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
+    let porceq1 = (50 + 0.5*dif)*.01
+    let porceq2 = (50 - 0.5*dif)*.01
+    
+    partido.geq1 = randomG({0:porceq2, 1:porceq1})
+    partido.geq2 = randomG({0:porceq1, 1:porceq2})
     if (partido.geq2 == partido.geq1) {
         while (partido.pen1 == partido.pen2) {
             partido.pen1 = random(0,5)
@@ -760,3 +762,95 @@ let tablaFinal = document.getElementById ('tablasPartidosPlayoff');
 tablaFinal.innerHTML += `<div class="grupo" id="partidoFinal"> <h3>${FASES[4]}</h3>`
 crearTablaPartidoFinal()
 tablaFinal.innerHTML += `</div>`
+
+
+
+/////////////////////////////RANDOM CON RANKING///////////////////////////
+
+// Probabilidad sobre goles
+function weightedRandom(prob) {
+    let i, sum=0, r=Math.random();
+    for (i in prob){
+        sum += prob[i];
+        if (r<=sum) return i
+    }
+}
+
+// Itero 5 veces la posibilidad de gol
+function randomG(w){ 
+    var r = 0;
+    for(var i = 5; i > 0; i --){
+        r += Math.round(weightedRandom(w));
+    }
+    return r;
+}
+
+GRUPO.forEach((grupo) => {
+    grupo.partido.forEach((partido) => {        
+        // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
+        let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+        console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
+        let porceq1 = (50 + 0.5*dif)*.01
+        let porceq2 = (50 - 0.5*dif)*.01
+        
+        partido.geq1 = randomG({0:porceq2, 1:porceq1})
+        partido.geq2 = randomG({0:porceq1, 1:porceq2})
+        console.log(partido.geq1, partido.geq2)
+
+});
+});
+
+////////////////////// FUNCION TOGGLE ////////////////////////
+
+const GRUPOSTOGGLE = ["GrupoA", "GrupoB", "GrupoC", "GrupoD", "GrupoE", "GrupoF", "GrupoG", "GrupoH"]
+
+function funcToggle(tabla) {
+    const newGrupo = GRUPOSTOGGLE.filter(gr => {
+        return gr !== tabla
+    })
+    console.log(newGrupo)
+
+    var z = document.getElementById(`zonaGrupos`);
+    var x = document.getElementById(`partido${tabla}`);
+    var y = document.getElementById(`${tabla}`);
+    console.log(x, y, tabla);
+
+    if (z.style.display === "flex") {
+
+        z.style.display = "block";
+        x.style.display = "block";
+        y.style.display = "block";
+        var t = document.getElementById(`tituloFG`);
+        t.style.display = "block"
+        var r = document.getElementById(`tituloPG`);
+        r.style.display = "block"
+        newGrupo.forEach(grupo => {
+            var w = document.getElementById(`partido${grupo}`);
+            w.style.display = "block";
+            var v = document.getElementById(`${grupo}`);
+            v.style.display = "block";
+        })
+    }
+
+    else {
+        
+
+        z.style.display = "flex";
+        z.style.justifyContent = "center";
+        x.style.display = "block";
+        y.style.display = "block";
+        var t = document.getElementById(`tituloFG`);
+        t.style.display = "none"
+        var r = document.getElementById(`tituloPG`);
+        r.style.display = "none"
+
+        console.log(t)
+        newGrupo.forEach(grupo => {
+            var w = document.getElementById(`partido${grupo}`);
+            w.style.display = "none";
+            var v = document.getElementById(`${grupo}`);
+            v.style.display = "none";
+    })
+    }
+    
+}

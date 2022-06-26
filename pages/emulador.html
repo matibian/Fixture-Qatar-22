@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="../style.css">
 
     <title>Fixture Qatar 22</title>
 </head>
@@ -20,13 +20,13 @@
         <div class="collapse navbar-collapse justify-content-end " id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active  text-white" aria-current="page" href="#">Fixture</a>
+              <a class="nav-link active  text-white" aria-current="page" href="../index.html">Fixture</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link  text-white" href="./pages/prode.html">Prode</a>
+              <a class="nav-link  text-white" href="./prode.html">Prode</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link  text-white" href="./pages/emulador.html">Emulador partidos</a>
+              <a class="nav-link  text-white" href="#">Emulador partidos</a>
             </li>
             <li class="nav-item">
               <a class="nav-link  text-white" href="#">Torneo</a>
@@ -68,11 +68,18 @@
 
     <h2 class="titulo"><center> PLAYOFFS </center></h2>
     <div class="tablaScroll">
-    <section id="tablasPartidosPlayoff">
-    </section>
+      <section id="tablasPartidosPlayoff">
+      </section>
+      </div>
+
+    <div class="botonrandom" onClick="window.location.reload()">
+      <button class="botonF1">
+        <span>EMULAR</span>
+      </button>
     </div>
+
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script src="./javascript/main.js"></script>
+    <script src="../javascript/emulador.js"></script>
 </body>
 </html>
