@@ -1,3 +1,12 @@
+const GRUPOSTORAGE = localStorage.getItem('GrupoStorage');
+const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
+
+const GRUPO = JSON.parse(GRUPOSTORAGE) ?? [];
+const PARTIDO = JSON.parse(PARTIDOSTORAGE) ?? [];
+console.log(GRUPO)
+console.log(PARTIDO)
+
+
 const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
 
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
@@ -24,12 +33,12 @@ class Equipo {
 }
 
 const EQUIPO = [];
-rank = 0
-EQUIPOS.forEach((nombre) => {
+
+EQUIPOS.forEach((nombre,index) => {
     
-    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0, RANKING[rank])
+    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0, RANKING[index])
     EQUIPO.push(equipox)
-    rank ++
+
 });
 
 
@@ -46,20 +55,18 @@ class Grupo {
 }
 
 
-const GRUPO = [];
-let l = 0;
 let multl = 0; 
 
-
-GRUPOS.forEach((nombre) => {
+if (JSON.parse(GRUPOSTORAGE) == null ) {
+GRUPOS.forEach((nombre,index) => {
     
-    const grupox = new Grupo (nombre, [EQUIPO[multl+l], EQUIPO[multl+l+1], EQUIPO[multl+l+2], EQUIPO[multl+l+3]], [])
+    const grupox = new Grupo (nombre, [EQUIPO[multl+index], EQUIPO[multl+index+1], EQUIPO[multl+index+2], EQUIPO[multl+index+3]], [])
     GRUPO.push(grupox)
     
-    l++
     multl = multl + 3
 
 });
+}
 
 
 class Partido {
@@ -75,32 +82,39 @@ class Partido {
 
 id = 0
 
+
+console.log(PARTIDOSTORAGE)
+
+if (PARTIDOSTORAGE == null) {
+    console.log("si")
 GRUPO.forEach((grupo) => {
     id++
     const partido1 = new Partido (grupo.equipo[0],grupo.equipo[1], 0, 0 , false, id);
     grupo.partido.push(partido1)
+    PARTIDO.push(partido1)
     id++
     const partido2 = new Partido (grupo.equipo[2],grupo.equipo[3], 0, 0 , false, id);
     grupo.partido.push(partido2)
+    PARTIDO.push(partido2)
     id++
     const partido3 = new Partido (grupo.equipo[0],grupo.equipo[2], 0, 0 , false, id);
     grupo.partido.push(partido3)
+    PARTIDO.push(partido3)
     id++
     const partido4 = new Partido (grupo.equipo[1],grupo.equipo[3], 0, 0 , false, id);
     grupo.partido.push(partido4)
+    PARTIDO.push(partido4)
     id++
     const partido5 = new Partido (grupo.equipo[0],grupo.equipo[3], 0, 0 , false, id);
     grupo.partido.push(partido5)
+    PARTIDO.push(partido5)
     id++
     const partido6 = new Partido (grupo.equipo[1],grupo.equipo[2], 0, 0 , false, id);
     grupo.partido.push(partido6)
+    PARTIDO.push(partido6)
 
 });
-
-
-
-
-
+}
 
 
 function calcularPuntos(ge1,ge2) {
@@ -125,11 +139,14 @@ function calcularPuntos(ge1,ge2) {
 GRUPO.forEach((grupo) => {
     grupo.partido.forEach((partido) => {
         let resultado = calcularPuntos (partido.geq1, partido.geq2)
+        if (partido.terminado==true) {
         partido.eq1.partidosJugados ++
         partido.eq2.partidosJugados ++
         partido.eq1.puntos =  partido.eq1.puntos + resultado[0][0]
         partido.eq2.puntos =  partido.eq2.puntos + resultado[0][1]
-
+        
+            
+        
         switch (resultado[1]) {
             case 0:
                 partido.eq1.partidosEmpatados ++
@@ -154,14 +171,13 @@ GRUPO.forEach((grupo) => {
         partido.eq2.difGol -= partido.geq1
         partido.eq1.golesContra += partido.geq2
         partido.eq2.golesContra += partido.geq1
-
+        }
 
         });
-
+    
 
     
 });
-    
 
 
 
@@ -191,7 +207,7 @@ let tablaEq = document.getElementById("gruposPrin");
 
 GRUPO.forEach((grupo) => {
 
-tablaEq.innerHTML += `<div  onclick="funcToggle('Grupo${grupo.nombre}')" class="grupos" id="grup${grupo.nombre}"> <h3> Grupo ${grupo.nombre}</h3>`
+tablaEq.innerHTML += `<div class="grupos" id="grup${grupo.nombre}"> <h3> Grupo ${grupo.nombre}</h3>`
 tablaEquipos(grupo)
 
 tablaEq.innerHTML += `</div>`
@@ -201,7 +217,10 @@ tablaEq.innerHTML += `</div>`
 
 GRUPO.forEach(grupo => {
     grupo.equipo.sort((a, b) => b.puntos - a.puntos || b.difGol - a.difGol);
+
 });
+
+
 
 
 
@@ -218,19 +237,18 @@ function crearTablaPartidos(grupo) {
     table.appendChild(thead);
     table.appendChild(tbody);
     
+    
+
 
     document.getElementById('partidoGrupo'+ grupo.nombre).appendChild(table);
-
     grupo.partido.forEach(partido => {
-        
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
-    row_1_data_2.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq1">` //partido.geq1 ;
-    // row_1_data_2.addEventListener("onchange", randomTot);
+    row_1_data_2.innerHTML = `<input type="number" value= "${partido.geq1}" id= "${partido.id}L" class=" goles">` //partido.geq1 ;
     let row_1_data_3 = document.createElement('td');
-    row_1_data_3.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq2}">` //partido.geq2 ;
+    row_1_data_3.innerHTML = `<input type="number" value= "${partido.geq2}" id= "${partido.id}V" class=" goles">` //partido.geq2 ;
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.innerHTML = partido.eq2.nombre;
 
@@ -239,9 +257,15 @@ function crearTablaPartidos(grupo) {
     row_1.appendChild(row_1_data_3);
     row_1.appendChild(row_1_data_4);
     tbody.appendChild(row_1);
+    
+
+        
+        //GRUPO[objIndex].partido.terminado = true;
+    
+
+
     });
 }
-
 
 let tabla = document.getElementById ('tablasPartidosProde');
 GRUPO.forEach((grupo) => {
@@ -251,94 +275,36 @@ GRUPO.forEach((grupo) => {
     tabla.innerHTML += `</div>`
 
 });
+tabla.addEventListener("change", (e) => {
+    let id = e.target.id.slice(0, -1);
+    const objIndex = PARTIDO.findIndex(obj => obj.id == id)
+    // let objIndex = partido.find (obj => obj.id == id)
+
+    PARTIDO[objIndex].terminado = true
+    if (e.target.id.split("").pop()== "L") {
+        PARTIDO[objIndex].geq1 = document.getElementById(e.target.id).value
+    } else {
+        PARTIDO[objIndex].geq2 = document.getElementById(e.target.id).value
+    }
+    const localstoGru = JSON.stringify(GRUPO)
+    const localstoPart = JSON.stringify(PARTIDO)
+    console.log
+
+    localStorage.setItem('GrupoStorage', localstoGru)
+    localStorage.setItem('PartidoStorage', localstoPart)
+
+    
+
+    
+    
 
 
-
-// ////////////////////////////////// TABLAS DE PUNTOS POR GRUPO //////////////////
-
-
-// function crearTabla(grupo) {
-
-// let table = document.createElement('table');
-// let thead = document.createElement('thead');
-// let tbody = document.createElement('tbody');
-
-// table.appendChild(thead);
-// table.appendChild(tbody);
-
-
-// document.getElementById('Grupo'+ grupo.nombre).appendChild(table);
-
-
-// let row_1 = document.createElement('tr');
-// let heading_1 = document.createElement('th');
-// heading_1.innerHTML = "Pais";
-// let heading_2 = document.createElement('th');
-// heading_2.innerHTML = "Pts";
-// let heading_3 = document.createElement('th');
-// heading_3.innerHTML = "PJ";
-// let heading_4 = document.createElement('th');
-// heading_4.innerHTML = "PG";
-// let heading_5 = document.createElement('th');
-// heading_5.innerHTML = "PE";
-// let heading_6 = document.createElement('th');
-// heading_6.innerHTML = "PP";
-// let heading_7 = document.createElement('th');
-// heading_7.innerHTML = "DG";
-
-
-// row_1.appendChild(heading_1);
-// row_1.appendChild(heading_2);
-// row_1.appendChild(heading_3);
-// row_1.appendChild(heading_4);
-// row_1.appendChild(heading_5);
-// row_1.appendChild(heading_6);
-// row_1.appendChild(heading_7);
-// thead.appendChild(row_1);
-
-
-// grupo.equipo.forEach(equipo => {
-
-// let row = document.createElement('tr');
-// let row_data_1 = document.createElement('td');
-// row_data_1.innerHTML = equipo.nombre;
-// let row_data_2 = document.createElement('td');
-// row_data_2.innerHTML = equipo.puntos;
-// let row_data_3 = document.createElement('td');
-// row_data_3.innerHTML = equipo.partidosJugados;
-// let row_data_4 = document.createElement('td');
-// row_data_4.innerHTML = equipo.partidosGanados;
-// let row_data_5 = document.createElement('td');
-// row_data_5.innerHTML = equipo.partidosEmpatados;
-// let row_data_6 = document.createElement('td');
-// row_data_6.innerHTML = equipo.partidosPerdidos;
-// let row_data_7 = document.createElement('td');
-// row_data_7.innerHTML = equipo.difGol;
-
-// row.appendChild(row_data_1);
-// row.appendChild(row_data_2);
-// row.appendChild(row_data_3);
-// row.appendChild(row_data_4);
-// row.appendChild(row_data_5);
-// row.appendChild(row_data_6);
-// row.appendChild(row_data_7);
-// tbody.appendChild(row);
-
-// });
-
-// }
-
-// let tabla2 = document.getElementById ('tablasClasifGruposProde');
-
-
-// GRUPO.forEach((grupo) => {
-
-//     tabla2.innerHTML += `<div class="tablaGrupos" id="Grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
-//     crearTabla(grupo)
-//     tabla2.innerHTML += `</div>`
-
-// });
-
+    console.log(PARTIDO[objIndex])//.terminado = true
+    //console.log(PARTIDO[objIndex].terminado)
+    console.log(GRUPO)
+    });
+    
+    //GRUPO[objIndex].partido.terminado = true;
 
 
 
@@ -375,7 +341,7 @@ for (let j = 0; j < 4; j++) {
     i += 4
 
 };
-console.log(partidosOctavos)
+
 
 function crearTablaPartidosOctavos() {
 
@@ -400,8 +366,8 @@ function crearTablaPartidosOctavos() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2;
@@ -413,24 +379,6 @@ function crearTablaPartidosOctavos() {
     tbody.appendChild(row_1);
     });
 }
-
-
-// partidosOctavos.forEach((partido) => {
-//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-
-//     let porceq1 = (50 + 0.5*dif)*.01
-//     let porceq2 = (50 - 0.5*dif)*.01
-    
-//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//     if (partido.geq2 == partido.geq1) {
-//         while (partido.pen1 == partido.pen2) {
-//             partido.pen1 = random(0,5)
-//             partido.pen2 = random(0,5)
-//             }
-//     }
-// });
-
 
 
 
@@ -492,8 +440,8 @@ function crearTablaPartidosCuartos() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2.nombre;
@@ -505,24 +453,6 @@ function crearTablaPartidosCuartos() {
     tbody.appendChild(row_1);
     });
 }
-
-// partidosCuartos.forEach((partido) => {
-//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-
-//     let porceq1 = (50 + 0.5*dif)*.01
-//     let porceq2 = (50 - 0.5*dif)*.01
-    
-//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//     if (partido.geq2 == partido.geq1) {
-//         while (partido.pen1 == partido.pen2) {
-//         partido.pen1 = random(0,5)
-//         partido.pen2 = random(0,5)
-//         }
-//     }
-// });
-
-
 
 
 
@@ -572,8 +502,8 @@ function crearTablaPartidosSemi() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2.nombre;
@@ -585,25 +515,6 @@ function crearTablaPartidosSemi() {
     tbody.appendChild(row_1);
     });
 }
-
-
-// partidosSemi.forEach((partido) => {
-//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-
-//     let porceq1 = (50 + 0.5*dif)*.01
-//     let porceq2 = (50 - 0.5*dif)*.01
-    
-//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//     if (partido.geq2 == partido.geq1) {
-//         while (partido.pen1 == partido.pen2) {
-//             partido.pen1 = random(0,5)
-//             partido.pen2 = random(0,5)
-//             }
-//     }
-// });
-
-
 
 
 
@@ -654,9 +565,9 @@ function crearTablaPartidoFinal() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq1">` 
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` 
     partido.geq1 = row_1_data_2.innerHTML
-    row_1_data_3.innerHTML = `<input type="number" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
     partido.geq2 = row_1_data_3.innerHTML
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2.nombre;
@@ -669,21 +580,7 @@ function crearTablaPartidoFinal() {
     });
 }
 
-// partidoFinal.forEach((partido) => {
-//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
 
-//     let porceq1 = (50 + 0.5*dif)*.01
-//     let porceq2 = (50 - 0.5*dif)*.01
-    
-//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//     if (partido.geq2 == partido.geq1) {
-//         while (partido.pen1 == partido.pen2) {
-//             partido.pen1 = random(0,5)
-//             partido.pen2 = random(0,5)
-//             }
-//     }
-// });
 
 
 
@@ -706,153 +603,6 @@ let tablaFinal = document.getElementById ('tablasPartidosPlayoffProde');
 tablaFinal.innerHTML += `<div class="grupo" id="partidoFinal"> <h3>${FASES[4]}</h3>`
 crearTablaPartidoFinal()
 tablaFinal.innerHTML += `</div>`
-
-
-
-/////////////////////////////RANDOM CON RANKING///////////////////////////
-
-// // Probabilidad sobre goles
-// function weightedRandom(prob) {
-//     let i, sum=0, r=Math.random();
-//     for (i in prob){
-//         sum += prob[i];
-//         if (r<=sum) return i
-//     }
-// }
-
-// // Itero 5 veces la posibilidad de gol
-// function randomG(w){ 
-//     var r = 0;
-//     for(var i = 5; i > 0; i --){
-//         r += Math.round(weightedRandom(w));
-//     }
-//     return r;
-// }
-
-// GRUPO.forEach((grupo) => {
-//     grupo.partido.forEach((partido) => {        
-//         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-//         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-
-//         let porceq1 = (50 + 0.5*dif)*.01
-//         let porceq2 = (50 - 0.5*dif)*.01
-        
-//         partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-
-// });
-// });
-
-// /////////////////////////////TOGGLE///////////////////////////
-
-// const GRUPOSTOGGLE = ["GrupoA", "GrupoB", "GrupoC", "GrupoD", "GrupoE", "GrupoF", "GrupoG", "GrupoH"]
-
-// function funcToggle(tabla) {
-//     const newGrupo = GRUPOSTOGGLE.filter(gr => {
-//         return gr !== tabla
-//     })
-//     console.log(newGrupo)
-
-//     var z = document.getElementById(`zonaGrupos`);
-//     var x = document.getElementById(`partido${tabla}`);
-//     var y = document.getElementById(`${tabla}`);
-    
-
-//     if (z.style.display === "flex") {
-
-//         z.style.display = "block";
-//         x.style.display = "block";
-//         y.style.display = "block";
-//         var t = document.getElementById(`tituloFG`);
-//         t.style.display = "block"
-//         var r = document.getElementById(`tituloPG`);
-//         r.style.display = "block"
-//         newGrupo.forEach(grupo => {
-//             var w = document.getElementById(`partido${grupo}`);
-//             w.style.display = "block";
-//             var v = document.getElementById(`${grupo}`);
-//             v.style.display = "block";
-//         })
-//     }
-
-//     else {
-        
-
-//         z.style.display = "flex";
-//         z.style.justifyContent = "center";
-//         x.style.display = "block";
-//         y.style.display = "block";
-//         var t = document.getElementById(`tituloFG`);
-//         t.style.display = "none"
-//         var r = document.getElementById(`tituloPG`);
-//         r.style.display = "none"
-
-//         console.log(t)
-//         newGrupo.forEach(grupo => {
-//             var w = document.getElementById(`partido${grupo}`);
-//             w.style.display = "none";
-//             var v = document.getElementById(`${grupo}`);
-//             v.style.display = "none";
-//     })
-//     }
-    
-// }
-
-
-
-
-
-// /////////////////////////////RANDOM CON RANKING///////////////////////////
-
-// // Probabilidad sobre goles
-// function weightedRandom(prob) {
-//     let i, sum=0, r=Math.random();
-//     for (i in prob){
-//         sum += prob[i];
-//         if (r<=sum) return i
-//     }
-// }
-
-// // Itero 5 veces la posibilidad de gol
-// function randomG(w){ 
-//     var r = 0;
-//     for(var i = 5; i > 0; i --){
-//         r += Math.round(weightedRandom(w));
-//     }
-//     return r;
-// }
-
-
-// function random(min, max) {
-//     return Math.floor((Math.random() * (max - min + 1)) + min);
-// }
-
-// // GRUPO.forEach((grupo) => {
-// //     grupo.partido.forEach((partido) => {
-// //         partido.geq1 = random(0,5)
-// //         partido.geq2 = random(0,5)
-
-    
-// // });
-// // });
-// console.log(GRUPO)
-// function randomTot() {
-// GRUPO.forEach((grupo) => {
-//     grupo.partido.forEach((partido) => {        
-//         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-//         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-
-//         let porceq1 = (50 + 0.5*dif)*.01
-//         let porceq2 = (50 - 0.5*dif)*.01
-        
-//         partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-
-
-// });
-// });
-// console.log(GRUPO)
-// }
 
 
 

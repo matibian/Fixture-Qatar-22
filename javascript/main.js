@@ -24,12 +24,12 @@ class Equipo {
 }
 
 const EQUIPO = [];
-rank = 0
-EQUIPOS.forEach((nombre) => {
+
+EQUIPOS.forEach((nombre,index) => {
     
-    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0, RANKING[rank])
+    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0, RANKING[index])
     EQUIPO.push(equipox)
-    rank ++
+
 });
 
 
@@ -47,16 +47,15 @@ class Grupo {
 
 
 const GRUPO = [];
-let l = 0;
+
 let multl = 0; 
 
 
-GRUPOS.forEach((nombre) => {
+GRUPOS.forEach((nombre,index) => {
     
-    const grupox = new Grupo (nombre, [EQUIPO[multl+l], EQUIPO[multl+l+1], EQUIPO[multl+l+2], EQUIPO[multl+l+3]], [])
+    const grupox = new Grupo (nombre, [EQUIPO[multl+index], EQUIPO[multl+index+1], EQUIPO[multl+index+2], EQUIPO[multl+index+3]], [])
     GRUPO.push(grupox)
     
-    l++
     multl = multl + 3
 
 });
@@ -250,11 +249,10 @@ tablaEq.innerHTML += `</div>`
 })
 
 
-
+// Ordeno los equipos por puntos y dif de gol.
 GRUPO.forEach(grupo => {
     grupo.equipo.sort((a, b) => b.puntos - a.puntos || b.difGol - a.difGol);
 });
-
 
 
 
@@ -280,8 +278,10 @@ function crearTablaPartidos(grupo) {
     row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
     row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+    row_1_data_2.id = partido.id+`L`;
     let row_1_data_3 = document.createElement('td');
     row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
+    row_1_data_3.id = partido.id+`V`;
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.innerHTML = partido.eq2.nombre;
 
@@ -731,21 +731,6 @@ function crearTablaPartidoFinal() {
     });
 }
 
-// partidoFinal.forEach((partido) => {
-//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-//     console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
-//     let porceq1 = (50 + 0.5*dif)*.01
-//     let porceq2 = (50 - 0.5*dif)*.01
-    
-//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//     if (partido.geq2 == partido.geq1) {
-//         while (partido.pen1 == partido.pen2) {
-//             partido.pen1 = random(0,5)
-//             partido.pen2 = random(0,5)
-//             }
-//     }
-// });
 
 
 
@@ -791,20 +776,7 @@ function randomG(w){
     return r;
 }
 
-// GRUPO.forEach((grupo) => {
-//     grupo.partido.forEach((partido) => {        
-//         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-//         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-//         console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
-//         let porceq1 = (50 + 0.5*dif)*.01
-//         let porceq2 = (50 - 0.5*dif)*.01
-        
-//         partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//         console.log(partido.geq1, partido.geq2)
 
-// });
-// });
 
 ////////////////////// FUNCION TOGGLE ////////////////////////
 

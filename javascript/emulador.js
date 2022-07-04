@@ -276,6 +276,7 @@ function crearTablaPartidos(grupo) {
     row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
     row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+    row_1_data_2.id = partido.id+`L`;
     let row_1_data_3 = document.createElement('td');
     row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
     let row_1_data_4 = document.createElement('td');
@@ -854,3 +855,8 @@ function funcToggle(tabla) {
     }
     
 }
+
+
+console.log(GRUPO)
+console.log(EQUIPO)
+console.log(partidosOctavos)
