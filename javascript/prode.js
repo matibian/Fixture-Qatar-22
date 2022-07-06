@@ -1,10 +1,12 @@
-const GRUPOSTORAGE = localStorage.getItem('GrupoStorage');
 const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
 
-const GRUPO = JSON.parse(GRUPOSTORAGE) ?? [];
+
 const PARTIDO = JSON.parse(PARTIDOSTORAGE) ?? [];
-console.log(GRUPO)
-console.log(PARTIDO)
+
+const PARTIDOSOCTAVOSSTORAGE = localStorage.getItem('PartidosOFFStorage')
+const partidosOctavos = JSON.parse (PARTIDOSOCTAVOSSTORAGE) ?? [];
+    
+
 
 
 const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
@@ -53,11 +55,11 @@ class Grupo {
         this.partido = partidos;
     }
 }
-
+const GRUPO = [];
 
 let multl = 0; 
 
-if (JSON.parse(GRUPOSTORAGE) == null ) {
+//if (JSON.parse(GRUPOSTORAGE) == null ) {
 GRUPOS.forEach((nombre,index) => {
     
     const grupox = new Grupo (nombre, [EQUIPO[multl+index], EQUIPO[multl+index+1], EQUIPO[multl+index+2], EQUIPO[multl+index+3]], [])
@@ -66,7 +68,7 @@ GRUPOS.forEach((nombre,index) => {
     multl = multl + 3
 
 });
-}
+//}
 
 
 class Partido {
@@ -83,101 +85,37 @@ class Partido {
 id = 0
 
 
-console.log(PARTIDOSTORAGE)
-
-if (PARTIDOSTORAGE == null) {
-    console.log("si")
 GRUPO.forEach((grupo) => {
     id++
     const partido1 = new Partido (grupo.equipo[0],grupo.equipo[1], 0, 0 , false, id);
     grupo.partido.push(partido1)
-    PARTIDO.push(partido1)
     id++
     const partido2 = new Partido (grupo.equipo[2],grupo.equipo[3], 0, 0 , false, id);
     grupo.partido.push(partido2)
-    PARTIDO.push(partido2)
     id++
     const partido3 = new Partido (grupo.equipo[0],grupo.equipo[2], 0, 0 , false, id);
     grupo.partido.push(partido3)
-    PARTIDO.push(partido3)
     id++
     const partido4 = new Partido (grupo.equipo[1],grupo.equipo[3], 0, 0 , false, id);
     grupo.partido.push(partido4)
-    PARTIDO.push(partido4)
     id++
     const partido5 = new Partido (grupo.equipo[0],grupo.equipo[3], 0, 0 , false, id);
     grupo.partido.push(partido5)
-    PARTIDO.push(partido5)
     id++
     const partido6 = new Partido (grupo.equipo[1],grupo.equipo[2], 0, 0 , false, id);
     grupo.partido.push(partido6)
+    
+    if (PARTIDOSTORAGE == null) {
+    PARTIDO.push(partido1)
+    PARTIDO.push(partido2)
+    PARTIDO.push(partido3)
+    PARTIDO.push(partido4)
+    PARTIDO.push(partido5)
     PARTIDO.push(partido6)
-
-});
-}
-
-
-function calcularPuntos(ge1,ge2) {
-    let puntos
-    let ganador = ""
-
-    if (ge1>ge2) {
-        puntos = [3,0]
-        ganador = 1
-
-    } else if(ge1<ge2) {
-        puntos = [0,3]
-        ganador = 2
-    } else {
-        puntos = [1,1]
-        ganador = 0
     }
-    return [puntos, ganador]
-}
 
-
-GRUPO.forEach((grupo) => {
-    grupo.partido.forEach((partido) => {
-        let resultado = calcularPuntos (partido.geq1, partido.geq2)
-        if (partido.terminado==true) {
-        partido.eq1.partidosJugados ++
-        partido.eq2.partidosJugados ++
-        partido.eq1.puntos =  partido.eq1.puntos + resultado[0][0]
-        partido.eq2.puntos =  partido.eq2.puntos + resultado[0][1]
-        
-            
-        
-        switch (resultado[1]) {
-            case 0:
-                partido.eq1.partidosEmpatados ++
-                partido.eq2.partidosEmpatados ++
-                break
-            case 1 : 
-                partido.eq1.partidosGanados ++
-                partido.eq2.partidosPerdidos ++
-                break
-            case 2 : 
-                partido.eq2.partidosGanados ++
-                partido.eq1.partidosPerdidos ++
-                break
-
-                ;
-            }
-        partido.eq1.golesFavor += partido.geq1
-        partido.eq2.golesFavor += partido.geq2
-        partido.eq1.difGol += partido.geq1
-        partido.eq1.difGol -= partido.geq2
-        partido.eq2.difGol += partido.geq2
-        partido.eq2.difGol -= partido.geq1
-        partido.eq1.golesContra += partido.geq2
-        partido.eq2.golesContra += partido.geq1
-        }
-
-        });
-    
-
-    
 });
+
 
 
 
@@ -207,7 +145,7 @@ let tablaEq = document.getElementById("gruposPrin");
 
 GRUPO.forEach((grupo) => {
 
-tablaEq.innerHTML += `<div class="grupos" id="grup${grupo.nombre}"> <h3> Grupo ${grupo.nombre}</h3>`
+tablaEq.innerHTML += `<div onclick="funcTogglePRO('Grupo${grupo.nombre}')" class="grupos" id="grup${grupo.nombre}"> <h3> Grupo ${grupo.nombre}</h3>`
 tablaEquipos(grupo)
 
 tablaEq.innerHTML += `</div>`
@@ -246,9 +184,11 @@ function crearTablaPartidos(grupo) {
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
-    row_1_data_2.innerHTML = `<input type="number" value= "${partido.geq1}" id= "${partido.id}L" class=" goles">` //partido.geq1 ;
+    const geq1 = PARTIDO.findIndex(obj => obj.id == partido.id)
+    row_1_data_2.innerHTML = `<input type="number" value= "${PARTIDO[geq1].geq1}" id= "${partido.id}L" class=" goles">` //partido.geq1 ;
     let row_1_data_3 = document.createElement('td');
-    row_1_data_3.innerHTML = `<input type="number" value= "${partido.geq2}" id= "${partido.id}V" class=" goles">` //partido.geq2 ;
+    const geq2 = PARTIDO.findIndex(obj => obj.id == partido.id)
+    row_1_data_3.innerHTML = `<input type="number" value= "${PARTIDO[geq2].geq2}" id= "${partido.id}V" class=" goles">` //partido.geq2 ;
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.innerHTML = partido.eq2.nombre;
 
@@ -258,11 +198,6 @@ function crearTablaPartidos(grupo) {
     row_1.appendChild(row_1_data_4);
     tbody.appendChild(row_1);
     
-
-        
-        //GRUPO[objIndex].partido.terminado = true;
-    
-
 
     });
 }
@@ -278,33 +213,24 @@ GRUPO.forEach((grupo) => {
 tabla.addEventListener("change", (e) => {
     let id = e.target.id.slice(0, -1);
     const objIndex = PARTIDO.findIndex(obj => obj.id == id)
-    // let objIndex = partido.find (obj => obj.id == id)
 
     PARTIDO[objIndex].terminado = true
+
     if (e.target.id.split("").pop()== "L") {
         PARTIDO[objIndex].geq1 = document.getElementById(e.target.id).value
     } else {
         PARTIDO[objIndex].geq2 = document.getElementById(e.target.id).value
     }
+
     const localstoGru = JSON.stringify(GRUPO)
     const localstoPart = JSON.stringify(PARTIDO)
-    console.log
-
-    localStorage.setItem('GrupoStorage', localstoGru)
     localStorage.setItem('PartidoStorage', localstoPart)
 
-    
 
-    
-    
+    localStorage.setItem('GrupoStorage', localstoGru)
 
-
-    console.log(PARTIDO[objIndex])//.terminado = true
-    //console.log(PARTIDO[objIndex].terminado)
-    console.log(GRUPO)
     });
     
-    //GRUPO[objIndex].partido.terminado = true;
 
 
 
@@ -329,7 +255,7 @@ class PartidoPlayoff {
 //////////////////////////// OCTAVOS ///////////////////////////////////
 const OCTAVOS = ["1ºA", "2ºB", "1ºC", "2ºD", "1ºE", "2ºF", "1ºG", "2ºH", "2ºA", "1ºB", "2ºC", "1ºD", "2ºE", "1ºF", "2ºG", "1ºH"]
 
-const partidosOctavos = []
+if (PARTIDOSOCTAVOSSTORAGE == null) {
 let i = 0
 for (let j = 0; j < 4; j++) {
     id++
@@ -339,9 +265,8 @@ for (let j = 0; j < 4; j++) {
     const partido2 = new PartidoPlayoff (OCTAVOS[i+2],OCTAVOS[i+3],0 ,0 , 0, 0 , false, id);
     partidosOctavos.push(partido2)
     i += 4
-
+}
 };
-
 
 function crearTablaPartidosOctavos() {
 
@@ -364,10 +289,16 @@ function crearTablaPartidosOctavos() {
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1;
     let row_1_data_2 = document.createElement('td');
-    let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+
+    const geq1 = partidosOctavos.findIndex(obj => obj.id == partido.id)
+    row_1_data_2.innerHTML = `<input type="number" value= "${partidosOctavos[geq1].geq1}" id= "${partido.id}L" class=" goles">` //partido.geq1 ;
+    let row_1_data_3 = document.createElement('td');
+    const geq2 = partidosOctavos.findIndex(obj => obj.id == partido.id)
+    row_1_data_3.innerHTML = `<input type="number" value= "${partidosOctavos[geq2].geq2}" id= "${partido.id}V" class=" goles">` //partido.geq2 ;
+
+    // row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    // row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2;
@@ -570,7 +501,7 @@ function crearTablaPartidoFinal() {
     row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
     partido.geq2 = row_1_data_3.innerHTML
     let row_1_data_4 = document.createElement('td');
-        row_1_data_4.innerHTML = partido.eq2.nombre;
+    row_1_data_4.innerHTML = partido.eq2.nombre;
 
     row_1.appendChild(row_1_data_1);
     row_1.appendChild(row_1_data_2);
@@ -589,6 +520,29 @@ tablaOctavos.innerHTML += `<div class="grupo" id="partidosOctavos"> <h3>${FASES[
 crearTablaPartidosOctavos()
 tablaOctavos.innerHTML += `</div>`
 
+tablaOctavos.addEventListener("change", (e) => {
+    let id = e.target.id.slice(0, -1);
+    const objIndex = partidosOctavos.findIndex(obj => obj.id == id)
+
+    partidosOctavos[objIndex].terminado = true
+
+    if (e.target.id.split("").pop()== "L") {
+        partidosOctavos[objIndex].geq1 = document.getElementById(e.target.id).value
+    } else {
+        partidosOctavos[objIndex].geq2 = document.getElementById(e.target.id).value
+    }
+
+
+    const localstoPartOff = JSON.stringify(partidosOctavos)
+    localStorage.setItem('PartidosOFFStorage', localstoPartOff)
+
+
+
+
+    });
+    
+
+
 let tablaCuartos = document.getElementById ('tablasPartidosPlayoffProde');
 tablaCuartos.innerHTML += `<div class="grupo" id="partidosCuartos"> <h3>${FASES[2]}</h3>`
 crearTablaPartidosCuartos()
@@ -606,3 +560,167 @@ tablaFinal.innerHTML += `</div>`
 
 
 
+
+////////////////////// FUNCION TOGGLE ////////////////////////
+
+const GRUPOSTOGGLE = ["GrupoA", "GrupoB", "GrupoC", "GrupoD", "GrupoE", "GrupoF", "GrupoG", "GrupoH"]
+
+function funcTogglePRO(tabla) {
+    const newGrupo = GRUPOSTOGGLE.filter(gr => {
+        return gr !== tabla
+    })
+
+    var z = document.getElementById(`zonaGrupos`);
+    var x = document.getElementById(`partido${tabla}`);
+
+
+    if (z.style.display === "flex") {
+        setTimeout
+        z.style.display = "block";
+        x.style.display = "block";
+        var t = document.getElementById(`tituloFG`);
+        t.style.display = "block"
+        newGrupo.forEach(grupo => {
+            var w = document.getElementById(`partido${grupo}`);
+            w.style.display = "block";
+            w.style.transition= "all 2s linear";
+            z.style.transition= "all 2s linear";
+            x.style.transition= "all 2s linear";
+        })
+    }
+
+    else {
+        
+
+        z.style.display = "flex";
+        z.style.justifyContent = "center";
+        x.style.display = "block";
+        var t = document.getElementById(`tituloFG`);
+        t.style.display = "none"
+
+
+        newGrupo.forEach(grupo => {
+            var w = document.getElementById(`partido${grupo}`);
+            w.style.display = "none";
+
+    })
+    }
+    
+}
+
+
+
+/////////////////////////////RANDOM CON RANKING///////////////////////////
+
+// Probabilidad sobre goles
+function weightedRandom(prob) {
+    let i, sum=0, r=Math.random();
+    for (i in prob){
+        sum += prob[i];
+        if (r<=sum) return i
+    }
+}
+
+// Itero 5 veces la posibilidad de gol
+function randomG(w){ 
+    var r = 0;
+    for(var i = 5; i > 0; i --){
+        r += Math.round(weightedRandom(w));
+    }
+    return r;
+}
+// console.log(PARTIDO)
+// function randomize() {
+// PARTIDO.forEach((partido) => {
+//     // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
+//     if (partido.terminado==false) {
+//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+//     let porceq1 = (50 + 0.5*dif)*.01
+//     let porceq2 = (50 - 0.5*dif)*.01
+    
+//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
+//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
+//     partido.terminado = true
+//     }
+
+// });
+// console.log(PARTIDO)
+//}
+function random(min, max) {
+    return Math.floor((Math.random() * (max - min + 1)) + min);
+}
+
+
+let botonRandom = document.getElementById('botonrandom')
+
+botonRandom.addEventListener("click", (e) => {
+    PARTIDO.forEach((partido) => {
+        // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
+        if (partido.terminado==false) {
+        let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+        let porceq1 = (50 + 0.5*dif)*.01
+        let porceq2 = (50 - 0.5*dif)*.01
+        
+        partido.geq1 = randomG({0:porceq2, 1:porceq1})
+        partido.geq2 = randomG({0:porceq1, 1:porceq2})
+        partido.terminado = true
+        
+        const goles1 = document.getElementById(`${partido.id}L`)
+        goles1.value = partido.geq1
+        const goles2 = document.getElementById(`${partido.id}V`)
+        goles2.value = partido.geq2
+
+        
+        const localstoPart = JSON.stringify(PARTIDO)
+        localStorage.setItem('PartidoStorage', localstoPart)    
+    };
+
+    partidosOctavos.forEach((partido) => {
+        if (partido.terminado==false) {
+            partido.geq1 = random(0,5)
+            partido.geq2 = random(0,5)
+            partido.terminado = true
+        
+        const goles1 = document.getElementById(`${partido.id}L`)
+        goles1.value = partido.geq1
+        const goles2 = document.getElementById(`${partido.id}V`)
+        goles2.value = partido.geq2
+        
+        const localstoPart = JSON.stringify(PARTIDO)
+        localStorage.setItem('PartidoStorage', localstoPart)    
+        }
+    });
+
+})
+
+})
+
+
+let botonReset = document.getElementById('reset')
+
+botonReset.addEventListener("click", (e) => {
+    PARTIDO.forEach((partido) => {
+        const goles1 = document.getElementById(`${partido.id}L`)
+        goles1.value = 0
+        const goles2 = document.getElementById(`${partido.id}V`)
+        goles2.value = 0
+        partido.geq1 = 0;
+        partido.geq2 = 0;
+        partido.terminado = false;
+
+    })
+    partidosOctavos.forEach((partido) => {
+        const goles1 = document.getElementById(`${partido.id}L`)
+        goles1.value = 0
+        const goles2 = document.getElementById(`${partido.id}V`)
+        goles2.value = 0
+        partido.geq1 = 0;
+        partido.geq2 = 0;
+        partido.terminado = false;
+
+    })
+    const localstoPart = JSON.stringify(PARTIDO)
+    localStorage.setItem('PartidoStorage', localstoPart)
+    const localstoPartOct = JSON.stringify(partidosOctavos)
+    localStorage.setItem('PartidosOFFStorage', localstoPartOct)
+})

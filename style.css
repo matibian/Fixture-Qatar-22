@@ -14,8 +14,9 @@ body {
     display: inline-block;
     background-color: rgb(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
-    border-radius: 10px;
-    border: solid 1 px rgb(255, 255, 255, 0.5);;
+    border-radius: 20px 20px 10px 10px ;
+    border: solid 1 px rgb(255, 255, 255, 0.5);
+
 
 }
 
@@ -166,6 +167,8 @@ a .navbar-nav {
     flex-wrap: wrap;
     padding: 0 5vh;
     column-gap: 5vh;
+    
+    
 }
 
 
@@ -174,6 +177,9 @@ a .navbar-nav {
     display: flex;
     flex-wrap: wrap;
     padding: 0 10vh;
+
+    
+
 }
 
 
@@ -220,21 +226,7 @@ a .navbar-nav {
   .botonF1:active{
     transform:scale(1.1);
   }
-  .btn{
-    width:40px;
-    height:40px;
-    border-radius:100%;
-    border:none;
-    color:#8f0b31;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    font-size:28px;
-    outline:none;
-    position:absolute;
-    right:0;
-    bottom:0;
-    margin-right:26px;
-    transform:scale(0);
-}
+  
 
 #zonaGrupos {
     display : block;
@@ -246,3 +238,33 @@ a .navbar-nav {
     cursor: pointer;
 
 }
+
+.botonreset{
+    width:90px;
+    height: 240px;
+    position: fixed;
+    right:0px;
+    bottom:0px;
+
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    z-index: 9999999;
+}
+    .botonresetF1{
+        width:cover;
+        height:60px;
+        border-radius:100px;
+        background: white;
+        right:0;
+        bottom:0;
+        position:fixed;
+        margin-right:20vh;
+        margin-bottom:10vh;
+        border:none;
+        outline:none;
+        color:#8f0b31;
+        font-size:36px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        transition:.3s;  
+    }
