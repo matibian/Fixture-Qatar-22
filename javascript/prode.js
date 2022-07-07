@@ -3,13 +3,10 @@ const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
 
 const PARTIDO = JSON.parse(PARTIDOSTORAGE) ?? [];
 
-const PARTIDOSOCTAVOSSTORAGE = localStorage.getItem('PartidosOFFStorage')
-const partidosOctavos = JSON.parse (PARTIDOSOCTAVOSSTORAGE) ?? [];
-    
 
 
 
-const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
+const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
 
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
@@ -59,7 +56,7 @@ const GRUPO = [];
 
 let multl = 0; 
 
-//if (JSON.parse(GRUPOSTORAGE) == null ) {
+
 GRUPOS.forEach((nombre,index) => {
     
     const grupox = new Grupo (nombre, [EQUIPO[multl+index], EQUIPO[multl+index+1], EQUIPO[multl+index+2], EQUIPO[multl+index+3]], [])
@@ -68,17 +65,18 @@ GRUPOS.forEach((nombre,index) => {
     multl = multl + 3
 
 });
-//}
+
 
 
 class Partido {
-    constructor(eq1, eq2, geq1, geq2, terminado, id){
+    constructor(eq1, eq2, geq1, geq2, terminado, id, grupo){
         this.eq1 = eq1;
         this.eq2 = eq2;
         this.geq1 = geq1;
         this.geq2 = geq2;
         this.terminado = terminado;
         this.id = id;
+        this.grupo = grupo;
     }
 }
 
@@ -87,22 +85,22 @@ id = 0
 
 GRUPO.forEach((grupo) => {
     id++
-    const partido1 = new Partido (grupo.equipo[0],grupo.equipo[1], 0, 0 , false, id);
+    const partido1 = new Partido (grupo.equipo[0],grupo.equipo[1], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido1)
     id++
-    const partido2 = new Partido (grupo.equipo[2],grupo.equipo[3], 0, 0 , false, id);
+    const partido2 = new Partido (grupo.equipo[2],grupo.equipo[3], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido2)
     id++
-    const partido3 = new Partido (grupo.equipo[0],grupo.equipo[2], 0, 0 , false, id);
+    const partido3 = new Partido (grupo.equipo[0],grupo.equipo[2], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido3)
     id++
-    const partido4 = new Partido (grupo.equipo[1],grupo.equipo[3], 0, 0 , false, id);
+    const partido4 = new Partido (grupo.equipo[1],grupo.equipo[3], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido4)
     id++
-    const partido5 = new Partido (grupo.equipo[0],grupo.equipo[3], 0, 0 , false, id);
+    const partido5 = new Partido (grupo.equipo[0],grupo.equipo[3], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido5)
     id++
-    const partido6 = new Partido (grupo.equipo[1],grupo.equipo[2], 0, 0 , false, id);
+    const partido6 = new Partido (grupo.equipo[1],grupo.equipo[2], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido6)
     
     if (PARTIDOSTORAGE == null) {
@@ -115,8 +113,6 @@ GRUPO.forEach((grupo) => {
     }
 
 });
-
-
 
 
 ////////////////////// TABLAS EQUIPOS POR GRUPO/////////////////////////
@@ -182,14 +178,16 @@ function crearTablaPartidos(grupo) {
     grupo.partido.forEach(partido => {
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
+    row_1_data_1.className = 'tablaequipo'
     row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
     const geq1 = PARTIDO.findIndex(obj => obj.id == partido.id)
-    row_1_data_2.innerHTML = `<input type="number" value= "${PARTIDO[geq1].geq1}" id= "${partido.id}L" class=" goles">` //partido.geq1 ;
+    row_1_data_2.innerHTML = `<input type="number" value= "${PARTIDO[geq1].geq1}" id= "${partido.id}L" class="g${grupo.nombre} goles">` //partido.geq1 ;
     let row_1_data_3 = document.createElement('td');
     const geq2 = PARTIDO.findIndex(obj => obj.id == partido.id)
-    row_1_data_3.innerHTML = `<input type="number" value= "${PARTIDO[geq2].geq2}" id= "${partido.id}V" class=" goles">` //partido.geq2 ;
+    row_1_data_3.innerHTML = `<input type="number" value= "${PARTIDO[geq2].geq2}" id= "${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
     let row_1_data_4 = document.createElement('td');
+    row_1_data_4.className = 'tablaequipo'
     row_1_data_4.innerHTML = partido.eq2.nombre;
 
     row_1.appendChild(row_1_data_1);
@@ -197,12 +195,24 @@ function crearTablaPartidos(grupo) {
     row_1.appendChild(row_1_data_3);
     row_1.appendChild(row_1_data_4);
     tbody.appendChild(row_1);
-    
 
+    
+    
     });
+    let guardar = document.createElement('h3');
+    guardar.innerHTML = 'Guardar';
+    guardar.className = 'guardar';
+    guardar.id = 'guardar'+grupo.nombre;
+    insertAfter(table, guardar);
 }
 
+
 let tabla = document.getElementById ('tablasPartidosProde');
+
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+  }
+
 GRUPO.forEach((grupo) => {
 
     tabla.innerHTML += `<div class="grupo filterDiv Grupo${grupo.nombre}" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
@@ -210,6 +220,42 @@ GRUPO.forEach((grupo) => {
     tabla.innerHTML += `</div>`
 
 });
+
+GRUPOS.forEach(grupo => {
+    let boton = document.getElementById(`guardar${grupo}`);
+    boton.addEventListener('click', (e) =>{
+        if (boton.classList.contains('active')){
+    let b = document.getElementsByClassName(`g${grupo}`);
+    for (let index = 0; index < b.length; index++) {
+        b[index].removeAttribute("disabled");
+        boton.classList.remove("active");
+        document.getElementById(`guardar${grupo}`).innerText = "Guardar"
+    }
+
+
+} else {
+    let b = document.getElementsByClassName(`g${grupo}`);
+    for (let index = 0; index < b.length; index++) {
+        b[index].setAttribute("disabled","");
+        boton.className += " active";
+    }
+    document.getElementById(`guardar${grupo}`).innerText = "Editar"
+    
+    }
+    Swal.fire({
+        icon: 'success',
+        title: 'Guardado!',
+        showConfirmButton: false,
+        timer: 1000
+      })
+
+})
+
+
+});
+
+
+
 tabla.addEventListener("change", (e) => {
     let id = e.target.id.slice(0, -1);
     const objIndex = PARTIDO.findIndex(obj => obj.id == id)
@@ -237,6 +283,7 @@ tabla.addEventListener("change", (e) => {
 //////////////////////////// PLAYOFFS ///////////////////////////////////
 
 
+
 class PartidoPlayoff {
     constructor(eq1, eq2, geq1, geq2, pen1, pen2, terminado, id){
         this.eq1 = eq1;
@@ -250,23 +297,30 @@ class PartidoPlayoff {
     }
 }
 
+const PLAYOFFS = ["1ºA", "2ºB", "1ºC", "2ºD", "1ºE", "2ºF", "1ºG", "2ºH", "2ºA", "1ºB", "2ºC", "1ºD", "2ºE", "1ºF", "2ºG", "1ºH", "Cuartos 1", "Cuartos 2", "Cuartos 3", "Cuartos 4", "Cuartos 5", "Cuartos 6", "Cuartos 7", "Cuartos 8", "Semifinal 1", "Semifinal 2", "Semifinal 3", "Semifinal 4", "Final 1", "Final 2"]
+
+const PARTIDOPLAYOFF = [];
+
+//if (PARTIDOSOCTAVOSSTORAGE == null) {
+let i = 0
+for (let j = 0; j < 7; j++) {
+    id++
+    const partido1 = new PartidoPlayoff (PLAYOFFS[i],PLAYOFFS[i+1],0 ,0 , 0, 0 , false, id);
+    PARTIDOPLAYOFF.push(partido1)
+    id++
+    const partido2 = new PartidoPlayoff (PLAYOFFS[i+2],PLAYOFFS[i+3],0 ,0 , 0, 0 , false, id);
+    PARTIDOPLAYOFF.push(partido2)
+    i += 4
+}
+const partidoFin = new PartidoPlayoff (PLAYOFFS[i],PLAYOFFS[i+1],0 ,0 , 0, 0 , false, id);
+    PARTIDOPLAYOFF.push(partidoFin)
+    id++
+
 
 
 //////////////////////////// OCTAVOS ///////////////////////////////////
-const OCTAVOS = ["1ºA", "2ºB", "1ºC", "2ºD", "1ºE", "2ºF", "1ºG", "2ºH", "2ºA", "1ºB", "2ºC", "1ºD", "2ºE", "1ºF", "2ºG", "1ºH"]
 
-if (PARTIDOSOCTAVOSSTORAGE == null) {
-let i = 0
-for (let j = 0; j < 4; j++) {
-    id++
-    const partido1 = new PartidoPlayoff (OCTAVOS[i],OCTAVOS[i+1],0 ,0 , 0, 0 , false, id);
-    partidosOctavos.push(partido1)
-    id++
-    const partido2 = new PartidoPlayoff (OCTAVOS[i+2],OCTAVOS[i+3],0 ,0 , 0, 0 , false, id);
-    partidosOctavos.push(partido2)
-    i += 4
-}
-};
+let partidosOctavos = PARTIDOPLAYOFF.slice(0, 8);
 
 function crearTablaPartidosOctavos() {
 
@@ -312,209 +366,6 @@ function crearTablaPartidosOctavos() {
 }
 
 
-
-
-
-
-//////////////////////////// CUARTOS ///////////////////////////////////
-
-const Cuartos = []
-
-function partidosPlayoff(partido,Instancia) {
-    if (partido.geq2<partido.geq1) {
-        ganador = partido.eq1
-    } else if (partido.geq2>partido.geq1 ) {
-        ganador = partido.eq2
-    } else if (partido.pen1>partido.pen2 ) {
-        ganador = partido.eq1
-    } else {
-        ganador = partido.eq2}
-    Instancia.push(ganador)
-
-}
-
-partidosOctavos.forEach(partido => {
-    partidosPlayoff(partido,Cuartos)
-})
-
-
-const partidosCuartos = [];
-
-let n = 0
-for (let j = 0; j < 4; j++) {
-    id++
-    const partido1 = new PartidoPlayoff (Cuartos[n],Cuartos[n+1], 0, 0, 0, 0 , false, id);
-    partidosCuartos.push(partido1)
-    id++
-    n += 2
-
-};
-
-
-function crearTablaPartidosCuartos() {
-
-
-    let table = document.createElement('table');
-    let thead = document.createElement('thead');
-    let tbody = document.createElement('tbody');
-    
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    
-    document.getElementById('partidosCuartos').appendChild(table);
-
-    partidosCuartos.forEach(partido => {
-        
-    let row_1 = document.createElement('tr');
-    let row_1_data_1 = document.createElement('td');
-    row_1_data_1.innerHTML = partido.eq1.nombre;
-    let row_1_data_2 = document.createElement('td');
-    let row_1_data_3 = document.createElement('td');
-
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
-
-    let row_1_data_4 = document.createElement('td');
-        row_1_data_4.innerHTML = partido.eq2.nombre;
-
-    row_1.appendChild(row_1_data_1);
-    row_1.appendChild(row_1_data_2);
-    row_1.appendChild(row_1_data_3);
-    row_1.appendChild(row_1_data_4);
-    tbody.appendChild(row_1);
-    });
-}
-
-
-
-
-//////////////////////////// SEMIFINAL ///////////////////////////////////
-
-const Semifinal = []
-
-
-partidosCuartos.forEach(partido => {
-    partidosPlayoff(partido,Semifinal)
-})
-
-const partidosSemi = [];
-
-let o = 0
-for (let j = 0; j < 2; j++) {
-    id++
-    const partido1 = new PartidoPlayoff (Semifinal[o],Semifinal[o+1], 0, 0, 0, 0 , false, id);
-    partidosSemi.push(partido1)
-    id++
-
-    o += 2
-
-};
-
-
-
-function crearTablaPartidosSemi() {
-
-
-    let table = document.createElement('table');
-    let thead = document.createElement('thead');
-    let tbody = document.createElement('tbody');
-    
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    
-
-    document.getElementById('partidosSemi').appendChild(table);
-
-    partidosSemi.forEach(partido => {
-        
-    let row_1 = document.createElement('tr');
-    let row_1_data_1 = document.createElement('td');
-    row_1_data_1.innerHTML = partido.eq1.nombre;
-    let row_1_data_2 = document.createElement('td');
-    let row_1_data_3 = document.createElement('td');
-
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
-
-    let row_1_data_4 = document.createElement('td');
-        row_1_data_4.innerHTML = partido.eq2.nombre;
-
-    row_1.appendChild(row_1_data_1);
-    row_1.appendChild(row_1_data_2);
-    row_1.appendChild(row_1_data_3);
-    row_1.appendChild(row_1_data_4);
-    tbody.appendChild(row_1);
-    });
-}
-
-
-
-//////////////////////////// FINAL ///////////////////////////////////
-
-const FINAL = []
-
-partidosSemi.forEach(partido => {
-    if (partido.geq2<partido.geq1) {
-        ganador = partido.eq1
-    } else  {
-        ganador = partido.eq2
-    }   
-    FINAL.push(ganador)
-});
-
-
-
-const partidoFinal = [];
-
-
-id++
-const partido1 = new PartidoPlayoff (FINAL[0],FINAL[1], 0, 0, 0, 0 , false, id);
-partidoFinal.push(partido1)
-
-
-
-
-
-function crearTablaPartidoFinal() {
-
-
-    let table = document.createElement('table');
-    let thead = document.createElement('thead');
-    let tbody = document.createElement('tbody');
-    
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    
-
-    document.getElementById('partidoFinal').appendChild(table);
-
-    partidoFinal.forEach(partido => {
-        
-    let row_1 = document.createElement('tr');
-    let row_1_data_1 = document.createElement('td');
-    row_1_data_1.innerHTML = partido.eq1.nombre;
-    let row_1_data_2 = document.createElement('td');
-    let row_1_data_3 = document.createElement('td');
-
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` 
-    partido.geq1 = row_1_data_2.innerHTML
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    partido.geq2 = row_1_data_3.innerHTML
-    let row_1_data_4 = document.createElement('td');
-    row_1_data_4.innerHTML = partido.eq2.nombre;
-
-    row_1.appendChild(row_1_data_1);
-    row_1.appendChild(row_1_data_2);
-    row_1.appendChild(row_1_data_3);
-    row_1.appendChild(row_1_data_4);
-    tbody.appendChild(row_1);
-    });
-}
-
-
-
-
-
 let tablaOctavos = document.getElementById ('tablasPartidosPlayoffProde');
 tablaOctavos.innerHTML += `<div class="grupo" id="partidosOctavos"> <h3>${FASES[1]}</h3>`
 crearTablaPartidosOctavos()
@@ -535,12 +386,143 @@ tablaOctavos.addEventListener("change", (e) => {
 
     const localstoPartOff = JSON.stringify(partidosOctavos)
     localStorage.setItem('PartidosOFFStorage', localstoPartOff)
-
-
-
-
     });
+
+
+
+//////////////////////////// CUARTOS ///////////////////////////////////
+
+const Cuartos = []
+
+let partidosCuartos = PARTIDOPLAYOFF.slice(8, 12);
+const [a,b,c,d] = partidosCuartos
+console.log(a, b, c, d);
+
+function crearTablaPartidosCuartos() {
+
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
     
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+    document.getElementById('partidosCuartos').appendChild(table);
+
+    partidosCuartos.forEach(partido => {
+        
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partido.eq1;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+
+    let row_1_data_4 = document.createElement('td');
+        row_1_data_4.innerHTML = partido.eq2;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    });
+}
+
+
+
+
+//////////////////////////// SEMIFINAL ///////////////////////////////////
+
+
+const partidosSemi = PARTIDOPLAYOFF.slice(12, 14);
+
+
+
+function crearTablaPartidosSemi() {
+
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+
+    document.getElementById('partidosSemi').appendChild(table);
+
+    partidosSemi.forEach(partido => {
+        
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partido.eq1;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+
+    let row_1_data_4 = document.createElement('td');
+        row_1_data_4.innerHTML = partido.eq2;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    });
+}
+
+
+
+//////////////////////////// FINAL ///////////////////////////////////
+
+console.log(...PLAYOFFS)
+
+
+
+const partidoFinal  = PARTIDOPLAYOFF[14];
+
+
+function crearTablaPartidoFinal() {
+
+
+    let table = document.createElement('table');
+    let thead = document.createElement('thead');
+    let tbody = document.createElement('tbody');
+    
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    
+
+    document.getElementById('partidoFinal').appendChild(table);
+
+
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = partidoFinal.eq1;
+    let row_1_data_2 = document.createElement('td');
+    let row_1_data_3 = document.createElement('td');
+
+    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partidoFinal.id}eq1">` 
+    partidoFinal.geq1 = row_1_data_2.innerHTML
+    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partidoFinal.id}eq1">` //`<input type="number" class="goles">`;
+    partidoFinal.geq2 = row_1_data_3.innerHTML
+    let row_1_data_4 = document.createElement('td');
+    row_1_data_4.innerHTML = partidoFinal.eq2;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+    };
+
+
 
 
 let tablaCuartos = document.getElementById ('tablasPartidosPlayoffProde');
@@ -606,6 +588,7 @@ function funcTogglePRO(tabla) {
     })
     }
     
+    
 }
 
 
@@ -629,34 +612,20 @@ function randomG(w){
     }
     return r;
 }
-// console.log(PARTIDO)
-// function randomize() {
-// PARTIDO.forEach((partido) => {
-//     // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-//     if (partido.terminado==false) {
-//     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-//     let porceq1 = (50 + 0.5*dif)*.01
-//     let porceq2 = (50 - 0.5*dif)*.01
-    
-//     partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//     partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//     partido.terminado = true
-//     }
 
-// });
-// console.log(PARTIDO)
-//}
+// Funcion random sin probabilidad (para penales)
 function random(min, max) {
     return Math.floor((Math.random() * (max - min + 1)) + min);
 }
 
 
 let botonRandom = document.getElementById('botonrandom')
-
+// Probabilidad sobre partidos en funcion al ranking FIFA
 botonRandom.addEventListener("click", (e) => {
     PARTIDO.forEach((partido) => {
+        let guardado = document.getElementById(`guardar${partido.grupo}`);
         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-        if (partido.terminado==false) {
+        if (partido.terminado==false && !guardado.classList.contains('active')) {
         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
         let porceq1 = (50 + 0.5*dif)*.01
         let porceq2 = (50 - 0.5*dif)*.01
@@ -675,23 +644,34 @@ botonRandom.addEventListener("click", (e) => {
         localStorage.setItem('PartidoStorage', localstoPart)    
     };
 
-    partidosOctavos.forEach((partido) => {
-        if (partido.terminado==false) {
-            partido.geq1 = random(0,5)
-            partido.geq2 = random(0,5)
-            partido.terminado = true
+    // PARTIDOPLAYOFF.forEach((partido) => {
+    //     if (partido.terminado==false) {
+    //         partido.geq1 = random(0,5)
+    //         partido.geq2 = random(0,5)
+    //         partido.terminado = true
         
-        const goles1 = document.getElementById(`${partido.id}L`)
-        goles1.value = partido.geq1
-        const goles2 = document.getElementById(`${partido.id}V`)
-        goles2.value = partido.geq2
+    //     const goles1 = document.getElementById(`${partido.id}L`)
+    //     goles1.value = partido.geq1
+    //     const goles2 = document.getElementById(`${partido.id}V`)
+    //     goles2.value = partido.geq2
         
-        const localstoPart = JSON.stringify(PARTIDO)
-        localStorage.setItem('PartidoStorage', localstoPart)    
-        }
-    });
+    //     const localstoPart = JSON.stringify(PARTIDO)
+    //     localStorage.setItem('PartidoStorage', localstoPart)    
+    //     }
+    // });
 
-})
+})  
+
+
+
+Toastify({
+    text: "Partidos emulados",
+    className: "info",
+    style: {
+    color: "rgba(130,26,75,255)",
+    background: "rgb(255, 255, 255, 0.9)",
+    }
+}).showToast();
 
 })
 
@@ -699,7 +679,10 @@ botonRandom.addEventListener("click", (e) => {
 let botonReset = document.getElementById('reset')
 
 botonReset.addEventListener("click", (e) => {
+
     PARTIDO.forEach((partido) => {
+        let guardado = document.getElementById(`guardar${partido.grupo}`);
+        if (!guardado.classList.contains('active')){
         const goles1 = document.getElementById(`${partido.id}L`)
         goles1.value = 0
         const goles2 = document.getElementById(`${partido.id}V`)
@@ -707,20 +690,43 @@ botonReset.addEventListener("click", (e) => {
         partido.geq1 = 0;
         partido.geq2 = 0;
         partido.terminado = false;
-
+        }
     })
-    partidosOctavos.forEach((partido) => {
-        const goles1 = document.getElementById(`${partido.id}L`)
-        goles1.value = 0
-        const goles2 = document.getElementById(`${partido.id}V`)
-        goles2.value = 0
-        partido.geq1 = 0;
-        partido.geq2 = 0;
-        partido.terminado = false;
+    
+    // PARTIDOPLAYOFF.forEach((partido) => {
+    //     const goles1 = document.getElementById(`${partido.id}L`)
+    //     goles1.value = 0
+    //     const goles2 = document.getElementById(`${partido.id}V`)
+    //     goles2.value = 0
+    //     partido.geq1 = 0;
+    //     partido.geq2 = 0;
+    //     partido.terminado = false;
 
-    })
+    // })
+    
+
     const localstoPart = JSON.stringify(PARTIDO)
     localStorage.setItem('PartidoStorage', localstoPart)
     const localstoPartOct = JSON.stringify(partidosOctavos)
     localStorage.setItem('PartidosOFFStorage', localstoPartOct)
+
+    Toastify({
+        text: "Borrado",
+        className: "info",
+        style: {
+        color: "rgba(130,26,75,255)",
+        background: "rgb(255, 255, 255, 0.9)",
+        }
+    }).showToast();
+    
 })
+
+
+
+let datetime = (new Date("Nov 21, 2022 12:00:00").getTime() / 1000)
+
+var flipdown = new FlipDown(datetime, {
+    theme: 'light' // or dark
+});
+flipdown.start();
+

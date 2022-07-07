@@ -6,8 +6,9 @@ body {
 }
 
 .titulo {
-    color: white;
+    color: #8f0b31;
     margin: 3vh 0;
+    background-color: white;
 }
 
 .grupos{
@@ -51,14 +52,18 @@ th, td{
 
 }
 
-.tablaGrupos {
+td .tablaGrupos {
     display: inline-block;
-    padding: 5vh
+    padding: 2vh
+}
+
+.tablaequipo{
+    width: 13vh;
 }
 
 .grupo {
     display: inline-block;
-    margin: 4vh;
+    margin: 1vh;
 
     border-radius: 20px;
     border: solid 1 px rgb(255, 255, 255, 0.5);;
@@ -89,6 +94,13 @@ h3 {
     margin : 0px
 }
 
+.guardar{
+    border-radius: 0 0 20px 20px;
+    margin-top: -7px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight:300;
+}
 
 
 .grupos li {
@@ -152,7 +164,7 @@ a .navbar-nav {
     display: flex;
     flex-wrap: wrap;
     padding: 0 5vh;
-    column-gap: 5vh;
+    column-gap: 2vh;
 }
 
 #tablasClasifGruposProde {
@@ -165,8 +177,8 @@ a .navbar-nav {
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    padding: 0 5vh;
-    column-gap: 5vh;
+    padding: 0 2vh;
+    column-gap: 2vh;
     
     
 }
@@ -203,7 +215,7 @@ a .navbar-nav {
     width:cover;
     height:60px;
     border-radius:100px;
-    background: white;
+    background: rgb(255, 255, 255, 0.9);
     right:0;
     bottom:0;
     position:fixed;
@@ -216,7 +228,7 @@ a .navbar-nav {
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition:.3s;  
   }
-  span{
+.botones{
     transition:.5s;  
     padding: 2vh;
   }
@@ -251,20 +263,48 @@ a .navbar-nav {
     right: 20px;
     z-index: 9999999;
 }
-    .botonresetF1{
-        width:cover;
-        height:60px;
-        border-radius:100px;
-        background: white;
-        right:0;
-        bottom:0;
-        position:fixed;
-        margin-right:20vh;
-        margin-bottom:10vh;
-        border:none;
-        outline:none;
-        color:#8f0b31;
-        font-size:36px;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-        transition:.3s;  
-    }
+.botonresetF1{
+    width:cover;
+    height:60px;
+    border-radius:100px;
+    background: rgb(255, 255, 255, 0.9);
+    right:0;
+    bottom:0;
+    position:fixed;
+    margin-right:20vh;
+    margin-bottom:10vh;
+    border:none;
+    outline:none;
+    color:rgba(130,26,75,255);
+    font-size:36px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition:.3s;  
+} 
+
+.botonenviarF1{
+    width:cover;
+    height:60px;
+    border-radius:100px;
+    background: rgb(255, 255, 255, 0.9);
+    right:0;
+    bottom:0;
+    position:fixed;
+    margin-right:35vh;
+    margin-bottom:10vh;
+    border:none;
+    outline:none;
+    color:rgba(130,26,75,255);
+    font-size:36px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition:.3s;  
+    display: none;
+} 
+
+#flip {
+    display: flex;
+    justify-content: center;
+}
+
+.flipdown {
+    width: fit-content;
+}
