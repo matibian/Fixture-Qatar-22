@@ -86,9 +86,7 @@ td .tablaGrupos {
     width: 40px;
 }
 
-section tr {
-    width: 50vh;
-}
+
 
 h3 {
     background-color: white;
@@ -421,3 +419,10 @@ a .navbar-nav {
     padding-top: 3px;
     cursor: pointer;
     border: solid rgb(187, 187, 187) 1px;}
+
+/* .tabusuario{
+    width: 100%;
+} */
+section tr {
+    width: 100vh;
+}
