@@ -400,10 +400,10 @@ a .navbar-nav {
     width: inherit;
 }
 
-#torneogeneral table{
+#torneogeneral {
     overflow: auto;
     width: 100%;
-    height: 300px;
+    height: 307px;
 }
 
 #nuevotorneo{
