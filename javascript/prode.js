@@ -1,9 +1,9 @@
 const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
-
-
 const PARTIDO = JSON.parse(PARTIDOSTORAGE) ?? [];
 
 
+const GUARDSTORAGE = localStorage.getItem('guardadasStorage');
+const guardadas = JSON.parse(GUARDSTORAGE) ?? [];
 
 
 const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
@@ -17,17 +17,9 @@ const RANKING = [1441, 1464, 1593, 1679, 1737, 1559, 1635, 1582, 1770, 1435, 165
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
 
 class Equipo {
-    constructor(nombre, puntos, golesFavor, golesContra, partidosGanados, partidosPerdidos, partidosJugados, partidosEmpatados, difGol, ranking) {
+    constructor(nombre, ranking) {
         this.nombre = nombre;
-        this.puntos = puntos;
-        this.golesFavor = golesFavor;
-        this.golesContra = golesContra;
-        this.partidosGanados = partidosGanados;
-        this.partidosPerdidos = partidosPerdidos;
-        this.partidosJugados = partidosJugados;
-        this.partidosEmpatados = partidosEmpatados;
-        this.difGol = difGol;
-        this.ranking = ranking
+        this.ranking = ranking;
     }
 }
 
@@ -35,7 +27,7 @@ const EQUIPO = [];
 
 EQUIPOS.forEach((nombre,index) => {
     
-    const equipox = new Equipo (nombre, 0, 0, 0, 0, 0, 0, 0, 0, RANKING[index])
+    const equipox = new Equipo (nombre, RANKING[index])
     EQUIPO.push(equipox)
 
 });
@@ -213,6 +205,7 @@ function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
   }
 
+
 GRUPO.forEach((grupo) => {
 
     tabla.innerHTML += `<div class="grupo filterDiv Grupo${grupo.nombre}" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
@@ -221,38 +214,81 @@ GRUPO.forEach((grupo) => {
 
 });
 
+
+
+////////////////////////////////////////////////////// GUARDAR TABLAS //////////////////////////////////////////////////////////////
+
+
+function funcenviar() {
+    let enviar = document.getElementById('enviar')
+    if (guardadas.length == 8) {
+        enviar.style.display = 'block'
+        console.log('si')
+    }else{
+        enviar.style.display = 'none'
+        console.log('no')
+    }
+}
+
+
 GRUPOS.forEach(grupo => {
+    /////////////////// GUARDADO EN STORAGE ////////////////
+    const block = guardadas.indexOf(`guardar${grupo}`);
+    const c = document.getElementById(`guardar${grupo}`);
+    if (block > -1) { 
+        let a = document.getElementsByClassName(`g${grupo}`);
+        for (let index = 0; index < a.length; index++) {
+            a[index].setAttribute("disabled","");
+        }
+
+        c.className += " active";
+        document.getElementById(`guardar${grupo}`).innerText = "Editar"
+    }
+    /////////////////// EVENT LISTENER ////////////////
     let boton = document.getElementById(`guardar${grupo}`);
-    boton.addEventListener('click', (e) =>{
+    boton.addEventListener('click', () =>{
         if (boton.classList.contains('active')){
-    let b = document.getElementsByClassName(`g${grupo}`);
-    for (let index = 0; index < b.length; index++) {
-        b[index].removeAttribute("disabled");
-        boton.classList.remove("active");
-        document.getElementById(`guardar${grupo}`).innerText = "Guardar"
-    }
+            let b = document.getElementsByClassName(`g${grupo}`);
+            for (let index = 0; index < b.length; index++) {
+                b[index].removeAttribute("disabled");
+                boton.classList.remove("active");
+                document.getElementById(`guardar${grupo}`).innerText = "Guardar"
+                
+            }
+            const bus = guardadas.indexOf(`guardar${grupo}`);
+            guardadas.splice(bus, 1); 
+
+        } else {
+            let b = document.getElementsByClassName(`g${grupo}`);
+            for (let index = 0; index < b.length; index++) {
+                b[index].setAttribute("disabled","");
+            }
+            boton.className += " active";
+            document.getElementById(`guardar${grupo}`).innerText = "Editar"
+            guardadas.push(`guardar${grupo}`);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Guardado!',
+                showConfirmButton: false,
+                color : '#821a4b',
+                timer: 1000
+            })
+        }
+
+        funcenviar()
 
 
-} else {
-    let b = document.getElementsByClassName(`g${grupo}`);
-    for (let index = 0; index < b.length; index++) {
-        b[index].setAttribute("disabled","");
-        boton.className += " active";
-    }
-    document.getElementById(`guardar${grupo}`).innerText = "Editar"
-    
-    }
-    Swal.fire({
-        icon: 'success',
-        title: 'Guardado!',
-        showConfirmButton: false,
-        timer: 1000
-      })
-
-})
+        console.log(guardadas)
+    const localstoGuar = JSON.stringify(guardadas)
+    localStorage.setItem('guardadasStorage', localstoGuar)
 
 
+    })
+
+    funcenviar()
 });
+
 
 
 
@@ -271,7 +307,6 @@ tabla.addEventListener("change", (e) => {
     const localstoGru = JSON.stringify(GRUPO)
     const localstoPart = JSON.stringify(PARTIDO)
     localStorage.setItem('PartidoStorage', localstoPart)
-
 
     localStorage.setItem('GrupoStorage', localstoGru)
 
@@ -346,13 +381,10 @@ function crearTablaPartidosOctavos() {
 
 
     const geq1 = partidosOctavos.findIndex(obj => obj.id == partido.id)
-    row_1_data_2.innerHTML = `<input type="number" value= "${partidosOctavos[geq1].geq1}" id= "${partido.id}L" class=" goles">` //partido.geq1 ;
+    row_1_data_2.innerHTML = `<input type="number" value= "${partidosOctavos[geq1].geq1}" id= "${partido.id}L" class=" goles">`
     let row_1_data_3 = document.createElement('td');
     const geq2 = partidosOctavos.findIndex(obj => obj.id == partido.id)
-    row_1_data_3.innerHTML = `<input type="number" value= "${partidosOctavos[geq2].geq2}" id= "${partido.id}V" class=" goles">` //partido.geq2 ;
-
-    // row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    // row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" value= "${partidosOctavos[geq2].geq2}" id= "${partido.id}V" class=" goles">`
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2;
@@ -396,7 +428,7 @@ const Cuartos = []
 
 let partidosCuartos = PARTIDOPLAYOFF.slice(8, 12);
 const [a,b,c,d] = partidosCuartos
-console.log(a, b, c, d);
+
 
 function crearTablaPartidosCuartos() {
 
@@ -481,7 +513,6 @@ function crearTablaPartidosSemi() {
 
 //////////////////////////// FINAL ///////////////////////////////////
 
-console.log(...PLAYOFFS)
 
 
 
@@ -622,47 +653,31 @@ function random(min, max) {
 let botonRandom = document.getElementById('botonrandom')
 // Probabilidad sobre partidos en funcion al ranking FIFA
 botonRandom.addEventListener("click", (e) => {
+    console.log(PARTIDO)
     PARTIDO.forEach((partido) => {
+
         let guardado = document.getElementById(`guardar${partido.grupo}`);
         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
         if (partido.terminado==false && !guardado.classList.contains('active')) {
         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
         let porceq1 = (50 + 0.5*dif)*.01
         let porceq2 = (50 - 0.5*dif)*.01
-        
+        console.log(porceq1)
         partido.geq1 = randomG({0:porceq2, 1:porceq1})
         partido.geq2 = randomG({0:porceq1, 1:porceq2})
         partido.terminado = true
-        
+
         const goles1 = document.getElementById(`${partido.id}L`)
         goles1.value = partido.geq1
         const goles2 = document.getElementById(`${partido.id}V`)
         goles2.value = partido.geq2
 
-        
+        console.log(PARTIDO)
         const localstoPart = JSON.stringify(PARTIDO)
         localStorage.setItem('PartidoStorage', localstoPart)    
     };
-
-    // PARTIDOPLAYOFF.forEach((partido) => {
-    //     if (partido.terminado==false) {
-    //         partido.geq1 = random(0,5)
-    //         partido.geq2 = random(0,5)
-    //         partido.terminado = true
-        
-    //     const goles1 = document.getElementById(`${partido.id}L`)
-    //     goles1.value = partido.geq1
-    //     const goles2 = document.getElementById(`${partido.id}V`)
-    //     goles2.value = partido.geq2
-        
-    //     const localstoPart = JSON.stringify(PARTIDO)
-    //     localStorage.setItem('PartidoStorage', localstoPart)    
-    //     }
-    // });
-
+    console.log(PARTIDO)
 })  
-
-
 
 Toastify({
     text: "Partidos emulados",
@@ -674,13 +689,14 @@ Toastify({
 }).showToast();
 
 })
-
+/////////////////////////////RESETEO ///////////////////////////
 
 let botonReset = document.getElementById('reset')
 
 botonReset.addEventListener("click", (e) => {
 
     PARTIDO.forEach((partido) => {
+        console.log(partido)
         let guardado = document.getElementById(`guardar${partido.grupo}`);
         if (!guardado.classList.contains('active')){
         const goles1 = document.getElementById(`${partido.id}L`)
@@ -692,18 +708,6 @@ botonReset.addEventListener("click", (e) => {
         partido.terminado = false;
         }
     })
-    
-    // PARTIDOPLAYOFF.forEach((partido) => {
-    //     const goles1 = document.getElementById(`${partido.id}L`)
-    //     goles1.value = 0
-    //     const goles2 = document.getElementById(`${partido.id}V`)
-    //     goles2.value = 0
-    //     partido.geq1 = 0;
-    //     partido.geq2 = 0;
-    //     partido.terminado = false;
-
-    // })
-    
 
     const localstoPart = JSON.stringify(PARTIDO)
     localStorage.setItem('PartidoStorage', localstoPart)
@@ -721,7 +725,7 @@ botonReset.addEventListener("click", (e) => {
     
 })
 
-
+/////////////////////////////COUNTDOWN///////////////////////////
 
 let datetime = (new Date("Nov 21, 2022 12:00:00").getTime() / 1000)
 
@@ -729,4 +733,29 @@ var flipdown = new FlipDown(datetime, {
     theme: 'light' // or dark
 });
 flipdown.start();
+
+
+/////////////////////////////ENVIO DE RESULTADOS///////////////////////////
+const botonenviar = document.getElementById('enviar')
+
+botonenviar.onclick = (e) => {
+    swal({
+        title: "Estas seguro?",
+        text: "No se puede deshacer.",
+        icon: "warning",
+        buttons: true,
+        buttonsColor : '#821a4b',
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            swal("Resultados enviados!", {
+            icon: "success",
+            });
+        } 
+    });
+}
+
+
+
 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
+    <!-- <link rel="stylesheet" href="drop-theme-arrows.css" /> -->
+    <link rel="stylesheet" href="../javascript/fstdropdown-master/fstdropdown.css">
+
+
+  
+    <title>Fixture Qatar 22</title>
+</head>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">WOOMBI</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end " id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link  text-white" href="../index.html">Prode</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active  text-white" aria-current="page" href="./fixture.html">Fixture</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-white" href="./emulador.html">Emulador partidos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link  text-white" href="./torneos.html">Torneo</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Usuario
+            </a>
+            <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul> -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
+<body id="body">
+  <h1 class="titulo"><center>Fixture Mundial Qatar 2022 </center></h1>
+
+  <center><img src="../assets/logo.png" alt="logo" id="logo"></center>
+    
+    <div id="tablaUsuario" >
+        <div id="tablaprin">
+        <h3 id="titulopuntos" type="button" value="Toggle" onclick="toggle()">PUNTOS : </h3>
+            <table id="collapse" class="show" >
+                <thead>
+                    <th>Resultados Mundial</th>
+                    <th>Resultados Usuario</th>
+                    <th>Pts partido</th>
+                    <th>Pts total</th>
+                </thead>
+                <tbody id="tabla">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <section id="torneos">
+        <div class="container">
+            <div class="row">
+              <div class="col">
+                <table id="torneogeneral">
+                    <h3>TABLA GENERAL</h3>
+                    <table>
+                      <thead>
+                    <th class="tabusuario">Usuario</th>
+                    <th>Puntos</th>
+                  </thead>
+                  <tbody id="tabgeneral">
+                  </tbody>
+                </table>
+              </table>
+              </div>
+              <div class="col">
+                <h3>TORNEOS INDIVIDUALES</h3>
+                <span id="individuales">
+                  <select class="fstdropdown-select" id="fstdiv" data-searchdisable="true">
+                    <option value="Pibes">Pibes</option>
+                    <option value="Laburo">Laburo</option>
+                    <option value="Flia">Flia</option>
+                    <option value="Coderhouse">Coderhouse</option>
+                  </select>
+                  <h3 id="nuevotorneo">&nbspNuevo&nbsp</h3>
+                </span>
+                <div>
+                  <table id="torneoindividual">
+                    <thead>
+                      <th class="tabusuario">Usuario</th>
+                      <th>Puntos</th>
+                    </thead>
+                    
+                  </table>
+                </div>
+                
+              </div>
+          </div>
+    </section>
+
+
+
+    <script src="../javascript/fstdropdown-master/fstdropdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="../javascript/torneos.js"></script>
+
+</body>
+</html>

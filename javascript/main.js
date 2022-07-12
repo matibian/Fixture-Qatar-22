@@ -1,4 +1,4 @@
-const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
+const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
 
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
@@ -6,6 +6,7 @@ const FASES = ["Fase de grupos", "Octavos de final", "Cuartos de final", "Semifi
 
 const RANKING = [1441, 1464, 1593, 1679, 1737, 1559, 1635, 1582, 1770, 1435, 1650, 1546, 1765, 1484, 1665, 1508, 1717, 1500, 1659, 1553, 1822, 1474, 1559, 1632, 1838, 1550, 1621, 1485, 1679, 1390, 1644, 1526]
 
+const PARTIDOMUN = []
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
 
 class Equipo {
@@ -122,30 +123,14 @@ function random(min, max) {
     return Math.floor((Math.random() * (max - min + 1)) + min);
 }
 
-// GRUPO.forEach((grupo) => {
-//     grupo.partido.forEach((partido) => {
-//         partido.geq1 = random(0,5)
-//         partido.geq2 = random(0,5)
-
-    
-// });
-// });
-// GRUPO.forEach((grupo) => {
-//     grupo.partido.forEach((partido) => {        
-//         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-//         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-//         console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
-//         let porceq1 = (50 + 0.5*dif)*.01
-//         let porceq2 = (50 - 0.5*dif)*.01
-        
-//         partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//         console.log(partido.geq1, partido.geq2)
-
-// });
-// });
 
 
+GRUPO[0].partido[0].geq1 = 0; 
+GRUPO[0].partido[0].geq2 = 3; 
+GRUPO[0].partido[0].terminado = true; 
+GRUPO[0].partido[1].geq1 = 4; 
+GRUPO[0].partido[1].geq2 = 1; 
+GRUPO[0].partido[1].terminado = true; 
 
 
 
@@ -207,6 +192,7 @@ GRUPO.forEach((grupo) => {
         partido.eq2.golesContra += partido.geq1
         }
 
+        PARTIDOMUN.push(partido)
         });
     
 
@@ -276,6 +262,7 @@ function crearTablaPartidos(grupo) {
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1.nombre;
+    row_1_data_1.className = 'tablaequipo';
     let row_1_data_2 = document.createElement('td');
     row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
     row_1_data_2.id = partido.id+`L`;
@@ -284,6 +271,7 @@ function crearTablaPartidos(grupo) {
     row_1_data_3.id = partido.id+`V`;
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.innerHTML = partido.eq2.nombre;
+    row_1_data_4.className = 'tablaequipo'
 
     row_1.appendChild(row_1_data_1);
     row_1.appendChild(row_1_data_2);
@@ -422,7 +410,8 @@ for (let j = 0; j < 4; j++) {
     const partido2 = new PartidoPlayoff (OCTAVOS[i+2],OCTAVOS[i+3],0 ,0 , 0, 0 , false, id);
     partidosOctavos.push(partido2)
     i += 4
-
+    PARTIDOMUN.push(partido1)
+    PARTIDOMUN.push(partido2)
 };
 console.log(partidosOctavos)
 
@@ -518,8 +507,9 @@ for (let j = 0; j < 4; j++) {
     id++
     const partido1 = new PartidoPlayoff (Cuartos[n],Cuartos[n+1], 0, 0, 0, 0 , false, id);
     partidosCuartos.push(partido1)
-    id++
+    PARTIDOMUN.push(partido1)
     n += 2
+    
 
 };
 
@@ -600,9 +590,10 @@ for (let j = 0; j < 2; j++) {
     id++
     const partido1 = new PartidoPlayoff (Semifinal[o],Semifinal[o+1], 0, 0, 0, 0 , false, id);
     partidosSemi.push(partido1)
-    id++
+
 
     o += 2
+    PARTIDOMUN.push(partido1)
 
 };
 
@@ -688,6 +679,8 @@ const partidoFinal = [];
 id++
 const partido1 = new PartidoPlayoff (FINAL[0],FINAL[1], 0, 0, 0, 0 , false, id);
 partidoFinal.push(partido1)
+PARTIDOMUN.push(partido1)
+
 
 
 
@@ -832,3 +825,14 @@ function funcToggle(tabla) {
     }
     
 }
+
+
+
+console.log(PARTIDOMUN)
+let boton = document.getElementById('botonrandom')
+
+boton.addEventListener('click', () =>{
+const PARTIDOMUNSTO = JSON.stringify(PARTIDOMUN)
+    localStorage.setItem('partidoMunstore', PARTIDOMUNSTO)
+    console.log(PARTIDOMUNSTO)
+    })

@@ -1,10 +1,13 @@
-const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea del Sur"]
+const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
 
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
 const FASES = ["Fase de grupos", "Octavos de final", "Cuartos de final", "Semifinal", "Final"]
 
 const RANKING = [1441, 1464, 1593, 1679, 1737, 1559, 1635, 1582, 1770, 1435, 1650, 1546, 1765, 1484, 1665, 1508, 1717, 1500, 1659, 1553, 1822, 1474, 1559, 1632, 1838, 1550, 1621, 1485, 1679, 1390, 1644, 1526]
+
+
+const PARTIDOMUN = [];
 
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
 
@@ -793,11 +796,11 @@ GRUPO.forEach((grupo) => {
         console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
         let porceq1 = (50 + 0.5*dif)*.01
         let porceq2 = (50 - 0.5*dif)*.01
-        
+        partido.terminado = true
         partido.geq1 = randomG({0:porceq2, 1:porceq1})
         partido.geq2 = randomG({0:porceq1, 1:porceq2})
         console.log(partido.geq1, partido.geq2)
-
+        PARTIDOMUN.push(partido)
 });
 });
 
@@ -856,7 +859,10 @@ function funcToggle(tabla) {
     
 }
 
+let boton = document.getElementById('botonrandom')
 
-console.log(GRUPO)
-console.log(EQUIPO)
-console.log(partidosOctavos)
+boton.addEventListener('click', () =>{
+const PARTIDOMUNSTO = JSON.stringify(PARTIDOMUN)
+    localStorage.setItem('partidoMunstore', PARTIDOMUNSTO)
+    console.log(PARTIDOMUNSTO)
+    })
