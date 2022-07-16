@@ -6,7 +6,7 @@ const GUARDSTORAGE = localStorage.getItem('guardadasStorage');
 const guardadas = JSON.parse(GUARDSTORAGE) ?? [];
 
 
-const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia Sau.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
+const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia S.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
 
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"]
 
@@ -174,10 +174,20 @@ function crearTablaPartidos(grupo) {
     row_1_data_1.innerHTML = partido.eq1.nombre;
     let row_1_data_2 = document.createElement('td');
     const geq1 = PARTIDO.findIndex(obj => obj.id == partido.id)
-    row_1_data_2.innerHTML = `<input type="number" value= "${PARTIDO[geq1].geq1}" id= "${partido.id}L" class="g${grupo.nombre} goles">` //partido.geq1 ;
+    if (PARTIDO[geq1].terminado == true) {
+        row_1_data_2.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq1].geq1}" id="${partido.id}L" class="g${grupo.nombre} goles">`
+    } else {
+        row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.id}L" class="g${grupo.nombre} goles">` //partido.geq1 ;
+    }
     let row_1_data_3 = document.createElement('td');
     const geq2 = PARTIDO.findIndex(obj => obj.id == partido.id)
-    row_1_data_3.innerHTML = `<input type="number" value= "${PARTIDO[geq2].geq2}" id= "${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
+    
+    if (PARTIDO[geq2].terminado == true) {
+        row_1_data_3.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq2].geq2}" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
+    } else {
+        row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq1 ;
+    }
+    //row_1_data_3.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq2].geq2}" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.className = 'tablaequipo'
     row_1_data_4.innerHTML = partido.eq2.nombre;
@@ -223,10 +233,8 @@ function funcenviar() {
     let enviar = document.getElementById('enviar')
     if (guardadas.length == 8) {
         enviar.style.display = 'block'
-        console.log('si')
     }else{
         enviar.style.display = 'none'
-        console.log('no')
     }
 }
 
@@ -278,8 +286,6 @@ GRUPOS.forEach(grupo => {
 
         funcenviar()
 
-
-        console.log(guardadas)
     const localstoGuar = JSON.stringify(guardadas)
     localStorage.setItem('guardadasStorage', localstoGuar)
 
@@ -336,7 +342,7 @@ const PLAYOFFS = ["1ºA", "2ºB", "1ºC", "2ºD", "1ºE", "2ºF", "1ºG", "2ºH"
 
 const PARTIDOPLAYOFF = [];
 
-//if (PARTIDOSOCTAVOSSTORAGE == null) {
+
 let i = 0
 for (let j = 0; j < 7; j++) {
     id++
@@ -653,16 +659,13 @@ function random(min, max) {
 let botonRandom = document.getElementById('botonrandom')
 // Probabilidad sobre partidos en funcion al ranking FIFA
 botonRandom.addEventListener("click", (e) => {
-    console.log(PARTIDO)
     PARTIDO.forEach((partido) => {
-
         let guardado = document.getElementById(`guardar${partido.grupo}`);
         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
         if (partido.terminado==false && !guardado.classList.contains('active')) {
         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
         let porceq1 = (50 + 0.5*dif)*.01
         let porceq2 = (50 - 0.5*dif)*.01
-        console.log(porceq1)
         partido.geq1 = randomG({0:porceq2, 1:porceq1})
         partido.geq2 = randomG({0:porceq1, 1:porceq2})
         partido.terminado = true
@@ -672,15 +675,15 @@ botonRandom.addEventListener("click", (e) => {
         const goles2 = document.getElementById(`${partido.id}V`)
         goles2.value = partido.geq2
 
-        console.log(PARTIDO)
         const localstoPart = JSON.stringify(PARTIDO)
         localStorage.setItem('PartidoStorage', localstoPart)    
     };
-    console.log(PARTIDO)
 })  
 
 Toastify({
     text: "Partidos emulados",
+    duration : 1500,
+    stopOnFocus: false,
     className: "info",
     style: {
     color: "rgba(130,26,75,255)",
@@ -696,13 +699,12 @@ let botonReset = document.getElementById('reset')
 botonReset.addEventListener("click", (e) => {
 
     PARTIDO.forEach((partido) => {
-        console.log(partido)
         let guardado = document.getElementById(`guardar${partido.grupo}`);
         if (!guardado.classList.contains('active')){
         const goles1 = document.getElementById(`${partido.id}L`)
-        goles1.value = 0
+        goles1.value = "-"
         const goles2 = document.getElementById(`${partido.id}V`)
-        goles2.value = 0
+        goles2.value = "-"
         partido.geq1 = 0;
         partido.geq2 = 0;
         partido.terminado = false;
@@ -757,5 +759,5 @@ botonenviar.onclick = (e) => {
 }
 
 
-
-
+console.log("Hecho por Matias Bianchi")
+console.log("https://github.com/matibian/Fixture-Qatar-22")

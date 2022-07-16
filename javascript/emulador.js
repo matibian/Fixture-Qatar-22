@@ -126,31 +126,20 @@ function random(min, max) {
     return Math.floor((Math.random() * (max - min + 1)) + min);
 }
 
-// GRUPO.forEach((grupo) => {
-//     grupo.partido.forEach((partido) => {
-//         partido.geq1 = random(0,5)
-//         partido.geq2 = random(0,5)
 
-    
-// });
-// });
 GRUPO.forEach((grupo) => {
     grupo.partido.forEach((partido) => {        
         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-        console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
         let porceq1 = (50 + 0.5*dif)*.01
         let porceq2 = (50 - 0.5*dif)*.01
         
         partido.geq1 = randomG({0:porceq2, 1:porceq1})
         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-        console.log(partido.geq1, partido.geq2)
+
 
 });
 });
-
-
-
 
 
 
@@ -467,7 +456,6 @@ function crearTablaPartidosOctavos() {
 
 partidosOctavos.forEach((partido) => {
     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
     let porceq1 = (50 + 0.5*dif)*.01
     let porceq2 = (50 - 0.5*dif)*.01
     
@@ -561,7 +549,6 @@ function crearTablaPartidosCuartos() {
 
 partidosCuartos.forEach((partido) => {
     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
     let porceq1 = (50 + 0.5*dif)*.01
     let porceq2 = (50 - 0.5*dif)*.01
     
@@ -588,8 +575,6 @@ const Semifinal = []
 partidosCuartos.forEach(partido => {
     partidosPlayoff(partido,Semifinal)
 })
-
-console.log(GRUPO)
 
 const partidosSemi = [];
 
@@ -647,7 +632,6 @@ function crearTablaPartidosSemi() {
 
 partidosSemi.forEach((partido) => {
     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
     let porceq1 = (50 + 0.5*dif)*.01
     let porceq2 = (50 - 0.5*dif)*.01
     
@@ -731,7 +715,6 @@ function crearTablaPartidoFinal() {
 
 partidoFinal.forEach((partido) => {
     let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-    console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
     let porceq1 = (50 + 0.5*dif)*.01
     let porceq2 = (50 - 0.5*dif)*.01
     
@@ -793,13 +776,11 @@ GRUPO.forEach((grupo) => {
     grupo.partido.forEach((partido) => {        
         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-        console.log("equipo", partido.eq1.nombre, "ranking", partido.eq1.ranking,  "equipo", partido.eq2.nombre, "ranking", partido.eq2.ranking, dif)
         let porceq1 = (50 + 0.5*dif)*.01
         let porceq2 = (50 - 0.5*dif)*.01
         partido.terminado = true
         partido.geq1 = randomG({0:porceq2, 1:porceq1})
         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-        console.log(partido.geq1, partido.geq2)
         PARTIDOMUN.push(partido)
 });
 });
@@ -812,12 +793,10 @@ function funcToggle(tabla) {
     const newGrupo = GRUPOSTOGGLE.filter(gr => {
         return gr !== tabla
     })
-    console.log(newGrupo)
 
     var z = document.getElementById(`zonaGrupos`);
     var x = document.getElementById(`partido${tabla}`);
     var y = document.getElementById(`${tabla}`);
-    console.log(x, y, tabla);
 
     if (z.style.display === "flex") {
 
@@ -848,7 +827,6 @@ function funcToggle(tabla) {
         var r = document.getElementById(`tituloPG`);
         r.style.display = "none"
 
-        console.log(t)
         newGrupo.forEach(grupo => {
             var w = document.getElementById(`partido${grupo}`);
             w.style.display = "none";
@@ -864,5 +842,7 @@ let boton = document.getElementById('botonrandom')
 boton.addEventListener('click', () =>{
 const PARTIDOMUNSTO = JSON.stringify(PARTIDOMUN)
     localStorage.setItem('partidoMunstore', PARTIDOMUNSTO)
-    console.log(PARTIDOMUNSTO)
     })
+
+console.log("Hecho por Matias Bianchi")
+console.log("https://github.com/matibian/Fixture-Qatar-22")

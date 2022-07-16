@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'qatar';
+    src: url('./assets/Qatar2022/Qatar2022Arabic-Bold.ttf');
+  }
+  
+
+
 body {
     background-image: url(./assets/23-6-2021-7ss_generated.jpg);
     background-size: 100%;
@@ -10,6 +17,11 @@ body {
     margin: 3vh 0;
     background: white;
 
+}
+
+#woombi{
+    font-family: Permanent Marker;
+    font-size: 40px;
 }
 
 #logo {
@@ -40,7 +52,7 @@ div.grupos {
     margin: 5vh 1vh;
     display: inline-block;
     justify-items: center
-    
+
 }
 
 
@@ -87,6 +99,10 @@ td .tablaGrupos {
 }
 
 
+center {
+    font-family: qatar;
+    padding: 1vh 0;
+}
 
 h3 {
     background-color: white;
@@ -94,8 +110,15 @@ h3 {
     color: #8f0b31;
     text-align: center;
     font-weight: bolder;
+    font-family: qatar ;
     font-size: 20px;
-    margin : 0px
+    margin : 0px;
+    padding-top : 1vh
+
+}
+
+.container-fluid{
+    font-family: qatar;
 }
 
 .guardar{
@@ -122,7 +145,7 @@ a {
 }
 
 a .navbar-nav {
-    color: white 
+    color: white
 }
 
 .navbar-brand {
@@ -185,8 +208,8 @@ a .navbar-nav {
     flex-wrap: wrap;
     padding: 0 2vh;
     column-gap: 2vh;
-    
-    
+
+
 }
 
 
@@ -196,7 +219,7 @@ a .navbar-nav {
     flex-wrap: wrap;
     padding: 0 10vh;
 
-    
+
 
 }
 
@@ -232,11 +255,12 @@ a .navbar-nav {
     color:#8f0b31;
     font-size:36px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition:.3s;  
+    transition:.3s;
   }
 .botones{
-    transition:.5s;  
-    padding: 2vh;
+    display: block;
+    transition:.5s;
+    padding: 0 2vh;
   }
   .botonF1:hover span{
     transform:rotate(360deg);
@@ -244,13 +268,13 @@ a .navbar-nav {
   .botonF1:active{
     transform:scale(1.1);
   }
-  
+
 
 #zonaGrupos {
     display : block;
     justify-content: center;
 
-} 
+}
 
 .grupos {
     cursor: pointer;
@@ -284,8 +308,8 @@ a .navbar-nav {
     color:rgba(130,26,75,255);
     font-size:36px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition:.3s;  
-} 
+    transition:.3s;
+}
 
 .botonenviarF1{
     width:cover;
@@ -302,9 +326,9 @@ a .navbar-nav {
     color:rgba(130,26,75,255);
     font-size:36px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition:.3s;  
+    transition:.3s;
 
-} 
+}
 
 #flip {
     display: flex;
@@ -330,18 +354,18 @@ a .navbar-nav {
         font-size: 15px;
         height:60px;
 
-        margin-right:231px;
+        margin-right:177px;
         margin-bottom:10vh;
-    } 
+    }
 
     .botonresetF1 {
         font-size: 15px;
         height:60px;
 
-        margin-right:135px;
+        margin-right:77px;
         margin-bottom:10vh;
-    } 
-    
+    }
+
     .botonF1{
         font-size: 15px;
         height:60px;
@@ -372,18 +396,18 @@ a .navbar-nav {
 
 #titulopuntos{
     border-radius: 0 ;
-    
+
 }
 
 #collapse {
 
     overflow: auto;
-    
-    
+
+
     width: 100%;
     height: 400px;
     scroll-behavior: auto;
-    
+
     transition: all 0.5s;
 }
 
