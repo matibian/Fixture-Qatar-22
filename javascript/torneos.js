@@ -134,7 +134,6 @@ USUARIOS.push(toto)
 let torneoSort = () => {
     TORNEOSIND.forEach(torneo => {
         torneo.usuarios.sort((a, b) => b.puntos - a.puntos)
-        console.log(torneo)
         })
     }
 
@@ -187,7 +186,6 @@ const torneosDesdeBD = () => {
     .then((response) => response.json())
     .then((data) => {
         TORNEOSIND = data.Torneos
-        console.log(TORNEOSIND)
         cargaTorneosInd()
         mostrarTorneo()
         agregarEventListener()
