@@ -450,3 +450,9 @@ a .navbar-nav {
 section tr {
     width: 100vh;
 }
+
+.flechita{
+    color: #8f0b31;
+    float: right;
+    margin-right: 10px;
+}

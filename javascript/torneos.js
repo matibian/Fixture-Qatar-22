@@ -57,13 +57,24 @@ PARTIDOMUN.forEach((partidomun, i) => {
     
 });
 
-let puntostotal = document.getElementById("titulopuntos");
-puntostotal.innerHTML = `PUNTOS : ${PUNTOS}`
+let puntostotal = document.getElementById("spanpuntos");
+puntostotal.innerHTML = PUNTOS
 
 
-function toggle () {
+document.getElementById("tablaUsuario").addEventListener("click", (e) => {
+
     document.getElementById("collapse").classList.toggle("show");
-}
+    const s = document.querySelector(".flechita");
+    if (s.classList.contains("fa-caret-down")){
+        s.classList.remove("fa-caret-down")
+        s.classList.add("fa-caret-up")
+    } else {
+        s.classList.remove("fa-caret-up")
+        s.classList.add("fa-caret-down")
+    }
+    //s.innerHTML = `<i class="fa-solid fa-caret-up flechita"></i>`
+    
+})
 
 
 
