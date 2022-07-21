@@ -75,6 +75,11 @@ td .tablaGrupos {
     padding: 2vh
 }
 
+.tablaGrupos{
+    margin-top: 8px;
+    padding: 0 2vh;
+}
+
 .tablaequipo{
     width: 13vh;
 }
@@ -152,6 +157,11 @@ a .navbar-nav {
     color: white;
 }
 
+.navbar-brand:hover {
+    color: white
+}
+
+
 .tablaScroll {
     display: flex;
     align-items: center;
@@ -217,7 +227,7 @@ a .navbar-nav {
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    padding: 0 10vh;
+    padding: 0 6vh;
 
 
 
@@ -226,29 +236,46 @@ a .navbar-nav {
 
 
 /* //////////////////////BOTON//////////////// */
+.botgeneral{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    user-select: none;
+    position: absolute;
+}
 
+.botones{
+    transition:.5s;
+    padding: 0 2vh;
+    
+}
 
 .botonrandom{
-    width:90px;
-    height: 240px;
-    position: fixed;
     right:0px;
     bottom:0px;
-
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9999999;
-  }
-  .botonF1{
+}
+.botonreset{
+    right:0px;
+    bottom:0px;
+}
+
+.botonenviar {
+    right:0px;
+    bottom:0px;
+}
+
+.botonF1{
     width:cover;
+    display: block;
     height:60px;
     border-radius:100px;
     background: rgb(255, 255, 255, 0.9);
     right:0;
     bottom:0;
-    position:fixed;
-    margin-right:75px;
+    position:absolute;
+    margin-right:1em;
     margin-bottom:10vh;
     border:none;
     outline:none;
@@ -256,42 +283,6 @@ a .navbar-nav {
     font-size:36px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     transition:.3s;
-  }
-.botones{
-    display: block;
-    transition:.5s;
-    padding: 0 2vh;
-  }
-  .botonF1:hover span{
-    transform:rotate(360deg);
-  }
-  .botonF1:active{
-    transform:scale(1.1);
-  }
-
-
-#zonaGrupos {
-    display : block;
-    justify-content: center;
-
-}
-
-.grupos {
-    cursor: pointer;
-
-}
-
-.botonreset{
-    width:90px;
-    height: 240px;
-    position: fixed;
-    right:0px;
-    bottom:0px;
-
-    position: fixed;
-    bottom: 60px;
-    right: 20px;
-    z-index: 9999999;
 }
 .botonresetF1{
     width:cover;
@@ -301,7 +292,7 @@ a .navbar-nav {
     right:0;
     bottom:0;
     position:fixed;
-    margin-right:155px;
+    margin-right:4.05em;
     margin-bottom:10vh;
     border:none;
     outline:none;
@@ -319,7 +310,7 @@ a .navbar-nav {
     right:0;
     bottom:0;
     position:fixed;
-    margin-right:305px;
+    margin-right:9em;
     margin-bottom:10vh;
     border:none;
     outline:none;
@@ -329,6 +320,27 @@ a .navbar-nav {
     transition:.3s;
 
 }
+.botonF1:hover span{
+    transform:rotate(360deg);
+}
+.botonF1:active{
+    transform:scale(1.1);
+}
+
+
+#zonaGrupos {
+    display : block;
+    justify-content: center;
+
+}
+
+.grupos {
+    cursor: pointer;
+
+}
+
+
+
 
 #flip {
     display: flex;
@@ -354,7 +366,7 @@ a .navbar-nav {
         font-size: 15px;
         height:60px;
 
-        margin-right:177px;
+        margin-right:13em;
         margin-bottom:10vh;
     }
 
@@ -362,7 +374,7 @@ a .navbar-nav {
         font-size: 15px;
         height:60px;
 
-        margin-right:77px;
+        margin-right:6em;
         margin-bottom:10vh;
     }
 
@@ -371,7 +383,7 @@ a .navbar-nav {
         height:60px;
 
 
-        margin-right:0;
+        margin-right:1em;
         margin-bottom:10vh;
     }
 
@@ -455,4 +467,7 @@ section tr {
     color: #8f0b31;
     float: right;
     margin-right: 10px;
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }

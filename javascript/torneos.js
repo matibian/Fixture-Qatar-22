@@ -72,7 +72,6 @@ document.getElementById("tablaUsuario").addEventListener("click", (e) => {
         s.classList.remove("fa-caret-up")
         s.classList.add("fa-caret-down")
     }
-    //s.innerHTML = `<i class="fa-solid fa-caret-up flechita"></i>`
     
 })
 
