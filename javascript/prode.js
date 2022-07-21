@@ -681,7 +681,7 @@ botonRandom.addEventListener("click", (e) => {
 })  
 
 Toastify({
-    text: "Partidos emulados",
+    text: "Partidos simulados",
     duration : 1500,
     stopOnFocus: false,
     className: "info",
