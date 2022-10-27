@@ -75,6 +75,8 @@ class Partido {
 
 id = 0
 
+
+
 GRUPO.forEach((grupo) => {
     id++
     const partido1 = new Partido (grupo.equipo[0],grupo.equipo[1], 0, 0 , false, id);
@@ -101,66 +103,27 @@ GRUPO.forEach((grupo) => {
 /////////////////////////////RANDOM CON RANKING///////////////////////////
 
 // Probabilidad sobre goles
-function weightedRandom(prob) {
-    let i, sum=0, r=Math.random();
-    for (i in prob){
-        sum += prob[i];
-        if (r<=sum) return i
-    }
-}
+// function weightedRandom(prob) {
+//     let i, sum=0, r=Math.random();
+//     for (i in prob){
+//         sum += prob[i];
+//         if (r<=sum) return i
+//     }
+// }
 
-// Itero 5 veces la posibilidad de gol
-function randomG(w){ 
-    var r = 0;
-    for(var i = 5; i > 0; i --){
-        r += Math.round(weightedRandom(w));
-    }
-    return r;
-}
-
-
-function random(min, max) {
-    return Math.floor((Math.random() * (max - min + 1)) + min);
-}
+// // Itero 5 veces la posibilidad de gol
+// function randomG(w){ 
+//     var r = 0;
+//     for(var i = 5; i > 0; i --){
+//         r += Math.round(weightedRandom(w));
+//     }
+//     return r;
+// }
 
 
-
-GRUPO[0].partido[0].geq1 = 0; 
-GRUPO[0].partido[0].geq2 = 3; 
-GRUPO[0].partido[0].terminado = true; 
-GRUPO[0].partido[1].geq1 = 4; 
-GRUPO[0].partido[1].geq2 = 1; 
-GRUPO[0].partido[1].terminado = true; 
-GRUPO[0].partido[2].geq1 = 2
-GRUPO[0].partido[2].geq2 = 2
-GRUPO[0].partido[2].terminado = true; 
-GRUPO[0].partido[3].geq1 = 6
-GRUPO[0].partido[3].geq2 = 4
-GRUPO[0].partido[3].terminado = true; 
-GRUPO[0].partido[4].geq1 = 1
-GRUPO[0].partido[4].geq2 = 0
-GRUPO[0].partido[4].terminado = true; 
-GRUPO[0].partido[5].geq1 = 3
-GRUPO[0].partido[5].geq2 = 2
-GRUPO[0].partido[5].terminado = true; 
-GRUPO[1].partido[0].geq1 = 2
-GRUPO[1].partido[0].geq2 = 3
-GRUPO[1].partido[0].terminado = true; 
-GRUPO[1].partido[1].geq1 = 1
-GRUPO[1].partido[1].geq2 = 0
-GRUPO[1].partido[1].terminado = true; 
-GRUPO[1].partido[2].geq1 = 3
-GRUPO[1].partido[2].geq2 = 2
-GRUPO[1].partido[2].terminado = true; 
-GRUPO[1].partido[3].geq1 = 4
-GRUPO[1].partido[3].geq2 = 4
-GRUPO[1].partido[3].terminado = true; 
-GRUPO[1].partido[4].geq1 = 1
-GRUPO[1].partido[4].geq2 = 2
-GRUPO[1].partido[4].terminado = true; 
-GRUPO[1].partido[5].geq1 = 0
-GRUPO[1].partido[5].geq2 = 2
-GRUPO[1].partido[5].terminado = true; 
+// function random(min, max) {
+//     return Math.floor((Math.random() * (max - min + 1)) + min);
+// }
 
 
 
@@ -182,6 +145,8 @@ function calcularPuntos(ge1,ge2) {
     return [puntos, ganador]
 
 }
+
+
 
 
 GRUPO.forEach((grupo) => {
@@ -226,8 +191,7 @@ GRUPO.forEach((grupo) => {
     
 
     
-});
-    
+})
 
 
 
@@ -273,8 +237,13 @@ GRUPO.forEach(grupo => {
 
 ////////////////////// TABLAS PARTIDOS POR GRUPO/////////////////////////
 
-function crearTablaPartidos(grupo) {
 
+
+    
+
+function crearTablaPartidos(grupo) {
+    const partidos = Object.values(grupo.value);
+    
 
     let table = document.createElement('table');
     let thead = document.createElement('thead');
@@ -282,24 +251,25 @@ function crearTablaPartidos(grupo) {
     
     table.appendChild(thead);
     table.appendChild(tbody);
-    
 
-    document.getElementById('partidoGrupo'+ grupo.nombre).appendChild(table);
+    console.log(partidos)
 
-    grupo.partido.forEach(partido => {
+    document.getElementById('partidoGrupo'+ grupo.key).appendChild(table);
+    partidos.forEach(partido => {
+        console.log(partido)
         
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
-    row_1_data_1.innerHTML = partido.eq1.nombre;
+    row_1_data_1.innerHTML = partido.local.nombre;
     row_1_data_1.className = 'tablaequipo';
     let row_1_data_2 = document.createElement('td');
-    row_1_data_2.innerHTML = partido.geq1 //`<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = partido.local_goles||0; //`<input type="number" class="goles">`;
     row_1_data_2.id = partido.id+`L`;
     let row_1_data_3 = document.createElement('td');
-    row_1_data_3.innerHTML = partido.geq2 //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = partido.visita_goles||0; //`<input type="number" class="goles">`;
     row_1_data_3.id = partido.id+`V`;
     let row_1_data_4 = document.createElement('td');
-    row_1_data_4.innerHTML = partido.eq2.nombre;
+    row_1_data_4.innerHTML = partido.visita.nombre;
     row_1_data_4.className = 'tablaequipo'
 
     row_1.appendChild(row_1_data_1);
@@ -310,15 +280,25 @@ function crearTablaPartidos(grupo) {
     });
 }
 
+fetch('http://fprode.nachofernan.com/api/partidos_all')
+    .then(res => res.json())
+    .then(data => {
+        const result = Object.entries(data).map(([key, value]) => ({key,value})).slice(5,13)
 
-let tabla = document.getElementById ('tablasPartidos');
-GRUPO.forEach((grupo) => {
 
-    tabla.innerHTML += `<div class="grupo" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
-    crearTablaPartidos(grupo)
-    tabla.innerHTML += `</div>`
+        let tabla = document.getElementById ('tablasPartidos');
+        result.forEach((result) => {
 
-});
+        tabla.innerHTML += `<div class="grupo" id="partidoGrupo${result.key}"> <h3>Grupo ${result.key}</h3>`
+        crearTablaPartidos(result)
+        tabla.innerHTML += `</div>`
+        
+        });
+    })
+
+    .catch(error => console.error('Error:', error));
+
+
 
 
 

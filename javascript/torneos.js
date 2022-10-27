@@ -8,7 +8,7 @@ puntosGanados = 3
 puntosGoles = 1
 
 let TORNEOGENERAL = [];
-let TORNEOSIND = [];
+let TORNEOSIND
 let USUARIOS = []
 
 
@@ -122,23 +122,23 @@ USUARIOS.push(lore)
 USUARIOS.push(toto)
 
 
-class TorneoInd {
-    constructor(nombre, usuarios, id) {
-        this.nombre = nombre;
-        this.usuarios = usuarios;
-        this.id = id;
-    }
-}
+// class TorneoInd {
+//     constructor(nombre, usuarios, id) {
+//         this.nombre = nombre;
+//         this.usuarios = usuarios;
+//         this.id = id;
+//     }
+// }
 
-const Pibes = new TorneoInd("Pibes", [mati, gudi, pablo, andres, juani, lucas, juampa],1)
-const Laburo = new TorneoInd("Laburo", [mati, tincho, leti, lore],2)
-const Flia = new TorneoInd("Flia", [mati, majo, gon, tom],3)
-const Coderhouse = new TorneoInd("Coderhouse", [mati, toto, andres],4)
+// const Pibes = new TorneoInd("Pibes", [mati, gudi, pablo, andres, juani, lucas, juampa],1)
+// const Laburo = new TorneoInd("Laburo", [mati, tincho, leti, lore],2)
+// const Flia = new TorneoInd("Flia", [mati, majo, gon, tom],3)
+// const Coderhouse = new TorneoInd("Coderhouse", [mati, toto, andres],4)
 
-TORNEOSIND.push(Pibes);
-TORNEOSIND.push(Laburo);
-TORNEOSIND.push(Flia);
-TORNEOSIND.push(Coderhouse);
+// TORNEOSIND.push(Pibes);
+// TORNEOSIND.push(Laburo);
+// TORNEOSIND.push(Flia);
+// TORNEOSIND.push(Coderhouse);
 
 
 let torneoSort = () => {
@@ -189,25 +189,26 @@ select.addEventListener('change', (e) => {
 console.log("Hecho por Matias Bianchi")
 console.log("https://github.com/matibian/Fixture-Qatar-22")
 
-//const API_URL = 'https://prode-qatar-default-rtdb.firebaseio.com/Torneos.json'
+const API_URL = 'https://prode-qatar-default-rtdb.firebaseio.com/Torneos.json'
 
-// const torneosDesdeBD = () => {
-//     fetch(API_URL)
-//     .then((response) => response.json())
-//     .then((data) => {
-//         TORNEOSIND = data.Torneos
-//         cargaTorneosInd()
-//         mostrarTorneo()
-//         agregarEventListener()
-//         USUARIOS.forEach((usuario,index) => {
-//             crearTablaTorneoPrin(usuario, 'tabgeneral',index)
-//         });
-//         torneoSort()
+const torneosDesdeBD = () => {
+    fetch(API_URL)
+    .then((response) => response.json())
+    .then((data) => {
+        TORNEOSIND = data.Torneos
+        cargaTorneosInd()
+        mostrarTorneo()
+        agregarEventListener()
+        USUARIOS.forEach((usuario,index) => {
+            crearTablaTorneoPrin(usuario, 'tabgeneral',index)
+        });
+        torneoSort()
         
-//     })
+    })
     
-// }
-//torneosDesdeBD()
+}
+torneosDesdeBD()
+
 
 
 
@@ -240,26 +241,30 @@ function crearTablaTorneoPrin(u, nom, index) {
 }
 
 USUARIOS.sort((a, b) => b.puntos - a.puntos)
-TORNEOSIND.forEach(torneo => {
-    torneo.usuarios.sort((a, b) => b.puntos - a.puntos)
+// TORNEOSIND.forEach(torneo => {
+//     torneo.usuarios.sort((a, b) => b.puntos - a.puntos)
 
-});
+// });
 
-USUARIOS.forEach((usuario,index) => {
-    crearTablaTorneoPrin(usuario, 'tabgeneral',index)
-});
+// USUARIOS.forEach((usuario,index) => {
+//     crearTablaTorneoPrin(usuario, 'tabgeneral',index)
+// });
 
+cargaTorneosInd()
 
+        agregarEventListener()
+        USUARIOS.forEach((usuario,index) => {
+            crearTablaTorneoPrin(usuario, 'tabgeneral',index)
+        });
+        torneoSort()
 
 
 //Carga tabla individual al inicio//
-let torind = new Promise ((res, rej) => {
-    setTimeout(() => {
-    res(document.getElementsByClassName("fstselected")[0].innerText);
-    //document.getElementById(select).style.display = ''
-    },20);
-})
-torind.then((res) => document.getElementById(res).style.display = '')
+const mostrarTorneo = () => {
+
+    const select = document.getElementsByClassName('fstselected')[0].outerText;
+    document.getElementById(select).style.display = ''
+}
 
 
 cargaTorneosInd()
