@@ -387,10 +387,10 @@ function crearTablaPartidosOctavos() {
 
 
     const geq1 = partidosOctavos.findIndex(obj => obj.id == partido.id)
-    row_1_data_2.innerHTML = `<input type="number" value= "${partidosOctavos[geq1].geq1}" id= "${partido.id}L" class=" goles">`
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id= "${partido.id}L" class=" goles">`
     let row_1_data_3 = document.createElement('td');
     const geq2 = partidosOctavos.findIndex(obj => obj.id == partido.id)
-    row_1_data_3.innerHTML = `<input type="number" value= "${partidosOctavos[geq2].geq2}" id= "${partido.id}V" class=" goles">`
+    row_1_data_3.innerHTML = `<input type="number" min="0" min="0" value= "" placeholder="-" id= "${partido.id}V" class=" goles">`
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2;
@@ -456,8 +456,8 @@ function crearTablaPartidosCuartos() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2;
@@ -501,8 +501,8 @@ function crearTablaPartidosSemi() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq2">` //`<input type="number" class="goles">`;
 
     let row_1_data_4 = document.createElement('td');
         row_1_data_4.innerHTML = partido.eq2;
@@ -545,9 +545,9 @@ function crearTablaPartidoFinal() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" value= "0" class="goles" id="id${partidoFinal.id}eq1">` 
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">` 
     partidoFinal.geq1 = row_1_data_2.innerHTML
-    row_1_data_3.innerHTML = `<input type="number" value= "0" class="goles" id="id${partidoFinal.id}eq1">` //`<input type="number" class="goles">`;
+    row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">` //`<input type="number" class="goles">`;
     partidoFinal.geq2 = row_1_data_3.innerHTML
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.innerHTML = partidoFinal.eq2;
