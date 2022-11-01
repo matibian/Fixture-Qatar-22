@@ -7,6 +7,19 @@ const FASES = ["Fase de grupos", "Octavos de final", "Cuartos de final", "Semifi
 const RANKING = [1441, 1464, 1593, 1679, 1737, 1559, 1635, 1582, 1770, 1435, 1650, 1546, 1765, 1484, 1665, 1508, 1717, 1500, 1659, 1553, 1822, 1474, 1559, 1632, 1838, 1550, 1621, 1485, 1679, 1390, 1644, 1526]
 
 const PARTIDOMUN = []
+
+const USERSTORAGE = localStorage.getItem('user');
+function redirect(){
+    window.location='./login.html'
+}
+const USER = JSON.parse(USERSTORAGE) ?? redirect();
+
+document.getElementById('navbarDropdownMenuLink').innerHTML=USER.username
+const logout = document.getElementById('logout')
+logout.addEventListener("click", e=>{
+    localStorage.removeItem('user')
+    redirect()
+})
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
 
 class Equipo {
@@ -293,6 +306,7 @@ fetch('http://fprode.nachofernan.com/api/partidos_all')
         crearTablaPartidos(result)
         tabla.innerHTML += `</div>`
         
+
         });
     })
 

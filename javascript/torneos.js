@@ -4,6 +4,20 @@ const PARTIDOMUN = JSON.parse(PARTIDOMUNSTORAGE) ?? [];
 const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
 const PARTIDOUSUARIO = JSON.parse(PARTIDOSTORAGE) ?? [];
 
+const USERSTORAGE = localStorage.getItem('user');
+function redirect(){
+    window.location='./login.html'
+}
+const USER = JSON.parse(USERSTORAGE) ?? redirect();
+
+document.getElementById('navbarDropdownMenuLink').innerHTML=USER.username
+const logout = document.getElementById('logout')
+logout.addEventListener("click", e=>{
+    localStorage.removeItem('user')
+    redirect()
+})
+
+
 puntosGanados = 3
 puntosGoles = 1
 
@@ -261,8 +275,57 @@ cargaTorneosInd()
 
 //Carga tabla individual al inicio//
 
+let torind = new Promise ((res, rej) => {
+    setTimeout(() => {
+    res(document.getElementsByClassName("fstselected")[0].innerText);
+    //document.getElementById(select).style.display = ''
+    },20);
+})
+torind.then((res) => document.getElementById(res).style.display = '')
 
-    const select = document.getElementsByClassName('fstselected')[0].outerText;
-    document.getElementById(select).style.display = ''
 
+
+//////////AGREGAR JUGADORES TORNEOSIND///////////////////
+
+
+
+
+
+
+
+//////////EDITAR JUGADORES TORNEOSIND///////////////////
+let jugadoresTorneoInd = [{nombre: "carlos", id: 1}, {nombre: "julio", id: 2}, {nombre: "feli", id: 3}]
+
+
+const eliminarJugador = (id) => {
+    const result = jugadoresTorneoInd.filter((jug) => jug.id !== id)
+    jugadoresTorneoInd = result
+    document.getElementById('tbodyJugadores').innerHTML = ""
+    listaJugadoresTorneoInd(jugadoresTorneoInd)
+
+}
+
+
+let table = document.createElement('table');
+let tbody = document.createElement('tbody');
+tbody.id = "tbodyJugadores"
+table.appendChild(tbody);
+
+document.getElementById('JugadoresTorneoIndEditar').appendChild(table);
+
+function listaJugadoresTorneoInd(jugador) {
+    jugador.forEach((jugador) => {
+    let row_1 = document.createElement('tr');
+    let row_1_data_1 = document.createElement('td');
+    row_1_data_1.innerHTML = jugador.nombre;
+    let row_1_data_2 = document.createElement('td');
+    row_1_data_2.innerHTML = `<i id="${jugador.id}" onclick="eliminarJugador(${jugador.id})" class="fa-regular fa-x"></i>` 
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    tbody.appendChild(row_1);
+    })
+    };
+
+    listaJugadoresTorneoInd(jugadoresTorneoInd)
 

@@ -9,6 +9,19 @@ const RANKING = [1441, 1464, 1593, 1679, 1737, 1559, 1635, 1582, 1770, 1435, 165
 
 const PARTIDOMUN = [];
 
+const USERSTORAGE = localStorage.getItem('user');
+function redirect(){
+    window.location='./login.html'
+}
+const USER = JSON.parse(USERSTORAGE) ?? redirect();
+
+document.getElementById('navbarDropdownMenuLink').innerHTML=USER.username
+const logout = document.getElementById('logout')
+logout.addEventListener("click", e=>{
+    localStorage.removeItem('user')
+    redirect()
+})
+
 ///////////////////////////////ARMADO DE EQUIPOS //////////////////////////////
 
 class Equipo {
@@ -837,12 +850,6 @@ function funcToggle(tabla) {
     
 }
 
-let boton = document.getElementById('botonrandom')
-
-boton.addEventListener('click', () =>{
-const PARTIDOMUNSTO = JSON.stringify(PARTIDOMUN)
-    localStorage.setItem('partidoMunstore', PARTIDOMUNSTO)
-    })
 
 console.log("Hecho por Matias Bianchi")
 console.log("https://github.com/matibian/Fixture-Qatar-22")
