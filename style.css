@@ -494,3 +494,7 @@ section tr {
 .fa-regular{
     cursor: pointer
 }
+
+#formEditar{
+    display: flex;
+}
