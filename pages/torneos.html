@@ -36,11 +36,9 @@
             <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Usuario
             </a>
-            <!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul> -->
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" id= "logout" href="#">Logout</a></li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -94,7 +92,64 @@
                     <option value="Flia">Flia</option>
                     <option value="Coderhouse">Coderhouse</option>
                   </select>
-                  <h3 id="nuevotorneo">&nbspNuevo&nbsp</h3>
+                  <h3 data-bs-toggle="modal" data-bs-target="#torneoIndModalNuevo" id="nuevotorneo">&nbspNuevo&nbsp</h3>
+                  <h3 data-bs-toggle="modal" data-bs-target="#torneoIndModalEditar" id="nuevotorneo">&nbspEditar&nbsp</h3>
+
+                  <!-- Button trigger modal -->
+                  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
+                  </button> -->
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="torneoIndModalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h2 class="modal-title fs-5" id="torneoIndModalTitulo">Crear torneo</h2>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <input class="form-control form-control-sm" type="text" placeholder="Nombre del torneo" aria-label=".form-control-sm example">
+                          <br>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Jugador" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <span onclick="agregarJugador()" class="input-group-text" id="agregarJugadorTorneoInd">Agregar</span>
+                          </div>
+                          <div id="JugadoresTorneoIndNuevo">
+
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary">Crear torneo</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal fade" id="torneoIndModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h2 class="modal-title fs-5" id="torneoIndModalTitulo">Editar torneo</h2>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Jugador" id="inputAgregar" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <span class="input-group-text" id="botonAgregar">Agregar</span>
+                          </div>
+                          <div id="JugadoresTorneoIndEditar">
+
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary">Guardar cambios</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
                 <div>
                   <table id="torneoindividual" >

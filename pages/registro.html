@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="Matu Bianchi y Nacho Fernandez" />
+    <meta name="generator" content="MN 1.0.0" />
+    <title>Registrarse</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="../style.css">
+<!-- 
+    <link
+      href="http://fprode.nachofernan.com/assets/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="http://fprode.nachofernan.com/assets/css/style.css"
+      rel="stylesheet"
+    /> -->
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" id="woombi" href="#">WOOMBI</a>
+          <!-- <div class="collapse navbar-collapse justify-content-end " id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link  text-white" href="./index.html">Prode</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active  text-white" aria-current="page" href="./pages/fixture.html">Fixture</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  text-white" href="./pages/simulador.html">Simulador partidos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  text-white" href="./pages/torneos.html">Torneos</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="#">Vemo</a></li>
+                  <li><a class="dropdown-item" href="#">Vemo</a></li>
+                  <li><a class="dropdown-item" id= "logout" href="#">Logout</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div> -->
+        </div>
+      </nav>
+      
+      
+      <!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="http://fprode.nachofernan.com/"
+            >WOOMBI</a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="http://fprode.nachofernan.com/home"
+                  >Home</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="http://fprode.nachofernan.com/login"
+                  >Ingresar</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="http://fprode.nachofernan.com/register"
+                  >Registrarme</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav> -->
+    </header>
+
+    <!-- Begin page content -->
+    <main role="main" class="flex-shrink-0">
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="text-muted font-weight-light mt-4" id="titulo">Registrate</h1>
+                <div class="row justify-content-md-center">
+                    <div class="col-6">
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <form action="" method="POST" id="formRegister">
+                                    <div class="form-group">
+                                        <label for="email" class="text-muted">Correo Electrónico</label>
+                                        <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Correo Electrónico">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username" class="text-muted">Nombre de Usuario</label>
+                                        <input type="username" id="inputUsername" class="form-control" name="username" placeholder="Nombre de Usuario">
+                                    </div>
+                                    <div class="form-group pb-2">
+                                        <label for="password" class="text-muted">Contraseña</label>
+                                        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Contraseña">
+                                    </div>
+                                    <div class="d-none text-danger py-1 rounded small" role="alert" id="error">
+                                        Error en guardar el usuario
+                                    </div>
+                                    <div class="d-none text-dark py-1 rounded small" role="alert" id="correcto">
+                                        Creando usuario <div class="loader"></div>
+                                    </div>
+                                    <hr class="mt-2">
+                                    <div class="form-group mt-2 mb-1">
+                                        <button type="submit" class="btn btn-block btn-light text-muted">Registrarse</button>
+                                    </div>
+                                </form>
+                                <b class="faltareg">
+                                    <a class="nav-link" href="./login.html">Ya estas registrado?</a>
+                                    
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3">
+
+    </footer>
+    <script src="http://fprode.nachofernan.com/assets/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="http://fprode.nachofernan.com/assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="../javascript/index.js" >
+    //   const formLogin = document.getElementById("formLogin");
+    //   formLogin.addEventListener("submit", (e) => {
+    //     const email = document.getElementById("inputEmail");
+    //     const password = document.getElementById("inputPassword");
+    //     const error = document.getElementById("error");
+    //     e.preventDefault();
+    //     console.log(e);
+
+    //     let request = {
+    //       method: "POST",
+    //       body: JSON.stringify({
+    //         email: email.value,
+    //         password: password.value,
+    //       }),
+    //     };
+
+    //     fetch("http://fprode.nachofernan.com/api/login", request)
+    //       .then((res) => res.json())
+    //       .then((data) => {
+    //         if (data) {
+    //           const userKey = JSON.stringify(data);
+    //           localStorage.setItem("user", userKey);
+    //           window.location = "../index.html";
+    //         } else {
+    //           error.classList.remove("d-none");
+    //         }
+    //       })
+    //       .catch((error) => console.error("Error:", error));
+    //   });
+    </script>
+  </body>
+</html>
+
+
+

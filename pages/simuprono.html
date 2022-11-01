@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+          let request = {
+            method: "POST",
+            body: JSON.stringify({
+                user_id: 2,
+                api_key: 12341234,
+                partido_id: 12,
+                local: 2,
+                visita: 4,
+
+            }),
+          };
+  
+          fetch("http://fprode.nachofernan.com/api/pronosticos", request)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((error) => console.error("Error:", error));
+
+      </script>
+</body>
+</html>
+
+
+
+//devuelve los datos del torneo y los usuarios
+url = 'api/torneo/(torneo_id)'
+
+//crea un torneo nuevo 
+request: {method:post, body:{user_id, nombre}}
+url = 'api/torneo'
+
+// actualiza los datos del torneo 
+request: {method:put, body:{torneo_id, nombre}}
+url = 'api/torneo'
+
+// elimina un torneo 
+request: {method:delete, body:{torneo_id}}
+url = 'api/torneo'
+
+//devuelve los torneos en donde esta el usuarios
+url = 'api/torneo_user/(user_id)'
+
+// agrega un nuevo usuario al torneo 
+request: {method:post, body:{torneo_id, user_id}}
+url = 'api/torneo_user'
+
+// elimina un nuevo usuario al torneo 
+request: {method:delete, body:{torneos_users_id}}
+url = 'api/torneo_user'

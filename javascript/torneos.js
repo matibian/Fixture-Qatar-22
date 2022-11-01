@@ -4,6 +4,20 @@ const PARTIDOMUN = JSON.parse(PARTIDOMUNSTORAGE) ?? [];
 const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
 const PARTIDOUSUARIO = JSON.parse(PARTIDOSTORAGE) ?? [];
 
+const USERSTORAGE = localStorage.getItem('user');
+function redirect(){
+    window.location='./login.html'
+}
+const USER = JSON.parse(USERSTORAGE) ?? redirect();
+
+document.getElementById('navbarDropdownMenuLink').innerHTML=USER.username
+const logout = document.getElementById('logout')
+logout.addEventListener("click", e=>{
+    localStorage.removeItem('user')
+    redirect()
+})
+
+
 puntosGanados = 3
 puntosGoles = 1
 
@@ -260,11 +274,10 @@ cargaTorneosInd()
 
 
 //Carga tabla individual al inicio//
-const mostrarTorneo = () => {
+
 
     const select = document.getElementsByClassName('fstselected')[0].outerText;
     document.getElementById(select).style.display = ''
-}
 
 
 cargaTorneosInd()
@@ -273,5 +286,3 @@ USUARIOS.forEach((usuario,index) => {
     crearTablaTorneoPrin(usuario, 'tabgeneral',index)
 });
 torneoSort()
-
-getItem

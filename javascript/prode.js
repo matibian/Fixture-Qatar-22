@@ -2,6 +2,22 @@ const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
 const PARTIDO = JSON.parse(PARTIDOSTORAGE) ?? [];
 
 
+const USERSTORAGE = localStorage.getItem('user');
+function redirect(){
+    window.location='./pages/login.html'
+}
+const USER = JSON.parse(USERSTORAGE) ?? redirect();
+
+document.getElementById('navbarDropdownMenuLink').innerHTML=USER.username
+const logout = document.getElementById('logout')
+logout.addEventListener("click", e=>{
+    localStorage.removeItem('user')
+    redirect()
+})
+
+const URL = "http://fprode.nachofernan.com/api/"
+
+
 const GUARDSTORAGE = localStorage.getItem('guardadasStorage');
 const guardadas = JSON.parse(GUARDSTORAGE) ?? [];
 
@@ -229,14 +245,14 @@ GRUPO.forEach((grupo) => {
 ////////////////////////////////////////////////////// GUARDAR TABLAS //////////////////////////////////////////////////////////////
 
 
-function funcenviar() {
-    let enviar = document.getElementById('enviar')
-    if (guardadas.length == 8) {
-        enviar.style.display = 'block'
-    }else{
-        enviar.style.display = 'none'
-    }
-}
+// function funcenviar() {
+//     let enviar = document.getElementById('enviar')
+//     if (guardadas.length == 8) {
+//         enviar.style.display = 'block'
+//     }else{
+//         enviar.style.display = 'none'
+//     }
+// }
 
 
 GRUPOS.forEach(grupo => {
@@ -284,7 +300,7 @@ GRUPOS.forEach(grupo => {
             })
         }
 
-        funcenviar()
+        // funcenviar()
 
     const localstoGuar = JSON.stringify(guardadas)
     localStorage.setItem('guardadasStorage', localstoGuar)
@@ -292,7 +308,7 @@ GRUPOS.forEach(grupo => {
 
     })
 
-    funcenviar()
+    // funcenviar()
 });
 
 
@@ -305,17 +321,40 @@ tabla.addEventListener("change", (e) => {
     PARTIDO[objIndex].terminado = true
 
     if (e.target.id.split("").pop()== "L") {
-        PARTIDO[objIndex].geq1 = document.getElementById(e.target.id).value
+        PARTIDO[objIndex].geq1 = parseInt(document.getElementById(e.target.id).value)
     } else {
-        PARTIDO[objIndex].geq2 = document.getElementById(e.target.id).value
+        PARTIDO[objIndex].geq2 = parseInt(document.getElementById(e.target.id).value)
     }
 
+        
     const localstoGru = JSON.stringify(GRUPO)
     const localstoPart = JSON.stringify(PARTIDO)
     localStorage.setItem('PartidoStorage', localstoPart)
 
     localStorage.setItem('GrupoStorage', localstoGru)
 
+    const API_PRONOSTICOS = "pronosticos"
+
+    let request = {
+        method: "POST",
+        body: JSON.stringify({
+            user_id: USER.id,
+            api_key: USER.api_key,
+            partido_id: PARTIDO[objIndex].id,
+
+            local: PARTIDO[objIndex].geq1,
+
+            visita: PARTIDO[objIndex].geq2,
+
+        }),
+      };
+
+    fetch(URL+API_PRONOSTICOS, request)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((error) => console.error("Error:", error));
     });
     
 
@@ -716,6 +755,7 @@ botonReset.addEventListener("click", (e) => {
     const localstoPartOct = JSON.stringify(partidosOctavos)
     localStorage.setItem('PartidosOFFStorage', localstoPartOct)
 
+
     Toastify({
         text: "Borrado",
         className: "info",
@@ -738,26 +778,45 @@ flipdown.start();
 
 
 /////////////////////////////ENVIO DE RESULTADOS///////////////////////////
-const botonenviar = document.getElementById('enviar')
+// const botonenviar = document.getElementById('enviar')
 
-botonenviar.onclick = (e) => {
-    swal({
-        title: "Estas seguro?",
-        text: "No se puede deshacer.",
-        icon: "warning",
-        buttons: true,
-        buttonsColor : '#821a4b',
-        dangerMode: true,
-    })
-    .then((willDelete) => {
-        if (willDelete) {
-            swal("Resultados enviados!", {
-            icon: "success",
-            });
-        } 
-    });
-}
+// botonenviar.onclick = (e) => {
+//     swal({
+//         title: "Estas seguro?",
+//         text: "No se puede deshacer.",
+//         icon: "warning",
+//         buttons: true,
+//         buttonsColor : '#821a4b',
+//         dangerMode: true,
+//     })
+//     .then((willDelete) => {
+//         if (willDelete) {
+//             swal("Resultados enviados!", {
+//             icon: "success",
+//             });
+//         } 
+//     });
+// }
 
 
 console.log("Hecho por Matias Bianchi")
 console.log("https://github.com/matibian/Fixture-Qatar-22")
+
+
+// let request = {
+//     method: "POST",
+//     body: JSON.stringify({
+//         // user_id: ,
+//         // api_key: ,
+//         // partido_id: ,
+//         // local:
+//         // visita: 
+//     }),
+//   };
+
+//   fetch("http://fprode.nachofernan.com/api/pronosticos", request)
+//     .then((res) => res.json())
+//     .then((data) => {
+//         console.log(data)
+//     })
+//     .catch((error) => console.error("Error:", error));
