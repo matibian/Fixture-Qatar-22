@@ -109,19 +109,26 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <input class="form-control form-control-sm" type="text" placeholder="Nombre del torneo" aria-label=".form-control-sm example">
-                          <br>
-                          <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Jugador" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <span onclick="agregarJugador()" class="input-group-text" id="agregarJugadorTorneoInd">Agregar</span>
-                          </div>
-                          <div id="JugadoresTorneoIndNuevo">
 
-                          </div>
 
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary">Crear torneo</button>
+                          <div > 
+
+                            <input type="text" class="form-control" placeholder="Torneo"  id="nombreTorneo" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <br>
+
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control" placeholder="Jugador"  id="nombreJugador" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                              <button class="input-group-text " onclick="agregarJugadorTorneo(nombreJugador.value)" >Agregar</button>
+                            </div>
+
+                            <div id="JugadoresTorneoIndNuevo">
+
+                            </div>
+
+                            <div class="modal-footer">
+                              <button type="button" onclick="agregarTorneo(nombreTorneo.value)" class="btn btn-secondary" data-bs-toggle="modal">Crear torneo</button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -136,15 +143,17 @@
                         </div>
                         <div class="modal-body">
                           <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Jugador" id="inputAgregar" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <span class="input-group-text" id="botonAgregar">Agregar</span>
+                            <form onsubmit="return agregarJugador(this.inputAgregar)" id="formEditar"> 
+                              <input type="text" class="form-control" placeholder="Jugador" inputItem.value="" id="inputAgregar" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                              <button class="input-group-text" id="botonAgregar" type="submit" >Agregar</button>
+                            </form>
                           </div>
                           <div id="JugadoresTorneoIndEditar">
-
+                            
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary">Guardar cambios</button>
+                          <button type="button" class="btn btn-secondary" data-bs-toggle="modal">Guardar cambios</button>
                         </div>
                       </div>
                     </div>
