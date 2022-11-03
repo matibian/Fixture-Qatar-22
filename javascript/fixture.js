@@ -293,7 +293,7 @@ function crearTablaPartidos(grupo) {
     });
 }
 
-fetch('http://fprode.nachofernan.com/api/partidos_all')
+fetch('http://fprode.nachofernan.com/api/partidos_all2')
     .then(res => res.json())
     .then(data => {
         const result = Object.entries(data).map(([key, value]) => ({key,value})).slice(5,13)

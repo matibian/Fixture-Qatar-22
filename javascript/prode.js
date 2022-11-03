@@ -1,6 +1,6 @@
-const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
-const PARTIDO = JSON.parse(PARTIDOSTORAGE) ?? [];
-
+// const PARTIDOSTORAGE = localStorage.getItem('PartidoStorage');
+const PARTIDO = [];
+//JSON.parse(PARTIDOSTORAGE) ??
 
 const USERSTORAGE = localStorage.getItem('user');
 function redirect(){
@@ -18,8 +18,8 @@ logout.addEventListener("click", e=>{
 const URL = "http://fprode.nachofernan.com/api/"
 
 
-const GUARDSTORAGE = localStorage.getItem('guardadasStorage');
-const guardadas = JSON.parse(GUARDSTORAGE) ?? [];
+// const GUARDSTORAGE = localStorage.getItem('guardadasStorage');
+// const guardadas = JSON.parse(GUARDSTORAGE) ?? [];
 
 
 const EQUIPOS = ["Qatar", "Ecuador", "Senegal", "Holanda", "Inglaterra", "Irán", "EEUU", "Gales", "Argentina", "Arabia S.", "México", "Polonia", "Francia", "Australia", "Dinamarca", "Tunez", "España", "Costa Rica", "Alemania", "Japon", "Belgica", "Canada", "Marruecos", "Croacia", "Brazil", "Serbia", "Suiza", "Camerun", "Portugal","Ghana","Uruguay","Corea"]
@@ -42,7 +42,7 @@ class Equipo {
 const EQUIPO = [];
 
 EQUIPOS.forEach((nombre,index) => {
-    
+
     const equipox = new Equipo (nombre, RANKING[index])
     EQUIPO.push(equipox)
 
@@ -62,14 +62,14 @@ class Grupo {
 }
 const GRUPO = [];
 
-let multl = 0; 
+let multl = 0;
 
 
 GRUPOS.forEach((nombre,index) => {
-    
+
     const grupox = new Grupo (nombre, [EQUIPO[multl+index], EQUIPO[multl+index+1], EQUIPO[multl+index+2], EQUIPO[multl+index+3]], [])
     GRUPO.push(grupox)
-    
+
     multl = multl + 3
 
 });
@@ -110,15 +110,15 @@ GRUPO.forEach((grupo) => {
     id++
     const partido6 = new Partido (grupo.equipo[1],grupo.equipo[2], 0, 0 , false, id, grupo.nombre);
     grupo.partido.push(partido6)
-    
-    if (PARTIDOSTORAGE == null) {
-    PARTIDO.push(partido1)
-    PARTIDO.push(partido2)
-    PARTIDO.push(partido3)
-    PARTIDO.push(partido4)
-    PARTIDO.push(partido5)
-    PARTIDO.push(partido6)
-    }
+
+    // if (PARTIDOSTORAGE == null) {
+    // PARTIDO.push(partido1)
+    // PARTIDO.push(partido2)
+    // PARTIDO.push(partido3)
+    // PARTIDO.push(partido4)
+    // PARTIDO.push(partido5)
+    // PARTIDO.push(partido6)
+    // }
 
 });
 
@@ -126,20 +126,20 @@ GRUPO.forEach((grupo) => {
 ////////////////////// TABLAS EQUIPOS POR GRUPO/////////////////////////
 
 
-function tablaEquipos (grupo) { 
+function tablaEquipos (grupo) {
 
 
     let ul = document.createElement("ul")
-    
+
     document.getElementById('grup'+ grupo.nombre).appendChild(ul);
 
     grupo.equipo.forEach(equipo => {
-        
+
     let eq = document.createElement('li');
     eq.innerHTML = equipo.nombre
     ul.appendChild(eq)
 
-    
+
     });
 }
 
@@ -169,44 +169,47 @@ GRUPO.forEach(grupo => {
 
 ////////////////////// TABLAS PARTIDOS POR GRUPO/////////////////////////
 
-function crearTablaPartidos(grupo) {
+function crearTablaPartidos(grupo, data) {
 
 
     let table = document.createElement('table');
     let thead = document.createElement('thead');
     let tbody = document.createElement('tbody');
-    
+
     table.appendChild(thead);
     table.appendChild(tbody);
-    
-    
 
 
-    document.getElementById('partidoGrupo'+ grupo.nombre).appendChild(table);
-    grupo.partido.forEach(partido => {
+
+
+    document.getElementById('partidoGrupo'+ grupo.grupo_nombre).appendChild(table);
+    grupo.partidos.forEach(partido => {
+
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.className = 'tablaequipo'
-    row_1_data_1.innerHTML = partido.eq1.nombre;
+    row_1_data_1.innerHTML = partido.local.nombre;
     let row_1_data_2 = document.createElement('td');
-    const geq1 = PARTIDO.findIndex(obj => obj.id == partido.id)
-    if (PARTIDO[geq1].terminado == true) {
-        row_1_data_2.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq1].geq1}" id="${partido.id}L" class="g${grupo.nombre} goles">`
+    // const geq1 = PARTIDO.findIndex(obj => obj.id == partido.id)
+    const pronost_partido = (data.find(pronostico => pronostico.partido_id == partido.partido_id)) ?? false
+    console.log(pronost_partido)
+    if (pronost_partido) {
+        row_1_data_2.innerHTML = `<input type="number" min="0" value= "${pronost_partido.local}" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">`
     } else {
-        row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.id}L" class="g${grupo.nombre} goles">` //partido.geq1 ;
+        row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">` //partido.geq1 ;
     }
     let row_1_data_3 = document.createElement('td');
-    const geq2 = PARTIDO.findIndex(obj => obj.id == partido.id)
-    
-    if (PARTIDO[geq2].terminado == true) {
-        row_1_data_3.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq2].geq2}" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
+    const geq2 = PARTIDO.findIndex(obj => obj.id == partido.partido_id)
+
+    if (pronost_partido) {
+        row_1_data_3.innerHTML = `<input type="number" min="0" value= "${pronost_partido.visita}" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">` //partido.geq2 ;
     } else {
-        row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq1 ;
+        row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">` //partido.geq1 ;
     }
     //row_1_data_3.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq2].geq2}" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.className = 'tablaequipo'
-    row_1_data_4.innerHTML = partido.eq2.nombre;
+    row_1_data_4.innerHTML = partido.visita.nombre;
 
     row_1.appendChild(row_1_data_1);
     row_1.appendChild(row_1_data_2);
@@ -214,14 +217,14 @@ function crearTablaPartidos(grupo) {
     row_1.appendChild(row_1_data_4);
     tbody.appendChild(row_1);
 
-    
-    
+
+
     });
-    let guardar = document.createElement('h3');
-    guardar.innerHTML = 'Guardar';
-    guardar.className = 'guardar';
-    guardar.id = 'guardar'+grupo.nombre;
-    insertAfter(table, guardar);
+    // let guardar = document.createElement('h3');
+    // guardar.innerHTML = 'Guardar';
+    // guardar.className = 'guardar';
+    // guardar.id = 'guardar'+grupo.grupo_nombre;
+    // insertAfter(table, guardar);
 }
 
 
@@ -229,16 +232,88 @@ let tabla = document.getElementById ('tablasPartidosProde');
 
 function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-  }
+}
+
+const PRONOSTICOS = "pronosticos/" + USER.id;
+
+let fixture = []
 
 
-GRUPO.forEach((grupo) => {
+function pronosticos(fixture){fetch(URL+PRONOSTICOS)
+            .then((res) => res.json())
+            .then((data) => {
+                fixture.forEach((grupo) => {
 
-    tabla.innerHTML += `<div class="grupo filterDiv Grupo${grupo.nombre}" id="partidoGrupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
-    crearTablaPartidos(grupo)
-    tabla.innerHTML += `</div>`
-
+                    tabla.innerHTML += `<div class="grupo filterDiv Grupo ${grupo.grupo_nombre}" id="partidoGrupo${grupo.grupo_nombre}"> <h3>Grupo ${grupo.grupo_nombre}</h3>`
+                    crearTablaPartidos(grupo, data)
+                    tabla.innerHTML += `</div>`
 });
+            })
+            .catch((error) => console.error("Error:", error));
+
+        }
+
+
+
+        tabla.addEventListener("change", (e) => {
+            let id = e.target.id.slice(0, -1);
+            console.log(e)
+            console.log(e.target.id.split("").pop())
+            let golLocal = 0;
+            let golVisitante = 0;
+
+            console.log(document.getElementById(e.target.id.slice(0, -1)+"V").value)
+
+
+            if (e.target.id.split("").pop()== "L") {
+                golLocal = parseInt(document.getElementById(e.target.id).value)
+                golVisitante = document.getElementById(e.target.id.slice(0, -1)+"V").value
+            } else {
+                golVisitante = parseInt(document.getElementById(e.target.id).value)
+                golLocal = document.getElementById(e.target.id.slice(0, -1)+"L").value
+            }
+
+            // localStorage.setItem('PartidoStorage', localstoPart)
+
+            // localStorage.setItem('GrupoStorage', localstoGru)
+
+            const API_PRONOSTICOS = "pronosticos"
+
+            let request = {
+                method: "POST",
+                body: JSON.stringify({
+                    user_id: USER.id,
+                    api_key: USER.api_key,
+                    partido_id: id,
+
+                    local: golLocal,
+
+                    visita: golVisitante,
+
+                }),
+              };
+
+            fetch(URL+API_PRONOSTICOS, request)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((error) => console.error("Error:", error));
+            });
+
+
+
+
+fetch('http://fprode.nachofernan.com/api/partidos_all')
+.then(res => res.json())
+.then(data => {
+    fixture = data.slice(0,8)
+    pronosticos(fixture)
+    })
+.catch(error => console.error('Error:', error))
+
+
+
 
 
 
@@ -255,108 +330,65 @@ GRUPO.forEach((grupo) => {
 // }
 
 
-GRUPOS.forEach(grupo => {
-    /////////////////// GUARDADO EN STORAGE ////////////////
-    const block = guardadas.indexOf(`guardar${grupo}`);
-    const c = document.getElementById(`guardar${grupo}`);
-    if (block > -1) { 
-        let a = document.getElementsByClassName(`g${grupo}`);
-        for (let index = 0; index < a.length; index++) {
-            a[index].setAttribute("disabled","");
-        }
+// GRUPOS.forEach(grupo => {
+//     /////////////////// GUARDADO EN STORAGE ////////////////
+//     const block = guardadas.indexOf(`guardar${grupo}`);
+//     const c = document.getElementById(`guardar${grupo}`);
+//     if (block > -1) {
+//         let a = document.getElementsByClassName(`g${grupo}`);
+//         for (let index = 0; index < a.length; index++) {
+//             a[index].setAttribute("disabled","");
+//         }
 
-        c.className += " active";
-        document.getElementById(`guardar${grupo}`).innerText = "Editar"
-    }
-    /////////////////// EVENT LISTENER ////////////////
-    let boton = document.getElementById(`guardar${grupo}`);
-    boton.addEventListener('click', () =>{
-        if (boton.classList.contains('active')){
-            let b = document.getElementsByClassName(`g${grupo}`);
-            for (let index = 0; index < b.length; index++) {
-                b[index].removeAttribute("disabled");
-                boton.classList.remove("active");
-                document.getElementById(`guardar${grupo}`).innerText = "Guardar"
-                
-            }
-            const bus = guardadas.indexOf(`guardar${grupo}`);
-            guardadas.splice(bus, 1); 
+//         c.className += " active";
+//         document.getElementById(`guardar${grupo}`).innerText = "Editar"
+//     }
+//     /////////////////// EVENT LISTENER ////////////////
+//     // let boton = document.getElementById(`guardar${grupo}`);
+//     // boton.addEventListener('click', () =>{
+//     //     if (boton.classList.contains('active')){
+//     //         let b = document.getElementsByClassName(`g${grupo}`);
+//     //         for (let index = 0; index < b.length; index++) {
+//     //             b[index].removeAttribute("disabled");
+//     //             boton.classList.remove("active");
+//     //             document.getElementById(`guardar${grupo}`).innerText = "Guardar"
 
-        } else {
-            let b = document.getElementsByClassName(`g${grupo}`);
-            for (let index = 0; index < b.length; index++) {
-                b[index].setAttribute("disabled","");
-            }
-            boton.className += " active";
-            document.getElementById(`guardar${grupo}`).innerText = "Editar"
-            guardadas.push(`guardar${grupo}`);
+//     //         }
+//     //         const bus = guardadas.indexOf(`guardar${grupo}`);
+//     //         guardadas.splice(bus, 1);
 
-            Swal.fire({
-                icon: 'success',
-                title: 'Guardado!',
-                showConfirmButton: false,
-                color : '#821a4b',
-                timer: 1000
-            })
-        }
+//     //     } else {
+//     //         let b = document.getElementsByClassName(`g${grupo}`);
+//     //         for (let index = 0; index < b.length; index++) {
+//     //             b[index].setAttribute("disabled","");
+//     //         }
+//     //         boton.className += " active";
+//     //         document.getElementById(`guardar${grupo}`).innerText = "Editar"
+//     //         guardadas.push(`guardar${grupo}`);
 
-        // funcenviar()
+//     //         Swal.fire({
+//     //             icon: 'success',
+//     //             title: 'Guardado!',
+//     //             showConfirmButton: false,
+//     //             color : '#821a4b',
+//     //             timer: 1000
+//     //         })
+//     //     }
 
-    const localstoGuar = JSON.stringify(guardadas)
-    localStorage.setItem('guardadasStorage', localstoGuar)
+//     //     // funcenviar()
 
-
-    })
-
-    // funcenviar()
-});
+//     // const localstoGuar = JSON.stringify(guardadas)
+//     // localStorage.setItem('guardadasStorage', localstoGuar)
 
 
+//     // })
+
+//     // funcenviar()
+// });
 
 
-tabla.addEventListener("change", (e) => {
-    let id = e.target.id.slice(0, -1);
-    const objIndex = PARTIDO.findIndex(obj => obj.id == id)
 
-    PARTIDO[objIndex].terminado = true
 
-    if (e.target.id.split("").pop()== "L") {
-        PARTIDO[objIndex].geq1 = parseInt(document.getElementById(e.target.id).value)
-    } else {
-        PARTIDO[objIndex].geq2 = parseInt(document.getElementById(e.target.id).value)
-    }
-
-        
-    const localstoGru = JSON.stringify(GRUPO)
-    const localstoPart = JSON.stringify(PARTIDO)
-    localStorage.setItem('PartidoStorage', localstoPart)
-
-    localStorage.setItem('GrupoStorage', localstoGru)
-
-    const API_PRONOSTICOS = "pronosticos"
-
-    let request = {
-        method: "POST",
-        body: JSON.stringify({
-            user_id: USER.id,
-            api_key: USER.api_key,
-            partido_id: PARTIDO[objIndex].id,
-
-            local: PARTIDO[objIndex].geq1,
-
-            visita: PARTIDO[objIndex].geq2,
-
-        }),
-      };
-
-    fetch(URL+API_PRONOSTICOS, request)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-            })
-            .catch((error) => console.error("Error:", error));
-    });
-    
 
 
 
@@ -408,17 +440,17 @@ function crearTablaPartidosOctavos() {
     let table = document.createElement('table');
     let thead = document.createElement('thead');
     let tbody = document.createElement('tbody');
-    
+
     table.appendChild(thead);
     table.appendChild(tbody);
-    
+
 
     document.getElementById('partidosOctavos').appendChild(table);
 
     partidosOctavos.forEach(partido => {
 
-    
-        
+
+
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1;
@@ -481,14 +513,14 @@ function crearTablaPartidosCuartos() {
     let table = document.createElement('table');
     let thead = document.createElement('thead');
     let tbody = document.createElement('tbody');
-    
+
     table.appendChild(thead);
     table.appendChild(tbody);
-    
+
     document.getElementById('partidosCuartos').appendChild(table);
 
     partidosCuartos.forEach(partido => {
-        
+
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1;
@@ -525,15 +557,15 @@ function crearTablaPartidosSemi() {
     let table = document.createElement('table');
     let thead = document.createElement('thead');
     let tbody = document.createElement('tbody');
-    
+
     table.appendChild(thead);
     table.appendChild(tbody);
-    
+
 
     document.getElementById('partidosSemi').appendChild(table);
 
     partidosSemi.forEach(partido => {
-        
+
     let row_1 = document.createElement('tr');
     let row_1_data_1 = document.createElement('td');
     row_1_data_1.innerHTML = partido.eq1;
@@ -570,10 +602,10 @@ function crearTablaPartidoFinal() {
     let table = document.createElement('table');
     let thead = document.createElement('thead');
     let tbody = document.createElement('tbody');
-    
+
     table.appendChild(thead);
     table.appendChild(tbody);
-    
+
 
     document.getElementById('partidoFinal').appendChild(table);
 
@@ -584,7 +616,7 @@ function crearTablaPartidoFinal() {
     let row_1_data_2 = document.createElement('td');
     let row_1_data_3 = document.createElement('td');
 
-    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">` 
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">`
     partidoFinal.geq1 = row_1_data_2.innerHTML
     row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">` //`<input type="number" class="goles">`;
     partidoFinal.geq2 = row_1_data_3.innerHTML
@@ -648,7 +680,7 @@ function funcTogglePRO(tabla) {
     }
 
     else {
-        
+
 
         z.style.display = "flex";
         z.style.justifyContent = "center";
@@ -663,8 +695,8 @@ function funcTogglePRO(tabla) {
 
     })
     }
-    
-    
+
+
 }
 
 
@@ -681,7 +713,7 @@ function weightedRandom(prob) {
 }
 
 // Itero 5 veces la posibilidad de gol
-function randomG(w){ 
+function randomG(w){
     var r = 0;
     for(var i = 5; i > 0; i --){
         r += Math.round(weightedRandom(w));
@@ -695,77 +727,77 @@ function random(min, max) {
 }
 
 
-let botonRandom = document.getElementById('botonrandom')
-// Probabilidad sobre partidos en funcion al ranking FIFA
-botonRandom.addEventListener("click", (e) => {
-    PARTIDO.forEach((partido) => {
-        let guardado = document.getElementById(`guardar${partido.grupo}`);
-        // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-        if (partido.terminado==false && !guardado.classList.contains('active')) {
-        let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-        let porceq1 = (50 + 0.5*dif)*.01
-        let porceq2 = (50 - 0.5*dif)*.01
-        partido.geq1 = randomG({0:porceq2, 1:porceq1})
-        partido.geq2 = randomG({0:porceq1, 1:porceq2})
-        partido.terminado = true
+// let botonRandom = document.getElementById('botonrandom')
+// // Probabilidad sobre partidos en funcion al ranking FIFA
+// botonRandom.addEventListener("click", (e) => {
+//     PARTIDO.forEach((partido) => {
+//         let guardado = document.getElementById(`guardar${partido.grupo}`);
+//         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
+//         if (partido.terminado==false && !guardado.classList.contains('active')) {
+//         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
+//         let porceq1 = (50 + 0.5*dif)*.01
+//         let porceq2 = (50 - 0.5*dif)*.01
+//         partido.geq1 = randomG({0:porceq2, 1:porceq1})
+//         partido.geq2 = randomG({0:porceq1, 1:porceq2})
+//         partido.terminado = true
 
-        const goles1 = document.getElementById(`${partido.id}L`)
-        goles1.value = partido.geq1
-        const goles2 = document.getElementById(`${partido.id}V`)
-        goles2.value = partido.geq2
+//         const goles1 = document.getElementById(`${partido.id}L`)
+//         goles1.value = partido.geq1
+//         const goles2 = document.getElementById(`${partido.id}V`)
+//         goles2.value = partido.geq2
 
-        const localstoPart = JSON.stringify(PARTIDO)
-        localStorage.setItem('PartidoStorage', localstoPart)    
-    };
-})  
+//         const localstoPart = JSON.stringify(PARTIDO)
+//         localStorage.setItem('PartidoStorage', localstoPart)
+//     };
+// })
 
-Toastify({
-    text: "Partidos simulados",
-    duration : 1500,
-    stopOnFocus: false,
-    className: "info",
-    style: {
-    color: "rgba(130,26,75,255)",
-    background: "rgb(255, 255, 255, 0.9)",
-    }
-}).showToast();
+// Toastify({
+//     text: "Partidos simulados",
+//     duration : 1500,
+//     stopOnFocus: false,
+//     className: "info",
+//     style: {
+//     color: "rgba(130,26,75,255)",
+//     background: "rgb(255, 255, 255, 0.9)",
+//     }
+// }).showToast();
 
-})
-/////////////////////////////RESETEO ///////////////////////////
+// })
+// /////////////////////////////RESETEO ///////////////////////////
 
-let botonReset = document.getElementById('reset')
+// let botonReset = document.getElementById('reset')
 
-botonReset.addEventListener("click", (e) => {
+// botonReset.addEventListener("click", (e) => {
 
-    PARTIDO.forEach((partido) => {
-        let guardado = document.getElementById(`guardar${partido.grupo}`);
-        if (!guardado.classList.contains('active')){
-        const goles1 = document.getElementById(`${partido.id}L`)
-        goles1.value = "-"
-        const goles2 = document.getElementById(`${partido.id}V`)
-        goles2.value = "-"
-        partido.geq1 = 0;
-        partido.geq2 = 0;
-        partido.terminado = false;
-        }
-    })
+//     PARTIDO.forEach((partido) => {
+//         let guardado = document.getElementById(`guardar${partido.grupo}`);
+//         if (!guardado.classList.contains('active')){
+//         const goles1 = document.getElementById(`${partido.id}L`)
+//         goles1.value = "-"
+//         const goles2 = document.getElementById(`${partido.id}V`)
+//         goles2.value = "-"
+//         partido.geq1 = 0;
+//         partido.geq2 = 0;
+//         partido.terminado = false;
+//         }
+//     })
 
-    const localstoPart = JSON.stringify(PARTIDO)
-    localStorage.setItem('PartidoStorage', localstoPart)
-    const localstoPartOct = JSON.stringify(partidosOctavos)
-    localStorage.setItem('PartidosOFFStorage', localstoPartOct)
+//     const localstoPart = JSON.stringify(PARTIDO)
+//     localStorage.setItem('PartidoStorage', localstoPart)
+//     const localstoPartOct = JSON.stringify(partidosOctavos)
+//     localStorage.setItem('PartidosOFFStorage', localstoPartOct)
 
 
-    Toastify({
-        text: "Borrado",
-        className: "info",
-        style: {
-        color: "rgba(130,26,75,255)",
-        background: "rgb(255, 255, 255, 0.9)",
-        }
-    }).showToast();
-    
-})
+//     Toastify({
+//         text: "Borrado",
+//         className: "info",
+//         style: {
+//         color: "rgba(130,26,75,255)",
+//         background: "rgb(255, 255, 255, 0.9)",
+//         }
+//     }).showToast();
+
+// })
 
 /////////////////////////////COUNTDOWN///////////////////////////
 
@@ -794,7 +826,7 @@ flipdown.start();
 //             swal("Resultados enviados!", {
 //             icon: "success",
 //             });
-//         } 
+//         }
 //     });
 // }
 
@@ -810,7 +842,7 @@ console.log("https://github.com/matibian/Fixture-Qatar-22")
 //         // api_key: ,
 //         // partido_id: ,
 //         // local:
-//         // visita: 
+//         // visita:
 //     }),
 //   };
 
