@@ -452,12 +452,29 @@ a .navbar-nav {
 
 #individuales{
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
+}
+
+#torneosgen{
+    background-color: white;
+    color: #8f0b31;
+    text-align: center;
+    font-weight: bolder;
+    width: -webkit-fill-available;
+    font-family: qatar;
+    font-size: 20px;
+    margin: 0px;
+}
+
+#editartorneo{
+    border-radius: 0 0 0 0;
+    padding-top: 3px;
+    cursor: pointer;
+    border: solid rgb(187, 187, 187) 1px;
 }
 
 #nuevotorneo{
     border-radius: 0 0 0 0;
-
     padding-top: 3px;
     cursor: pointer;
     border: solid rgb(187, 187, 187) 1px;}

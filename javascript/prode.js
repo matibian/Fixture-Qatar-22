@@ -192,7 +192,6 @@ function crearTablaPartidos(grupo, data) {
     let row_1_data_2 = document.createElement('td');
     // const geq1 = PARTIDO.findIndex(obj => obj.id == partido.id)
     const pronost_partido = (data.find(pronostico => pronostico.partido_id == partido.partido_id)) ?? false
-    console.log(pronost_partido)
     if (pronost_partido) {
         row_1_data_2.innerHTML = `<input type="number" min="0" value= "${pronost_partido.local}" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">`
     } else {
@@ -206,7 +205,7 @@ function crearTablaPartidos(grupo, data) {
     } else {
         row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">` //partido.geq1 ;
     }
-    //row_1_data_3.innerHTML = `<input type="number" min="0" value= "${PARTIDO[geq2].geq2}" id="${partido.id}V" class="g${grupo.nombre} goles">` //partido.geq2 ;
+
     let row_1_data_4 = document.createElement('td');
     row_1_data_4.className = 'tablaequipo'
     row_1_data_4.innerHTML = partido.visita.nombre;
@@ -257,13 +256,9 @@ function pronosticos(fixture){fetch(URL+PRONOSTICOS)
 
         tabla.addEventListener("change", (e) => {
             let id = e.target.id.slice(0, -1);
-            console.log(e)
-            console.log(e.target.id.split("").pop())
+
             let golLocal = 0;
             let golVisitante = 0;
-
-            console.log(document.getElementById(e.target.id.slice(0, -1)+"V").value)
-
 
             if (e.target.id.split("").pop()== "L") {
                 golLocal = parseInt(document.getElementById(e.target.id).value)
@@ -296,7 +291,6 @@ function pronosticos(fixture){fetch(URL+PRONOSTICOS)
             fetch(URL+API_PRONOSTICOS, request)
                     .then((res) => res.json())
                     .then((data) => {
-                        console.log(data)
                     })
                     .catch((error) => console.error("Error:", error));
             });

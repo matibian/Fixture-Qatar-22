@@ -58,7 +58,7 @@
             <table id="collapse" class="show" >
                 <thead>
                     <th>Resultados Mundial</th>
-                    <th>Resultados Usuario</th>
+                    <th>Pronóstico Usuario</th>
                     <th>Pts partido</th>
                     <th>Pts total</th>
                 </thead>
@@ -86,14 +86,15 @@
               <div class="col">
                 <h3>TORNEOS INDIVIDUALES</h3>
                 <div id="individuales">
-                  <select class="fstdropdown-select" id="fstdiv" data-searchdisable="true">
-                    <option value="Pibes">Pibes</option>
+                  <select name="torneos"   id="torneosgen" >
+                    <option hidden selected>Elegi un torneo</option>
+                    <!-- <option value="Pibes">Pibes</option>
                     <option value="Laburo">Laburo</option>
                     <option value="Flia">Flia</option>
-                    <option value="Coderhouse">Coderhouse</option>
+                    <option value="Coderhouse">Coderhouse</option> -->
                   </select>
+                  <h3 data-bs-toggle="modal" data-bs-target="#torneoIndModalEditar" style="display: none" id="editartorneo">&nbspEditar&nbsp</h3>
                   <h3 data-bs-toggle="modal" data-bs-target="#torneoIndModalNuevo" id="nuevotorneo">&nbspNuevo&nbsp</h3>
-                  <h3 data-bs-toggle="modal" data-bs-target="#torneoIndModalEditar" id="nuevotorneo">&nbspEditar&nbsp</h3>
 
                   <!-- Button trigger modal -->
                   <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -115,11 +116,11 @@
 
                             <input type="text" class="form-control" placeholder="Torneo"  id="nombreTorneo" aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <br>
-
+<!-- 
                             <div class="input-group mb-3">
                               <input type="text" class="form-control" placeholder="Jugador"  id="nombreJugador" aria-label="Recipient's username" aria-describedby="basic-addon2">
                               <button class="input-group-text " onclick="agregarJugadorTorneo(nombreJugador.value)" >Agregar</button>
-                            </div>
+                            </div> -->
 
                             <div id="JugadoresTorneoIndNuevo">
 
