@@ -144,10 +144,10 @@
                         </div>
                         <div class="modal-body">
                           <div class="input-group mb-3">
-                            <form onsubmit="return agregarJugador(this.inputAgregar)" id="formEditar"> 
+                            <!-- <form onsubmit= "agregarJugador(this.inputAgregar)" id="formEditar">  -->
                               <input type="text" class="form-control" placeholder="Jugador" inputItem.value="" id="inputAgregar" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                              <button class="input-group-text" id="botonAgregar" type="submit" >Agregar</button>
-                            </form>
+                              <button class="input-group-text" onclick="agregarJugador(inputAgregar)" id="botonAgregar" type="submit" >Agregar mail</button>
+                            <!-- </form> -->
                           </div>
                           <div id="JugadoresTorneoIndEditar">
                             
@@ -177,7 +177,7 @@
     </section>
 
 
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../javascript/fstdropdown-master/fstdropdown.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script src="../javascript/torneos.js" defer></script>
