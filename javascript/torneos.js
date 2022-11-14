@@ -26,8 +26,6 @@ let TORNEOGENERAL = [];
 let TORNEOSIND = []
 let USUARIOS = []
 
-
-
 /////////////////////////////ENVIO DE RESULTADOS///////////////////////////
 
 // let PUNTOS = 0;
@@ -65,30 +63,21 @@ let USUARIOS = []
 //   }
 const PRONOSTICOS = "pronosticos/" + USER.id;
 
-fetch(API_URL+PRONOSTICOS)
-
-.then((res) => res.json())
-.then((data) => {
-    data.forEach(partido => {
-
-  const tabla = document.getElementById("tabla");
-  const res = document.createElement("tr");
-    res.innerHTML = `
+fetch(API_URL + PRONOSTICOS)
+  .then((res) => res.json())
+  .then((data) => {
+    data.forEach((partido) => {
+      const tabla = document.getElementById("tabla");
+      const res = document.createElement("tr");
+      res.innerHTML = `
             <td> PAIS 1 || 0-0|| PAIS 2</td>
             <td> PAIS 1 || ${partido.local}-${partido.visita} || PAIS 2 </td>
             <td class="usupuntos"> PUNTOS </td>
             <td class="usupuntos"> PUNTOS </td>`;
-    tabla.prepend(res);
-
-})
-
-})
+      tabla.prepend(res);
+    });
+  })
   .catch((error) => console.error("Error:", error));
-
-
-
-
-
 
 fetch(API_URL + "user_all/" + USER.id)
   .then((res) => res.json())
@@ -221,11 +210,11 @@ fetch(API_URL + "torneo_user/" + USER.id)
   .then((data) => {
     console.log(data);
     cargaTorneosInd(data);
-
-
   })
 
   .catch((error) => console.error("Error:", error));
+
+let arrJugadores = [];
 
 const agregarEventListener = (TORNEOS) => {
   const select = document.getElementById("torneosgen");
@@ -236,29 +225,27 @@ const agregarEventListener = (TORNEOS) => {
     const GRUPOSTOGGLE = TORNEOS;
 
     let vereditar = selecte.options[select.selectedIndex].dataset.admin;
-    let mostrareditar = document.getElementById("editartorneo")
+    let mostrareditar = document.getElementById("editartorneo");
 
     if (vereditar == USER.id) {
-      mostrareditar.style.display = ""
+      mostrareditar.style.display = "";
     } else {
-      mostrareditar.style.display = "none"
+      mostrareditar.style.display = "none";
     }
 
-    const buscartorneo = TORNEOS.find(tor => tor.torneo.nombre == selecte.options[select.selectedIndex].innerText)
-    let arrJugadores = []
-   
-    buscartorneo.usuarios.forEach(jugador =>{
-      arrJugadores.push(jugador.username)
-      console.log(jugador)
-    })
-    
+    const buscartorneo = TORNEOS.find(
+      (tor) =>
+        tor.torneo.nombre == selecte.options[select.selectedIndex].innerText
+    );
+    arrJugadores = [];
 
-    console.log(buscartorneo.usuarios)
-    console.log(arrJugadores)
+    buscartorneo.usuarios.forEach((jugador) => {
+      arrJugadores.push(jugador);
+    });
 
     listaJugadoresTorneoInd(arrJugadores);
+
     // document.getElementById(select).style.display = ''
-    
 
     const newGrupo = GRUPOSTOGGLE.filter((gr) => {
       return gr.torneo.torneo_id !== value;
@@ -266,9 +253,6 @@ const agregarEventListener = (TORNEOS) => {
     newGrupo.forEach((tabla) => {
       document.getElementById("T" + tabla.torneo.torneo_id).style.display =
         "none";
-      
-      
-      
     });
     document.getElementById(value).style.display = "";
   });
@@ -363,13 +347,11 @@ let jugadoresTorneoInd = [
 ];
 
 const eliminarJugador = (id) => {
-    const result = jugadoresTorneoInd.filter((jug) => jug.id !== id)
-    jugadoresTorneoInd = result
-    document.getElementById('tbodyJugadores').innerHTML = ""
-    listaJugadoresTorneoInd(jugadoresTorneoInd)
-
-}
-
+  const result = jugadoresTorneoInd.filter((jug) => jug.id !== id);
+  jugadoresTorneoInd = result;
+  document.getElementById("tbodyJugadores").innerHTML = "";
+  listaJugadoresTorneoInd(jugadoresTorneoInd);
+};
 
 let table = document.createElement('table');
 let tbody = document.createElement('tbody');
@@ -379,12 +361,12 @@ table.appendChild(tbody);
 document.getElementById('JugadoresTorneoIndEditar').appendChild(table);
 
 function listaJugadoresTorneoInd(jugador) {
-    jugador.forEach((jugador) => {
-    let row_1 = document.createElement('tr');
-    let row_1_data_1 = document.createElement('td');
+  jugador.forEach((jugador) => {
+    let row_1 = document.createElement("tr");
+    let row_1_data_1 = document.createElement("td");
     row_1_data_1.innerHTML = jugador.nombre;
-    let row_1_data_2 = document.createElement('td');
-    row_1_data_2.innerHTML = `<i id="${jugador.id}" onclick="eliminarJugador(${jugador.id})" class="fa-regular fa-x"></i>` 
+    let row_1_data_2 = document.createElement("td");
+    row_1_data_2.innerHTML = `<i id="${jugador.id}" onclick="eliminarJugador(${jugador.id})" class="fa-regular fa-x"></i>`;
 
     row_1.appendChild(row_1_data_1);
     row_1.appendChild(row_1_data_2);
@@ -404,11 +386,12 @@ listaJugadoresTorneoInd(jugadoresTorneoInd);
 
 function agregarJugador(inputField) {
   console.log(inputField.value);
-  jugadoresTorneoInd.push({ nombre: inputField.value, id: 0 });
-  document.getElementById("tbodyJugadores").innerHTML = "";
-  listaJugadoresTorneoInd(jugadoresTorneoInd);
 
-  return false; // stop submission
+  // arrJugadores.push({ nombre: inputField.value, id: 0 });
+  document.getElementById("tbodyJugadores").innerHTML = "";
+  // listaJugadoresTorneoInd(jugadoresTorneoInd);
+  return false
+  
 }
 
 
@@ -422,10 +405,26 @@ function agregarJugadorTorneo(nombre){
 
 
 function agregarTorneo(inputField) {
-    console.log(inputField)
-    const torneo = {nombre: inputField, jugadores: jugadoresTorneo}
-    console.log(torneo)
+  let request = {
+                method:'POST',
+                body: JSON.stringify({
+                  user_id: USER.id,
+                  nombre: inputField 
+                }) 
+            }
 
+
+  fetch(API_URL+"torneo", request)
+    .then(res => res.json())
+    .then(data => {
+      // console.log(data)
+      // cargaTorneosInd(data)
+      location.reload()
+    
+        })
   
-    return false; // stop submission
-  }
+
+    .catch(error => console.error('Error:', error));
+
+  return false; // stop submission
+}
