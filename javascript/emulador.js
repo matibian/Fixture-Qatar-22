@@ -851,5 +851,38 @@ function funcToggle(tabla) {
 }
 
 
+function cambiarNombreUsuario(inputField) {
+    Swal.fire({
+        text: "Estas seguro de cambiar tu nombre de usuario?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Cambiar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+        
+        let request = {
+            method: "POST",
+            body: JSON.stringify({
+                user_id: USER.id,
+                username: inputField.value,
+            }),
+            };
+        console.log(inputField.value)
+        
+        fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
+            .then((res) => res.json())
+            .then((data) => {
+    
+            location.reload();
+            })
+        
+            .catch((error) => console.error("Error:", error));
+    
+        }
+    });
+    }    
+
 console.log("Hecho por Matias Bianchi")
 console.log("https://github.com/matibian/Fixture-Qatar-22")

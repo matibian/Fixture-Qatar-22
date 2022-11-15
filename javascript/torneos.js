@@ -12,6 +12,8 @@ function redirect() {
 }
 const USER = JSON.parse(USERSTORAGE) ?? redirect();
 
+console.log(USER.username)
+
 document.getElementById("navbarDropdownMenuLink").innerHTML = USER.username;
 const logout = document.getElementById("logout");
 logout.addEventListener("click", (e) => {
@@ -61,21 +63,47 @@ let USUARIOS = [];
 //       Pts += puntosGoles;
 //     }
 //   }
+
+
+
+const PARTIDOS = "partidos";
+
+fetch(API_URL + PARTIDOS)
+      .then((res) => res.json())
+      .then((data) => {
+        let partidosMundial = data;
+
+
 const PRONOSTICOS = "pronosticos/" + USER.id;
 
 fetch(API_URL + PRONOSTICOS)
   .then((res) => res.json())
   .then((data) => {
+    let puntostotal = 0;
+
     data.forEach((partido) => {
+      let equipos = partidosMundial.find(
+        (equipos) => equipos.partido_id == partido.partido_id
+      );
+
+      puntostotal += partido.resultado;
       const tabla = document.getElementById("tabla");
       const res = document.createElement("tr");
-      res.innerHTML = `
-            <td> PAIS 1 || 0-0|| PAIS 2</td>
-            <td> PAIS 1 || ${partido.local}-${partido.visita} || PAIS 2 </td>
-            <td class="usupuntos"> PUNTOS </td>
-            <td class="usupuntos"> PUNTOS </td>`;
+      if (partido.resultado) {
+        res.innerHTML = `
+            <td> ${equipos.local[0].nombre} || ${equipos.local_goles}-${equipos.visita_goles}|| ${equipos.visita[0].nombre} </td>
+            <td> ${equipos.local[0].nombre} || ${partido.local}-${partido.visita} || ${equipos.visita[0].nombre} </td>
+            <td class="usupuntos"> ${partido.resultado}  </td>
+            <td class="usupuntos"> ${puntostotal} </td>`;
+      }
+
+      ///////usar null para sacar partidos no jugamos
+
       tabla.prepend(res);
     });
+
+  })
+  .catch((error) => console.error("Error:", error));
   })
   .catch((error) => console.error("Error:", error));
 
@@ -189,6 +217,7 @@ let nombretorn = document.getElementById("torneosgen");
 let torneoonchange = document.getElementById("individuales");
 
 let cargaTorneosInd = (TORNEOS) => {
+  console.log(TORNEOS)
   TORNEOS.forEach((torneo) => {
     console.log(torneo.torneo.nombre);
     agregarEventListener(TORNEOS);
@@ -215,6 +244,7 @@ fetch(API_URL + "torneo_user/" + USER.id)
   .catch((error) => console.error("Error:", error));
 
 let arrJugadores = [];
+let torneoSelect = "";
 
 const agregarEventListener = (TORNEOS) => {
   const select = document.getElementById("torneosgen");
@@ -243,9 +273,15 @@ const agregarEventListener = (TORNEOS) => {
       arrJugadores.push(jugador);
     });
 
-    listaJugadoresTorneoInd(arrJugadores);
 
+    listaJugadoresTorneoInd(arrJugadores);
+    torneoSelect = buscartorneo;
     // document.getElementById(select).style.display = ''
+
+    
+
+    const verNombreTorneo = document.getElementById("nombreTorneoCambiar")
+    verNombreTorneo.innerHTML = torneoSelect.torneo.nombre
 
     const newGrupo = GRUPOSTOGGLE.filter((gr) => {
       return gr.torneo.torneo_id !== value;
@@ -346,21 +382,32 @@ fetch(API_URL + "users_all")
 // ];
 
 const eliminarJugador = (id_torneo, id) => {
-  let request = {
-    method: "POST",
-    body: JSON.stringify({
-      torneo_user_id: id_torneo,
-    }),
-  };
-  fetch(API_URL + "delete_user", request)
-    .then((res) => res.json())
-    .then((data) => {
-      const result = arrJugadores.filter((jug) => jug.id !== id);
-      arrJugadores = result;
-      document.getElementById("tbodyJugadores").innerHTML = "";
-      listaJugadoresTorneoInd(arrJugadores);
-    })
-    .catch((error) => console.error("Error: ", error));
+  Swal.fire({
+    text: "Estas seguro?",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Borrar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let request = {
+        method: "POST",
+        body: JSON.stringify({
+          torneo_user_id: id_torneo,
+        }),
+      };
+      fetch(API_URL + "delete_user", request)
+        .then((res) => res.json())
+        .then((data) => {
+          const result = arrJugadores.filter((jug) => jug.id !== id);
+          arrJugadores = result;
+          document.getElementById("tbodyJugadores").innerHTML = "";
+          listaJugadoresTorneoInd(arrJugadores);
+          Swal.fire("Borrado", "Listo");
+        })
+        .catch((error) => console.error("Error: ", error));
+    }
+  });
 };
 
 let table = document.createElement("table");
@@ -374,7 +421,6 @@ function listaJugadoresTorneoInd(jugador) {
   tbody.innerHTML = "";
 
   jugador.forEach((jugador) => {
-    console.log(jugador);
     let row_1 = document.createElement("tr");
     let row_1_data_1 = document.createElement("td");
     row_1_data_1.innerHTML = jugador.username;
@@ -397,23 +443,46 @@ function listaJugadoresTorneoInd(jugador) {
 //     return false; // stop submission
 //   }
 
+function agregarJugadorTorneo(nombre) {
+  if (nombre !== ""){
+  arrJugadores.push(nombre);
+  }
+  listaJugadoresTorneoInd(arrJugadores)
+  console.log(jugadoresTorneo);
+
+}
+
 function agregarJugador(inputField) {
   console.log(inputField.value);
+  let request = {
+    method: "POST",
+    body: JSON.stringify({
+      email: inputField.value,
+      torneo_id: torneoSelect.torneo.torneo_id,
+    }),
+  };
 
-  // arrJugadores.push({ nombre: inputField.value, id: 0 });
+  fetch(API_URL + "torneo_nuevo_user", request)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data == "El usuario no existe"){
+        document.getElementById("errorAgregarUsuario").innerHTML = "  El usuario no existe"
+        agregarJugadorTorneo("")
+      } else {
+      agregarJugadorTorneo(data)
+      }
+    })
+    .catch((error) => console.log(error)
+      
+    );
+
   document.getElementById("tbodyJugadores").innerHTML = "";
-  // listaJugadoresTorneoInd(jugadoresTorneoInd);
-  return false
-  
+  return false;
 }
 
 const jugadoresTorneo = [];
 
-function agregarJugadorTorneo(nombre) {
-  console.log(nombre);
-  jugadoresTorneo.push(nombre);
-  console.log(jugadoresTorneo);
-}
+
 
 function agregarTorneo(inputField) {
   let request = {
@@ -435,4 +504,79 @@ function agregarTorneo(inputField) {
     .catch((error) => console.error("Error:", error));
 
   return false; // stop submission
+}
+
+// elimina un torneo 
+
+function eliminarTorneo() {
+  Swal.fire({
+    text: "Estas seguro de borrar el torneo?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Borrar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      
+
+
+      let request = {
+        method: "POST",
+        body: JSON.stringify({
+          torneo_id: torneoSelect.torneo.torneo_id
+        }),
+      };
+    
+      fetch(API_URL + "delete_torneo", request)
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data)
+          // cargaTorneosInd(data)
+          location.reload();
+        })
+    
+        .catch((error) => console.error("Error:", error));
+    
+    }
+  });
+
+
+}
+
+
+
+function cambiarNombreUsuario(inputField) {
+  Swal.fire({
+    text: "Estas seguro de cambiar tu nombre de usuario?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Cambiar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      
+      let request = {
+          method: "POST",
+          body: JSON.stringify({
+            user_id: USER.id,
+            username: inputField.value,
+          }),
+        };
+      console.log(inputField.value)
+    
+      fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
+        .then((res) => res.json())
+        .then((data) => {
+
+          location.reload();
+        })
+    
+        .catch((error) => console.error("Error:", error));
+    
+
+
+    }
+  });
 }

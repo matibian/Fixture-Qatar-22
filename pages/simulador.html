@@ -1,42 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" href="../style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet"> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
     <title>SIMULADOR - WOOMBI</title>
-</head>
-<body id="body">
-
+  </head>
+  <body id="body">
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" id="woombi" href="#">WOOMBI</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end " id="navbarNavDropdown">
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNavDropdown"
+        >
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link  text-white" href="../index.html">Prode</a>
+              <a class="nav-link text-white" href="../index.html">Prode</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active  text-white" aria-current="page" href="./fixture.html">Fixture</a>
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./fixture.html"
+                >Fixture</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link  text-white" href="./simulador.html">Simulador partidos</a>
+              <a class="nav-link text-white" href="./simulador.html"
+                >Simulador partidos</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link  text-white" href="./torneos.html">Torneos</a>
+              <a class="nav-link text-white" href="./torneos.html">Torneos</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 Usuario
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" id= "logout" href="#">Logout</a></li>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    id="cambiarNombre"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCambiarNombre"
+                    id="cambiar"
+                    >Cambiar nombre</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" id="logout" href="#">Logout</a>
+                </li>
               </ul>
             </li>
           </ul>
@@ -44,42 +91,90 @@
       </div>
     </nav>
 
-    <h1 class="titulo"><center>PRODE Mundial Qatar 2022 </center></h1>
+    <h1 class="titulo"><center>PRODE Mundial Qatar 2022</center></h1>
 
-    <section id="gruposPrin">
-    </section>
-    
-    <div id="zonaGrupos"> 
-      <h2 class="titulo" id="tituloFG"><center> Fase de grupos </center></h2>
+    <section id="gruposPrin"></section>
 
-      <section id="tablasPartidos">
+    <div id="zonaGrupos">
+      <h2 class="titulo" id="tituloFG"><center>Fase de grupos</center></h2>
 
-      </section>
+      <section id="tablasPartidos"></section>
 
-      
-      <h2 class="titulo" id="tituloPG"><center> PUNTOS POR GRUPO </center></h2>
-      <section id="tablasClasifGrupos">
-        
+      <h2 class="titulo" id="tituloPG"><center>PUNTOS POR GRUPO</center></h2>
+      <section id="tablasClasifGrupos"></section>
+    </div>
 
-      </section>
-    </div> 
-
-    <h2 class="titulo"><center> PLAYOFFS </center></h2>
+    <h2 class="titulo"><center>PLAYOFFS</center></h2>
     <div class="tablaScroll">
-      <section id="tablasPartidosPlayoff">
-      </section>
-      </div>
+      <section id="tablasPartidosPlayoff"></section>
+    </div>
 
-      <!-- <div class="botonrandom" id="botonrandom">
+    <!-- Modal cambiar nombre de usuario -->
+    <div
+      class="modal fade"
+      id="modalCambiarNombre"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" class="titulos" id="nombreUsuario">
+              Cambiar nombre de usuario
+            </h2>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                type="text"
+                class="form-control"
+                maxlength="20"
+                placeholder="Nuevo nombre"
+                id="cambioNombreUsuario"
+                aria-label="Recipient's username"
+                aria-describedby="basic-addon2"
+              />
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  onclick="cambiarNombreUsuario(cambioNombreUsuario)"
+                  class="btn btn-secondary"
+                  data-bs-toggle="modal"
+                >
+                  Cambiar Nombre
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="botonrandom" id="botonrandom">
         <button class="botonF1">
           <span class="botones"><i class="fa-solid fa-floppy-disk"></i>
           </span>
         </button>
       </div> -->
 
-
-    <script src="https://kit.fontawesome.com/84e9df15ed.js" crossorigin="anonymous"></script>    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/84e9df15ed.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../javascript/emulador.js"></script>
-</body>
+    <script src="../javascript/cambioNombre.js"></script>
+  </body>
 </html>

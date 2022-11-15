@@ -32,30 +32,3 @@
 </body>
 </html>
 
-
-
-//devuelve los datos del torneo y los usuarios
-url = 'api/torneo/(torneo_id)'
-
-//crea un torneo nuevo 
-request: {method:post, body:{user_id, nombre}}
-url = 'api/torneo'
-
-// actualiza los datos del torneo 
-request: {method:put, body:{torneo_id, nombre}}
-url = 'api/torneo'
-
-// elimina un torneo 
-request: {method:delete, body:{torneo_id}}
-url = 'api/torneo'
-
-//devuelve los torneos en donde esta el usuarios
-url = 'api/torneo_user/(user_id)'
-
-// agrega un nuevo usuario al torneo 
-request: {method:post, body:{torneo_id, user_id}}
-url = 'api/torneo_user'
-
-// elimina un nuevo usuario al torneo 
-request: {method:delete, body:{torneos_users_id}}
-url = 'api/torneo_user'
