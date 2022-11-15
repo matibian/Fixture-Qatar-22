@@ -229,6 +229,11 @@ function crearTablaPartidos(grupo, data) {
 
 let tabla = document.getElementById ('tablasPartidosProde');
 
+tabla.innerHTML = `<div style="padding: 5%; ">
+<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+<span class="sr-only"></span>
+</div></div>`
+
 function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
@@ -241,8 +246,9 @@ let fixture = []
 function pronosticos(fixture){fetch(URL+PRONOSTICOS)
             .then((res) => res.json())
             .then((data) => {
-                fixture.forEach((grupo) => {
+                tabla.innerHTML = ""
 
+                fixture.forEach((grupo) => {
                     tabla.innerHTML += `<div class="grupo filterDiv Grupo ${grupo.grupo_nombre}" id="partidoGrupo${grupo.grupo_nombre}"> <h3>Grupo ${grupo.grupo_nombre}</h3>`
                     crearTablaPartidos(grupo, data)
                     tabla.innerHTML += `</div>`
