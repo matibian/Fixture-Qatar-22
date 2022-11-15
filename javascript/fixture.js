@@ -293,13 +293,21 @@ function crearTablaPartidos(grupo) {
     });
 }
 
+let tabla = document.getElementById ('tablasPartidos');
+
+tabla.innerHTML = `<div style="padding: 5%; ">
+<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+<span class="sr-only"></span>
+</div></div>`
+
+
 fetch('http://fprode.nachofernan.com/api/partidos_all2')
     .then(res => res.json())
     .then(data => {
         const result = Object.entries(data).map(([key, value]) => ({key,value})).slice(5,13)
 
 
-        let tabla = document.getElementById ('tablasPartidos');
+        tabla.innerHTML = ""
         result.forEach((result) => {
 
         tabla.innerHTML += `<div class="grupo" id="partidoGrupo${result.key}"> <h3>Grupo ${result.key}</h3>`

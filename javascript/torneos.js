@@ -270,8 +270,12 @@ const agregarEventListener = (TORNEOS) => {
     arrJugadores = [];
 
     buscartorneo.usuarios.forEach((jugador) => {
+      if (jugador.id !== USER.id){
+      console.log(jugador)
       arrJugadores.push(jugador);
+    }
     });
+
 
 
     listaJugadoresTorneoInd(arrJugadores);
@@ -383,21 +387,32 @@ let jugadoresTorneoInd = [
 ];
 
 const eliminarJugador = (id_torneo, id) => {
-  let request = {
-    method: "POST",
-    body: JSON.stringify({
-      torneo_user_id: id_torneo,
-    }),
-  };
-  fetch(API_URL + "delete_user", request)
-    .then((res) => res.json())
-    .then((data) => {
-      const result = arrJugadores.filter((jug) => jug.id !== id);
-      arrJugadores = result;
-      document.getElementById("tbodyJugadores").innerHTML = "";
-      listaJugadoresTorneoInd(arrJugadores);
-    })
-    .catch((error) => console.error("Error: ", error));
+  Swal.fire({
+    text: "Estas seguro?",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Borrar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let request = {
+        method: "POST",
+        body: JSON.stringify({
+          torneo_user_id: id_torneo,
+        }),
+      };
+      fetch(API_URL + "delete_user", request)
+        .then((res) => res.json())
+        .then((data) => {
+          const result = arrJugadores.filter((jug) => jug.id !== id);
+          arrJugadores = result;
+          document.getElementById("tbodyJugadores").innerHTML = "";
+          listaJugadoresTorneoInd(arrJugadores);
+          Swal.fire("Borrado", "Listo");
+        })
+        .catch((error) => console.error("Error: ", error));
+    }
+  });
 };
 
 let table = document.createElement('table');
@@ -459,6 +474,9 @@ function agregarJugador(inputField) {
         agregarJugadorTorneo("")
       } else {
       agregarJugadorTorneo(data)
+        document.getElementById("errorAgregarUsuario").innerHTML = ""
+        document.getElementById("inputAgregar").value = ""
+        
       }
     })
     .catch((error) => console.log(error)
