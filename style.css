@@ -470,6 +470,22 @@ a .navbar-nav {
     margin: 0px;
 }
 
+.selects{
+    text-align: center;
+    padding : 3%;
+}
+
+#campeon{
+    background-color: white;
+    color: #8f0b31;
+    text-align: center;
+    font-weight: bolder;
+    padding: 5px;
+    font-family: qatar;
+    font-size: 30px;
+    margin: 0px;
+}
+
 #editartorneo{
     border-radius: 0 0 0 0;
     padding-top: 3px;

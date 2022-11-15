@@ -162,7 +162,14 @@ GRUPO.forEach(grupo => {
 
 });
 
+////////////////////// Elegi al campeon/////////////////////////
 
+
+const elCampeon = document.getElementById("campeon")
+
+EQUIPOS.forEach(equipo =>{
+    elCampeon.innerHTML += `<option value="${equipo}" >${equipo}</option>`;
+})
 
 
 

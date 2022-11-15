@@ -187,8 +187,12 @@ const agregarEventListener = (TORNEOS) => {
     arrJugadores = [];
 
     buscartorneo.usuarios.forEach((jugador) => {
+      if (jugador.id !== USER.id){
+      console.log(jugador)
       arrJugadores.push(jugador);
+    }
     });
+
 
 
     listaJugadoresTorneoInd(arrJugadores);
@@ -316,7 +320,7 @@ const eliminarJugador = (id_torneo, id) => {
       fetch(API_URL + "delete_user", request)
         .then((res) => res.json())
         .then((data) => {
-          const result = arrJugadores.filter((jug) => jug.id !== id);
+          const result = arrJugadores.filter((jug) => jug.id !== id)
           arrJugadores = result;
           document.getElementById("tbodyJugadores").innerHTML = "";
           listaJugadoresTorneoInd(arrJugadores);
@@ -387,6 +391,9 @@ function agregarJugador(inputField) {
         agregarJugadorTorneo("")
       } else {
       agregarJugadorTorneo(data)
+        document.getElementById("errorAgregarUsuario").innerHTML = ""
+        document.getElementById("inputAgregar").value = ""
+        
       }
     })
     .catch((error) => console.log(error)
