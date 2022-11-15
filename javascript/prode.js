@@ -795,7 +795,7 @@ function random(min, max) {
 
 /////////////////////////////COUNTDOWN///////////////////////////
 
-let datetime = (new Date("Nov 21, 2022 12:00:00").getTime() / 1000)
+let datetime = (new Date("Nov 20, 2022 12:00:00").getTime() / 1000)
 
 var flipdown = new FlipDown(datetime, {
     theme: 'light' // or dark
