@@ -167,6 +167,10 @@ a .navbar-nav {
     color: white
 }
 
+.navbar{
+    padding-right: 10%;
+}
+
 
 .tablaScroll {
     display: flex;
@@ -473,6 +477,7 @@ a .navbar-nav {
     border: solid rgb(187, 187, 187) 1px;
 }
 
+
 #nuevotorneo{
     border-radius: 0 0 0 0;
     padding-top: 3px;
@@ -499,6 +504,11 @@ section tr {
     color:#8f0b31;
     font-size: 10;
 }
+
+#nombreUsuario{
+    color: #8f0b31;
+}
+
 
 #torneoIndModalTitulo{
     color: #8f0b31;

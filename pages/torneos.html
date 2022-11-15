@@ -37,7 +37,8 @@
               Usuario
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" id= "logout" href="#">Logout</a></li>
+              <li><a class="dropdown-item" id= "cambiarNombre" data-bs-toggle="modal" data-bs-target="#modalCambiarNombre"  id="cambiar" >Cambiar nombre</a></li>
+              <li><a class="dropdown-item" id= "logout" href="#">Salir</a></li>
             </ul>
           </li>
         </ul>
@@ -100,13 +101,33 @@
                   <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Launch demo modal
                   </button> -->
+                  <!-- Modal cambiar nombre de usuario -->
+                  <div class="modal fade" id="modalCambiarNombre" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h2 class="modal-title fs-5" class="titulos" id="nombreUsuario">Cambiar nombre de usuario</h2>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div > 
 
-                  <!-- Modal -->
+                            <input type="text" class="form-control" maxlength="20" placeholder="Nuevo nombre"  id="cambioNombreUsuario" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="modal-footer">
+                              <button type="button" onclick="cambiarNombreUsuario(cambioNombreUsuario)" class="btn btn-secondary" data-bs-toggle="modal">Cambiar Nombre</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal crear torneo -->
                   <div class="modal fade" id="torneoIndModalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h2 class="modal-title fs-5" id="torneoIndModalTitulo">Crear torneo</h2>
+                          <h2 class="modal-title fs-5" class="titulos" id="torneoIndModalTitulo">Crear torneo</h2>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -114,18 +135,10 @@
 
                           <div > 
 
-                            <input type="text" class="form-control" placeholder="Torneo"  id="nombreTorneo" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" maxlength="20" placeholder="Nombre del torneo"  id="nombreTorneo" aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <br>
-<!-- 
-                            <div class="input-group mb-3">
-                              <input type="text" class="form-control" placeholder="Jugador"  id="nombreJugador" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                              <button class="input-group-text " onclick="agregarJugadorTorneo(nombreJugador.value)" >Agregar</button>
-                            </div> -->
-
                             <div id="JugadoresTorneoIndNuevo">
-
                             </div>
-
                             <div class="modal-footer">
                               <button type="button" onclick="agregarTorneo(nombreTorneo.value)" class="btn btn-secondary" data-bs-toggle="modal">Crear torneo</button>
                             </div>
@@ -135,26 +148,39 @@
                     </div>
                   </div>
 
+                  <!-- Modal editar torneo -->
+
                   <div class="modal fade" id="torneoIndModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h2 class="modal-title fs-5" id="torneoIndModalTitulo">Editar torneo</h2>
+                          <h2 class="modal-title fs-5" id="torneoIndModalTitulo">Editar torneo -- "<span id="nombreTorneoCambiar"></span>"</h2>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                         </div>
                         <div class="modal-body">
+                        <div class="input-group mb-3">
+                          <!-- <form onsubmit= "agregarJugador(this.inputAgregar)" id="formEditar">  -->
+                            <input type="text" class="form-control" placeholder="Nombre" inputItem.value="nombreTorneo" id="cambiarNombre" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <button class="input-group-text" onclick="cambiarNombreTorneo(cambiarNombre)" id="botonAgregar" type="submit" >Cambiar Nombre </span></button>
+                          <!-- </form> -->
+                        </div>
+                      </div>
+                      <div class="modal-body">
+                        <h1 class="modal-title fs-5" id="torneoIndModalTitulo"> Agregar jugadores</h1>
+                      </div>
+                        <div class="modal-body">
                           <div class="input-group mb-3">
-                            <!-- <form onsubmit= "agregarJugador(this.inputAgregar)" id="formEditar">  -->
                               <input type="text" class="form-control" placeholder="Jugador" inputItem.value="" id="inputAgregar" aria-label="Recipient's username" aria-describedby="basic-addon2">
                               <button class="input-group-text" onclick="agregarJugador(inputAgregar)" id="botonAgregar" type="submit" >Agregar mail</button>
-                            <!-- </form> -->
                           </div>
-                          <div id="JugadoresTorneoIndEditar">
-                            
+                          <div id="errorAgregarUsuario" style="color: red; font-size: 10px;     padding-left: 10px;"></div>
+                          <div class="titulos" id="JugadoresTorneoIndEditar">
+                          <br>
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-toggle="modal">Guardar cambios</button>
+                          <button type="button" class="btn btn-danger" onclick="eliminarTorneo()" data-bs-toggle="modal">Eliminar torneo</button>
                         </div>
                       </div>
                     </div>
