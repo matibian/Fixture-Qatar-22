@@ -97,7 +97,6 @@ fetch(API_URL + PRONOSTICOS)
             <td class="usupuntos"> ${puntostotal} </td>`;
       }
 
-      ///////usar null para sacar partidos no jugamos
 
       tabla.prepend(res);
     });
@@ -128,89 +127,6 @@ fetch(API_URL + "user_all/" + USER.id)
 
   .catch((error) => console.error("Error:", error));
 
-// document.getElementById("tablaUsuario").addEventListener("click", (e) => {
-//   document.getElementById("collapse").classList.toggle("show");
-//   const s = document.querySelector(".flechita");
-//   if (s.classList.contains("fa-caret-down")) {
-//     s.classList.remove("fa-caret-down");
-//     s.classList.add("fa-caret-up");
-//   } else {
-//     s.classList.remove("fa-caret-up");
-//     s.classList.add("fa-caret-down");
-//   }
-// });
-
-// class Usuarios {
-//   constructor(nombre, usuario, puntos, mail, id) {
-//     this.nombre = nombre;
-//     this.usuario = usuario;
-//     this.puntos = puntos;
-//     this.mail = mail;
-//     this.id = id;
-//   }
-// }
-
-// const mati = new Usuarios("Mati", "matute", 10, "matubianchi@gmail.com", 1);
-// const gudi = new Usuarios("Ignacio", "gudi", 120, "nachofernan@gmail.com", 2);
-// const marcos = new Usuarios("Marcos", "marquitos", 132, "bla@gmail.com", 3);
-// const pablo = new Usuarios("Pablo", "pablito", 114, "bla@gmail.com", 4);
-// const andres = new Usuarios("Andres", "bro", 125, "bla@gmail.com", 5);
-// const juani = new Usuarios("Juan Ignacio", "cabe", 105, "bla@gmail.com", 6);
-// const juampa = new Usuarios("Juan Pablo", "gordo", 121, "bla@gmail.com", 7);
-// const lucas = new Usuarios("lucas", "lulo", 123, "bla@gmail.com", 8);
-// const majo = new Usuarios("majo", "majo", 119, "bla@gmail.com", 8);
-// const gon = new Usuarios("gon", "gon", 128, "bla@gmail.com", 8);
-// const tom = new Usuarios("tom", "tom", 133, "bla@gmail.com", 8);
-// const tincho = new Usuarios("tincho", "tincho", 113, "bla@gmail.com", 8);
-// const leti = new Usuarios("leti", "leti", 110, "bla@gmail.com", 8);
-// const lore = new Usuarios("lore", "lore", 112, "bla@gmail.com", 8);
-// const toto = new Usuarios("toto", "toto", 127, "bla@gmail.com", 8);
-
-// USUARIOS.push(mati);
-// USUARIOS.push(gudi);
-// USUARIOS.push(marcos);
-// USUARIOS.push(pablo);
-// USUARIOS.push(andres);
-// USUARIOS.push(juani);
-// USUARIOS.push(juampa);
-// USUARIOS.push(lucas);
-// USUARIOS.push(majo);
-// USUARIOS.push(gon);
-// USUARIOS.push(tom);
-// USUARIOS.push(tincho);
-// USUARIOS.push(leti);
-// USUARIOS.push(lore);
-// USUARIOS.push(toto);
-
-// class TorneoInd {
-//   constructor(nombre, usuarios, id) {
-//     this.nombre = nombre;
-//     this.usuarios = usuarios;
-//     this.id = id;
-//   }
-// }
-
-// const Pibes = new TorneoInd(
-//   "Pibes",
-//   [mati, gudi, pablo, andres, juani, lucas, juampa],
-//   1
-// );
-// const Laburo = new TorneoInd("Laburo", [mati, tincho, leti, lore], 2);
-// const Flia = new TorneoInd("Flia", [mati, majo, gon, tom], 3);
-// const Coderhouse = new TorneoInd("Coderhouse", [mati, toto, andres], 4);
-
-// TORNEOSIND.push(Pibes);
-// TORNEOSIND.push(Laburo);
-// TORNEOSIND.push(Flia);
-// TORNEOSIND.push(Coderhouse);
-
-// let torneoSort = () => {
-//   TORNEOSIND.forEach((torneo) => {
-//     torneo.usuarios.sort((a, b) => b.puntos - a.puntos);
-//   });
-// };
-
-// TOR = TORNEOSIND.usuarios;
 
 let nombretorn = document.getElementById("torneosgen");
 
@@ -233,6 +149,7 @@ let cargaTorneosInd = (TORNEOS) => {
     tablaind.value = "torneosind";
   });
 };
+
 
 fetch(API_URL + "torneo_user/" + USER.id)
   .then((res) => res.json())
@@ -537,12 +454,43 @@ function eliminarTorneo() {
         })
     
         .catch((error) => console.error("Error:", error));
-    
     }
   });
-
-
 }
+
+function cambiarNombreTorneo(inputField) {
+  Swal.fire({
+    text: "Estas seguro de cambiar tu nombre de torneo?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Cambiar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log(inputField)
+      let request = {
+          method: "POST",
+          body: JSON.stringify({
+            torneo_id: torneoSelect.torneo.torneo_id,
+            nombre: inputField.value,
+          }),
+        };
+    
+      fetch(API_URL+ "editar_torneo", request)
+        .then((res) => res.json())
+        .then((data) => {
+          location.reload();
+        })
+            .catch((error) => console.error("Error:", error));
+    }
+  });
+}
+
+
+
+
+
 
 
 
@@ -556,7 +504,10 @@ function cambiarNombreUsuario(inputField) {
     confirmButtonText: "Cambiar",
   }).then((result) => {
     if (result.isConfirmed) {
-      
+      let localData = JSON.parse(localStorage.getItem("user"))
+    
+
+
       let request = {
           method: "POST",
           body: JSON.stringify({
@@ -569,14 +520,13 @@ function cambiarNombreUsuario(inputField) {
       fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
         .then((res) => res.json())
         .then((data) => {
-
+          localData.username = inputField.value
+          localData = JSON.stringify(localData)
+          localStorage.setItem("user", localData);
           location.reload();
+          
         })
-    
-        .catch((error) => console.error("Error:", error));
-    
-
-
+            .catch((error) => console.error("Error:", error));
     }
   });
 }
