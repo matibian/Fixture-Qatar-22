@@ -530,8 +530,18 @@ section tr {
     color: #8f0b31;
 }
 
+#modalReglas{
+    color: #8f0b31;
+    font: 'qatar';
+}
+
 #JugadoresTorneoIndEditar{
     color:#8f0b31
+}
+
+#reglas{
+    color:#8f0b31;
+    text-align: justify;
 }
 
 .fa-regular{

@@ -1,109 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/flipdown-master/src/flipdown.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="stylesheet" href="./style.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
     <title>Prode - WOOMBI</title>
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" id="woombi" href="#">WOOMBI</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end " id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link  text-white" href="./index.html">Prode</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active  text-white" aria-current="page" href="./pages/fixture.html">Fixture</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link  text-white" href="./pages/simulador.html">Simulador partidos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link  text-white" href="./pages/torneos.html">Torneos</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle  text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" id= "cambiarNombre" data-bs-toggle="modal" data-bs-target="#modalCambiarNombre"  id="cambiar" >Cambiar nombre</a></li>
-              <li><a class="dropdown-item" id= "logout" href="#">Salir</a></li>
-            </ul>
-          </li>
-        </ul>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" id="woombi" href="#">WOOMBI</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link text-white" href="./index.html">Prode</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active text-white"
+                aria-current="page"
+                href="./pages/fixture.html"
+                >Fixture</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="./pages/simulador.html"
+                >Simulador partidos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="./pages/torneos.html"
+                >Torneos</a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+              </a>
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="navbarDropdownMenuLink"
+              >
+                <li>
+                  <a
+                    class="dropdown-item"
+                    id="cambiarNombre"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCambiarNombre"
+                    id="cambiar"
+                    >Cambiar nombre</a
+                  >
+                </li>
+                <li><a class="dropdown-item" id="logout" href="#">Salir</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-    <h1 class="titulo"><center>PRODE Mundial Qatar 2022 </center></h1>
+    <h1 class="titulo"><center>PRODE Mundial Qatar 2022</center></h1>
     <section id="flip">
-    <div id="flipdown" class="flipdown">
-    </div>
-    <img src="./assets/logo.png" alt="logo" id="logo">
+      <div id="flipdown" class="flipdown"></div>
+      <img src="./assets/logo.png" alt="logo" id="logo" />
     </section>
 
-    <section id="gruposPrin">
- 
-    </section>
+    <section id="gruposPrin"></section>
 
-    <div class="selects"  >
+    <div class="selects">
       Adivinar el campeón suma 20 puntos. -->
-      <select name="campeon" id="campeon" >
+      <select name="campeon" id="campeon">
         <option hidden selected id="nombrePaisCampeon"></option>
-
-        
       </select>
-       <-- Tenés hasta el primer partido de Argentina para elegirlo.
+      <-- Tenés hasta el primer partido de Argentina para elegirlo.
     </div>
 
+    <div id="zonaGrupos">
+      <h2 class="titulo" id="tituloFG"><center>Fase de grupos</center></h2>
 
-    <div id="zonaGrupos"> 
-      <h2 class="titulo" id="tituloFG"><center> Fase de grupos </center></h2>
-
-      <section id="tablasPartidosProde">
-
-      </section>
-
-    </div> 
-    <h2 class="titulo"><center> PLAYOFFS </center></h2>
+      <section id="tablasPartidosProde"></section>
+    </div>
+    <h2 class="titulo"><center>PLAYOFFS</center></h2>
 
     <div class="tablaScroll">
-      <section id="tablasPartidosPlayoffProde">
-      </section>
+      <section id="tablasPartidosPlayoffProde"></section>
 
       <!-- Modal cambiar nombre de usuario -->
-                  <div class="modal fade" id="modalCambiarNombre" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h2 class="modal-title fs-5" class="titulos" id="nombreUsuario">Cambiar nombre de usuario</h2>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <div > 
-
-                            <input type="text" class="form-control" maxlength="20" placeholder="Nuevo nombre"  id="cambioNombreUsuario" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <div class="modal-footer">
-                              <button type="button" onclick="cambiarNombreUsuario(cambioNombreUsuario)" class="btn btn-secondary" data-bs-toggle="modal">Cambiar Nombre</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      <div
+        class="modal fade"
+        id="modalCambiarNombre"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title fs-5" class="titulos" id="nombreUsuario">
+                Cambiar nombre de usuario
+              </h2>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div>
+                <input
+                  type="text"
+                  class="form-control"
+                  maxlength="20"
+                  placeholder="Nuevo nombre"
+                  id="cambioNombreUsuario"
+                  aria-label="Recipient's username"
+                  aria-describedby="basic-addon2"
+                />
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    onclick="cambiarNombreUsuario(cambioNombreUsuario)"
+                    class="btn btn-secondary"
+                    data-bs-toggle="modal"
+                  >
+                    Cambiar Nombre
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-<!-- 
+    </div>
+    <!-- 
      <div class ="botgeneral">
       <div class="botonenviar" id="enviar">
         <button class="botonenviarF1">
@@ -111,30 +178,121 @@
         </button>
       </div> -->
 
-      <!-- <div class="botonreset" id="reset">
+    <!-- <div class="botonreset" id="reset">
         <button class="botonresetF1">
           <span class="botones">RESET</span>
         </button>
       </div>
+      -->
 
-
-      <div class="botonrandom" id="botonrandom">
-        <button class="botonF1">
-          <span class="botones"><i class="fa-solid fa-shuffle"></i></span>
-        </button>
-      </div> -->
+    <div class="botonrandom" id="botonrandom">
+      <button
+        type="button"
+        class="btn btn-secondary botonF1"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        <span class="botones"><i class="fa-solid fa-info"></i></span>
+      </button>
     </div>
 
-    
-    <script src="https://kit.fontawesome.com/84e9df15ed.js" crossorigin="anonymous"></script>    
+    <!-- Modal Reglas-->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="modalReglas"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalReglas">Reglas</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="reglas">
+            <h1>Bienvenid@ a Woombi, tu prode amigo!</h1>
+            <p>
+              Woombi es una plataforma de pronósticos deportivos en donde vas a
+              poder participar para demostrar cuánto sabés de la Copa Mundial de
+              Fútbol de la FIFA Qatar 2022.
+            </p>
+            <p>¿Las reglas?</p>
+            <p>
+              ¿Deberás completar tus pronósticos para todos los partidos,
+              recordá que no es necesario hacerlo todo junto de entrada, tenés
+              hasta quince minutos antes del partido para que el sistema te
+              valide tu proyección. Una vez cumplido el tiempo de gracia, no hay
+              posibilidad de ingresar el pronóstico al sistema.
+            </p>
+            <p>
+              Los partidos que no tengan resultados no suman puntos. ¡Además
+              podrás vaticinar al campeón por un plus de puntos! Para ello
+              seleccioná quién creés que va a ser el Campeón del Mundial de
+              Qatar antes del inicio del partido de Argentina.
+            </p>
+            <p>¿Y los puntos?</p>
+            <p>
+              El sistema de puntos es el siguiente:
+              <br>
+              - Acertando el
+              ganador/perdedor/empate: 3 puntos. 
+              <br>- Acertando la cantidad de
+              goles de alguno de los equipos: 1 punto. 
+              <br>- Partido acertado
+              perfecto: 7 puntos Partido acertando el ganador/empate: 3 puntos Y
+              en caso de haber acertado los goles de algún equipo sumás 1 punto
+              más. Ejemplo: En tu pronóstico pusiste que en partido inaugural
+              Qatar le gana a Ecuador por 3 a 1 En caso de que el resultado sea
+              efectivamente 3 a 1, obtendrá 7 puntos por resultado exacto. En
+              caso de que el partido haya terminado 2 a 1, obtendrá 3 puntos por
+              adivinar a Qatar como ganador y un punto más por acertar la
+              cantidad de goles de Ecuador. Total 4 puntos. En caso de
+              encontrase con un empate de 1 a 1, sólo obtendrá un punto por
+              hacer acertado la cantidad de goles de Ecuador. Y en el caso de
+              que Qatar pierda 1 a 3, no obtendrá ningún punto.
+            </p>
+            <p>¿Y el campeón y el plus de puntos?</p>
+            <p>
+              Adivinando el campeón de entrada, ¡¡sumás 20 puntos más!! (fiesta)
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://kit.fontawesome.com/84e9df15ed.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"></script>
     <script src="./assets/flipdown-master/src/flipdown.js"></script>
     <script src="./javascript/prode.js"></script>
     <script src="./javascript/index.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-</body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+  </body>
 </html>
