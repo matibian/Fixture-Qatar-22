@@ -89,6 +89,8 @@ EQUIPOS.forEach((nombre, index) => {
 
 ///////////////////////////////ARMADO DE GRUPOS //////////////////////////////
 
+let id=0
+
 class Grupo {
   constructor(nombre, equipos, partidos) {
     this.nombre = nombre;
