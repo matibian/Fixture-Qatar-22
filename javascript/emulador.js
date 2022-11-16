@@ -850,6 +850,9 @@ function funcToggle(tabla) {
     
 }
 
+function recargarRandom(){
+    location.reload()
+}
 
 function cambiarNombreUsuario(inputField) {
     Swal.fire({
@@ -869,7 +872,6 @@ function cambiarNombreUsuario(inputField) {
                 username: inputField.value,
             }),
             };
-        console.log(inputField.value)
         
         fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
             .then((res) => res.json())
@@ -884,5 +886,5 @@ function cambiarNombreUsuario(inputField) {
     });
     }    
 
-console.log("Hecho por Matias Bianchi")
+console.log("Hecho por Matias Bianchi(Front-end) y Nacho Fernandez(Back-end)")
 console.log("https://github.com/matibian/Fixture-Qatar-22")

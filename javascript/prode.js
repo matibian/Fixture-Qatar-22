@@ -179,7 +179,6 @@ fetch(URL + "paises")
                     const nombrePais = paises.find(
                         (pais) => pais.pais_id === data.pais_id
                         ).nombre;
-                        console.log(capeonDefault)
                         document.getElementById("nombrePaisCampeon").innerText = nombrePais;
                 }
             })
@@ -198,7 +197,6 @@ fetch(URL + "paises")
         let selecte = document.getElementById("campeon");
 
         let value = selecte.options[select.selectedIndex].dataset.admin;
-        console.log(value);
 
         let request = {
           method: "POST",
@@ -211,7 +209,6 @@ fetch(URL + "paises")
         fetch(URL + "elegir_campeon", request)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
           })
           .catch((error) => console.error("Error:", error));
       });
@@ -847,7 +844,7 @@ function random(min, max) {
 
 /////////////////////////////COUNTDOWN///////////////////////////
 
-let datetime = new Date("Nov 20, 2022 12:00:00").getTime() / 1000;
+let datetime = new Date("Nov 20, 2022 13:00:00").getTime() / 1000;
 
 var flipdown = new FlipDown(datetime, {
   theme: "light", // or dark
@@ -871,7 +868,6 @@ function cambiarNombreUsuario(inputField) {
           username: inputField,
         }),
       };
-      console.log(inputField.value);
 
       fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
         .then((res) => res.json())
@@ -884,44 +880,8 @@ function cambiarNombreUsuario(inputField) {
   });
 }
 
-/////////////////////////////ENVIO DE RESULTADOS///////////////////////////
-// const botonenviar = document.getElementById('enviar')
 
-// botonenviar.onclick = (e) => {
-//     swal({
-//         title: "Estas seguro?",
-//         text: "No se puede deshacer.",
-//         icon: "warning",
-//         buttons: true,
-//         buttonsColor : '#821a4b',
-//         dangerMode: true,
-//     })
-//     .then((willDelete) => {
-//         if (willDelete) {
-//             swal("Resultados enviados!", {
-//             icon: "success",
-//             });
-//         }
-//     });
-// }
 
-console.log("Hecho por Matias Bianchi");
+console.log("Hecho por Matias Bianchi(Front-end) y Nacho Fernandez(Back-end)");
 console.log("https://github.com/matibian/Fixture-Qatar-22");
 
-// let request = {
-//     method: "POST",
-//     body: JSON.stringify({
-//         // user_id: ,
-//         // api_key: ,
-//         // partido_id: ,
-//         // local:
-//         // visita:
-//     }),
-//   };
-
-//   fetch("http://fprode.nachofernan.com/api/pronosticos", request)
-//     .then((res) => res.json())
-//     .then((data) => {
-//         console.log(data)
-//     })
-//     .catch((error) => console.error("Error:", error));
