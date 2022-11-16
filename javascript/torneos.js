@@ -12,8 +12,6 @@ function redirect() {
 }
 const USER = JSON.parse(USERSTORAGE) ?? redirect();
 
-console.log(USER.username)
-
 document.getElementById("navbarDropdownMenuLink").innerHTML = USER.username;
 const logout = document.getElementById("logout");
 logout.addEventListener("click", (e) => {
@@ -133,9 +131,7 @@ let nombretorn = document.getElementById("torneosgen");
 let torneoonchange = document.getElementById("individuales");
 
 let cargaTorneosInd = (TORNEOS) => {
-  console.log(TORNEOS)
   TORNEOS.forEach((torneo) => {
-    console.log(torneo.torneo.nombre);
     agregarEventListener(TORNEOS);
     nombretorn.innerHTML += `<option value="T${torneo.torneo.torneo_id}" data-admin="${torneo.torneo.user_id}" >${torneo.torneo.nombre}</option>`;
     const tabla = document.getElementById("torneoindividual");
@@ -154,7 +150,6 @@ let cargaTorneosInd = (TORNEOS) => {
 fetch(API_URL + "torneo_user/" + USER.id)
   .then((res) => res.json())
   .then((data) => {
-    console.log(data);
     cargaTorneosInd(data);
   })
 
@@ -167,12 +162,11 @@ const agregarEventListener = (TORNEOS) => {
   const select = document.getElementById("torneosgen");
 
   select.addEventListener("change", (e) => {
-    
     var selecte = document.getElementById("torneosgen");
     var value = selecte.options[select.selectedIndex].value;
     const GRUPOSTOGGLE = TORNEOS;
 
-    let vereditar = selecte.options[select.selectedIndex].dataset;
+    let vereditar = selecte.options[select.selectedIndex].dataset.admin;
     let mostrareditar = document.getElementById("editartorneo");
 
     if (vereditar == USER.id) {
@@ -189,7 +183,6 @@ const agregarEventListener = (TORNEOS) => {
 
     buscartorneo.usuarios.forEach((jugador) => {
       if (jugador.id !== USER.id){
-      console.log(jugador)
       arrJugadores.push(jugador);
     }
     });
@@ -216,7 +209,7 @@ const agregarEventListener = (TORNEOS) => {
   });
 };
 
-console.log("Hecho por Matias Bianchi");
+console.log("Hecho por Matias Bianchi(Front-end) y Nacho Fernandez(Back-end)");
 console.log("https://github.com/matibian/Fixture-Qatar-22");
 
 // const API_URL = 'https://prode-qatar-default-rtdb.firebaseio.com/Torneos.json'
@@ -370,12 +363,10 @@ function agregarJugadorTorneo(nombre) {
   arrJugadores.push(nombre);
   }
   listaJugadoresTorneoInd(arrJugadores)
-  console.log(jugadoresTorneo);
 
 }
 
 function agregarJugador(inputField) {
-  console.log(inputField.value);
   let request = {
     method: "POST",
     body: JSON.stringify({
@@ -421,8 +412,6 @@ function agregarTorneo(inputField) {
   fetch(API_URL + "torneo", request)
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data)
-      // cargaTorneosInd(data)
       location.reload();
     })
 
@@ -456,8 +445,6 @@ function eliminarTorneo() {
       fetch(API_URL + "delete_torneo", request)
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data)
-          // cargaTorneosInd(data)
           location.reload();
         })
     
@@ -476,7 +463,6 @@ function cambiarNombreTorneo(inputField) {
     confirmButtonText: "Cambiar",
   }).then((result) => {
     if (result.isConfirmed) {
-      console.log(inputField)
       let request = {
           method: "POST",
           body: JSON.stringify({
@@ -523,7 +509,6 @@ function cambiarNombreUsuario(inputField) {
             username: inputField.value,
           }),
         };
-      console.log(inputField.value)
     
       fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
         .then((res) => res.json())

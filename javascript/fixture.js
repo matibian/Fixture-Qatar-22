@@ -265,8 +265,6 @@ function crearTablaPartidos(grupo) {
     table.appendChild(thead);
     table.appendChild(tbody);
 
-    console.log(partidos)
-
     document.getElementById('partidoGrupo'+ grupo.key).appendChild(table);
     partidos.forEach(partido => {
 
@@ -398,14 +396,14 @@ tbody.appendChild(row);
 
 }
 
-let tabla2 = document.getElementById ('tablasClasifGrupos');
-GRUPO.forEach((grupo) => {
+// let tabla2 = document.getElementById ('tablasClasifGrupos');
+// GRUPO.forEach((grupo) => {
 
-    tabla2.innerHTML += `<div class="tablaGrupos" id="Grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
-    crearTabla(grupo)
-    tabla2.innerHTML += `</div>`
+//     tabla2.innerHTML += `<div class="tablaGrupos" id="Grupo${grupo.nombre}"> <h3>Grupo ${grupo.nombre}</h3>`
+//     crearTabla(grupo)
+//     tabla2.innerHTML += `</div>`
 
-});
+// });
 
 
 
@@ -788,12 +786,12 @@ function funcToggle(tabla) {
     
 }
 
-let boton = document.getElementById('botonrandom')
+// let boton = document.getElementById('botonrandom')
 
-boton.addEventListener('click', () =>{
-const PARTIDOMUNSTO = JSON.stringify(PARTIDOMUN)
-    localStorage.setItem('partidoMunstore', PARTIDOMUNSTO)
-    })
+// boton.addEventListener('click', () =>{
+// const PARTIDOMUNSTO = JSON.stringify(PARTIDOMUN)
+//     localStorage.setItem('partidoMunstore', PARTIDOMUNSTO)
+//     })
 
 
 function cambiarNombreUsuario(inputField) {
@@ -814,7 +812,6 @@ Swal.fire({
             username: inputField.value,
         }),
         };
-    console.log(inputField.value)
     
     fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
         .then((res) => res.json())
@@ -829,5 +826,5 @@ Swal.fire({
 });
 }    
 
-console.log("Hecho por Matias Bianchi")
+console.log("Hecho por Matias Bianchi(Front-end) y Nacho Fernandez(Back-end)")
 console.log("https://github.com/matibian/Fixture-Qatar-22")
