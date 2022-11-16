@@ -167,11 +167,12 @@ const agregarEventListener = (TORNEOS) => {
   const select = document.getElementById("torneosgen");
 
   select.addEventListener("change", (e) => {
+    
     var selecte = document.getElementById("torneosgen");
     var value = selecte.options[select.selectedIndex].value;
     const GRUPOSTOGGLE = TORNEOS;
 
-    let vereditar = selecte.options[select.selectedIndex].dataset.admin;
+    let vereditar = selecte.options[select.selectedIndex].dataset;
     let mostrareditar = document.getElementById("editartorneo");
 
     if (vereditar == USER.id) {
