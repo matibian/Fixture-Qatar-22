@@ -12,6 +12,8 @@ formRegister.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log(e);
 
+  document.getElementById("botonRegistro").disabled=true
+
   let request = {
     method: "POST",
     body: JSON.stringify({

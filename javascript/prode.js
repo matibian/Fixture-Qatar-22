@@ -240,6 +240,7 @@ function crearTablaPartidos(grupo, data) {
     .getElementById("partidoGrupo" + grupo.grupo_nombre)
     .appendChild(table);
   grupo.partidos.forEach((partido) => {
+    console.log(partido)
     let row_1 = document.createElement("tr");
     let row_1_data_1 = document.createElement("td");
     row_1_data_1.className = "tablaequipo";
@@ -250,17 +251,17 @@ function crearTablaPartidos(grupo, data) {
       data.find((pronostico) => pronostico.partido_id == partido.partido_id) ??
       false;
     if (pronost_partido) {
-      row_1_data_2.innerHTML = `<input type="number" min="0" value= "${pronost_partido.local}" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">`;
+      row_1_data_2.innerHTML = `<input type="number" ${partido.editable == false ? "disabled" : ""} min="0" value= "${pronost_partido.local}" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">`;
     } else {
-      row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">`; //partido.geq1 ;
+      row_1_data_2.innerHTML = `<input type="number"  ${partido.editable == false ? "disabled" : ""} min="0" value= "" placeholder="-" id="${partido.partido_id}L" class="g${grupo.grupo_nombre} goles">`; //partido.geq1 ;
     }
     let row_1_data_3 = document.createElement("td");
     const geq2 = PARTIDO.findIndex((obj) => obj.id == partido.partido_id);
 
     if (pronost_partido) {
-      row_1_data_3.innerHTML = `<input type="number" min="0" value= "${pronost_partido.visita}" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">`; //partido.geq2 ;
+      row_1_data_3.innerHTML = `<input type="number"  ${partido.editable == false ? "disabled" : ""} min="0" value= "${pronost_partido.visita}" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">`; //partido.geq2 ;
     } else {
-      row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">`; //partido.geq1 ;
+      row_1_data_3.innerHTML = `<input type="number"  ${partido.editable == false ? "disabled" : ""} min="0" value= "" placeholder="-" id="${partido.partido_id}V" class="g${grupo.grupo_nombre} goles">`; //partido.geq1 ;
     }
 
     let row_1_data_4 = document.createElement("td");
@@ -325,10 +326,7 @@ tabla.addEventListener("change", (e) => {
     golVisitante = parseInt(document.getElementById(e.target.id).value);
     golLocal = document.getElementById(e.target.id.slice(0, -1) + "L").value;
   }
-
-  // localStorage.setItem('PartidoStorage', localstoPart)
-
-  // localStorage.setItem('GrupoStorage', localstoGru)
+  
 
   const API_PRONOSTICOS = "pronosticos";
 
@@ -347,8 +345,35 @@ tabla.addEventListener("change", (e) => {
 
   fetch(URL + API_PRONOSTICOS, request)
     .then((res) => res.json())
-    .then((data) => {})
-    .catch((error) => console.error("Error:", error));
+    .then((data) => {
+      console.error(data)
+      if(data == false){
+        Swal.fire({
+          icon: 'error',
+          title: 'Ya no podes cambiarlo',
+          text: 'Ya es tarde che, te hubieras acordado antes',
+          timer: 2500
+        })
+
+        let idDis
+        e.target.disabled = true
+
+        if (e.target.id.split("").pop() == "L") {
+          idDis = id + "V"
+          console.log(idDis)
+        } else {
+          idDis = id + "L"
+          console.log(idDis)
+        }
+        console.log(document.getElementById(idDis))
+        document.getElementById(idDis).disabled = true
+
+      }
+    }
+    )
+    .catch((error) => 
+      console.error("Error:", error)
+      );
 });
 
 fetch("http://fprode.nachofernan.com/api/partidos_all")
@@ -359,71 +384,7 @@ fetch("http://fprode.nachofernan.com/api/partidos_all")
   })
   .catch((error) => console.error("Error:", error));
 
-////////////////////////////////////////////////////// GUARDAR TABLAS //////////////////////////////////////////////////////////////
 
-// function funcenviar() {
-//     let enviar = document.getElementById('enviar')
-//     if (guardadas.length == 8) {
-//         enviar.style.display = 'block'
-//     }else{
-//         enviar.style.display = 'none'
-//     }
-// }
-
-// GRUPOS.forEach(grupo => {
-//     /////////////////// GUARDADO EN STORAGE ////////////////
-//     const block = guardadas.indexOf(`guardar${grupo}`);
-//     const c = document.getElementById(`guardar${grupo}`);
-//     if (block > -1) {
-//         let a = document.getElementsByClassName(`g${grupo}`);
-//         for (let index = 0; index < a.length; index++) {
-//             a[index].setAttribute("disabled","");
-//         }
-
-//         c.className += " active";
-//         document.getElementById(`guardar${grupo}`).innerText = "Editar"
-//     }
-//     /////////////////// EVENT LISTENER ////////////////
-//     // let boton = document.getElementById(`guardar${grupo}`);
-//     // boton.addEventListener('click', () =>{
-//     //     if (boton.classList.contains('active')){
-//     //         let b = document.getElementsByClassName(`g${grupo}`);
-//     //         for (let index = 0; index < b.length; index++) {
-//     //             b[index].removeAttribute("disabled");
-//     //             boton.classList.remove("active");
-//     //             document.getElementById(`guardar${grupo}`).innerText = "Guardar"
-
-//     //         }
-//     //         const bus = guardadas.indexOf(`guardar${grupo}`);
-//     //         guardadas.splice(bus, 1);
-
-//     //     } else {
-//     //         let b = document.getElementsByClassName(`g${grupo}`);
-//     //         for (let index = 0; index < b.length; index++) {
-//     //             b[index].setAttribute("disabled","");
-//     //         }
-//     //         boton.className += " active";
-//     //         document.getElementById(`guardar${grupo}`).innerText = "Editar"
-//     //         guardadas.push(`guardar${grupo}`);
-
-//     //         Swal.fire({
-//     //             icon: 'success',
-//     //             title: 'Guardado!',
-//     //             showConfirmButton: false,
-//     //             color : '#821a4b',
-//     //             timer: 1000
-//     //         })
-//     //     }
-
-//     //     // funcenviar()
-
-//     // const localstoGuar = JSON.stringify(guardadas)
-//     // localStorage.setItem('guardadasStorage', localstoGuar)
-
-//     // })
-
-//     // funcenviar()
-// });
 
 //////////////////////////// PLAYOFFS ///////////////////////////////////
 

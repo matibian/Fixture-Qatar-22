@@ -305,6 +305,7 @@ const eliminarJugador = (id_torneo, id) => {
     confirmButtonText: "Borrar",
   }).then((result) => {
     if (result.isConfirmed) {
+      console.log(id_torneo)
       let request = {
         method: "POST",
         body: JSON.stringify({
