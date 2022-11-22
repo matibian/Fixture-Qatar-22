@@ -23,8 +23,8 @@ puntosGanados = 3;
 puntosGoles = 1;
 
 let TORNEOGENERAL = [];
-let TORNEOSIND = []
-let USUARIOS = []
+let TORNEOSIND = [];
+let USUARIOS = [];
 
 /////////////////////////////ENVIO DE RESULTADOS///////////////////////////
 
@@ -125,89 +125,6 @@ fetch(API_URL + "user_all/" + USER.id)
 
   .catch((error) => console.error("Error:", error));
 
-// document.getElementById("tablaUsuario").addEventListener("click", (e) => {
-//   document.getElementById("collapse").classList.toggle("show");
-//   const s = document.querySelector(".flechita");
-//   if (s.classList.contains("fa-caret-down")) {
-//     s.classList.remove("fa-caret-down");
-//     s.classList.add("fa-caret-up");
-//   } else {
-//     s.classList.remove("fa-caret-up");
-//     s.classList.add("fa-caret-down");
-//   }
-// });
-
-// class Usuarios {
-//   constructor(nombre, usuario, puntos, mail, id) {
-//     this.nombre = nombre;
-//     this.usuario = usuario;
-//     this.puntos = puntos;
-//     this.mail = mail;
-//     this.id = id;
-//   }
-// }
-
-// const mati = new Usuarios("Mati", "matute", 10, "matubianchi@gmail.com", 1);
-// const gudi = new Usuarios("Ignacio", "gudi", 120, "nachofernan@gmail.com", 2);
-// const marcos = new Usuarios("Marcos", "marquitos", 132, "bla@gmail.com", 3);
-// const pablo = new Usuarios("Pablo", "pablito", 114, "bla@gmail.com", 4);
-// const andres = new Usuarios("Andres", "bro", 125, "bla@gmail.com", 5);
-// const juani = new Usuarios("Juan Ignacio", "cabe", 105, "bla@gmail.com", 6);
-// const juampa = new Usuarios("Juan Pablo", "gordo", 121, "bla@gmail.com", 7);
-// const lucas = new Usuarios("lucas", "lulo", 123, "bla@gmail.com", 8);
-// const majo = new Usuarios("majo", "majo", 119, "bla@gmail.com", 8);
-// const gon = new Usuarios("gon", "gon", 128, "bla@gmail.com", 8);
-// const tom = new Usuarios("tom", "tom", 133, "bla@gmail.com", 8);
-// const tincho = new Usuarios("tincho", "tincho", 113, "bla@gmail.com", 8);
-// const leti = new Usuarios("leti", "leti", 110, "bla@gmail.com", 8);
-// const lore = new Usuarios("lore", "lore", 112, "bla@gmail.com", 8);
-// const toto = new Usuarios("toto", "toto", 127, "bla@gmail.com", 8);
-
-// USUARIOS.push(mati);
-// USUARIOS.push(gudi);
-// USUARIOS.push(marcos);
-// USUARIOS.push(pablo);
-// USUARIOS.push(andres);
-// USUARIOS.push(juani);
-// USUARIOS.push(juampa);
-// USUARIOS.push(lucas);
-// USUARIOS.push(majo);
-// USUARIOS.push(gon);
-// USUARIOS.push(tom);
-// USUARIOS.push(tincho);
-// USUARIOS.push(leti);
-// USUARIOS.push(lore);
-// USUARIOS.push(toto);
-
-// class TorneoInd {
-//   constructor(nombre, usuarios, id) {
-//     this.nombre = nombre;
-//     this.usuarios = usuarios;
-//     this.id = id;
-//   }
-// }
-
-// const Pibes = new TorneoInd(
-//   "Pibes",
-//   [mati, gudi, pablo, andres, juani, lucas, juampa],
-//   1
-// );
-// const Laburo = new TorneoInd("Laburo", [mati, tincho, leti, lore], 2);
-// const Flia = new TorneoInd("Flia", [mati, majo, gon, tom], 3);
-// const Coderhouse = new TorneoInd("Coderhouse", [mati, toto, andres], 4);
-
-// TORNEOSIND.push(Pibes);
-// TORNEOSIND.push(Laburo);
-// TORNEOSIND.push(Flia);
-// TORNEOSIND.push(Coderhouse);
-
-// let torneoSort = () => {
-//   TORNEOSIND.forEach((torneo) => {
-//     torneo.usuarios.sort((a, b) => b.puntos - a.puntos);
-//   });
-// };
-
-// TOR = TORNEOSIND.usuarios;
 
 let nombretorn = document.getElementById("torneosgen");
 
@@ -295,23 +212,23 @@ const agregarEventListener = (TORNEOS) => {
 console.log("Hecho por Matias Bianchi(Front-end) y Nacho Fernandez(Back-end)");
 console.log("https://github.com/matibian/Fixture-Qatar-22");
 
-const API_URL = 'https://prode-qatar-default-rtdb.firebaseio.com/Torneos.json'
+// const API_URL = 'https://prode-qatar-default-rtdb.firebaseio.com/Torneos.json'
 
 // const torneosDesdeBD = () => {
 //     fetch(API_URL)
 //     .then((response) => response.json())
 //     .then((data) => {
 //         TORNEOSIND = data.Torneos
-        // cargaTorneosInd()
-        // mostrarTorneo()
-        // agregarEventListener()
-        // USUARIOS.forEach((usuario,index) => {
-        //     crearTablaTorneoPrin(usuario, 'tabgeneral',index)
-        // });
-        // torneoSort()
-        
+// cargaTorneosInd()
+// mostrarTorneo()
+// agregarEventListener()
+// USUARIOS.forEach((usuario,index) => {
+//     crearTablaTorneoPrin(usuario, 'tabgeneral',index)
+// });
+// torneoSort()
+
 //     })
-    
+
 // }
 // torneosDesdeBD()
 
@@ -336,14 +253,19 @@ async function crearTablaTorneoPrin(u, nom, index) {
   tabla.appendChild(tr);
 }
 
-USUARIOS.sort((a, b) => b.puntos - a.puntos);
-TORNEOSIND.forEach((torneo) => {
-  torneo.usuarios.sort((a, b) => b.puntos - a.puntos);
-});
+fetch(API_URL + "users_all")
+  .then((res) => res.json())
+  .then((data) => {
+    data.forEach((usuario, index) => {
+      crearTablaTorneoPrin(usuario, "tabgeneral", index);
+    });
+  })
+  .catch((error) => console.error("Error:", error));
 
-USUARIOS.forEach((usuario, index) => {
-  crearTablaTorneoPrin(usuario, "tabgeneral", index);
-});
+// USUARIOS.sort((a, b) => b.puntos - a.puntos);
+// TORNEOSIND.forEach((torneo) => {
+//   torneo.usuarios.sort((a, b) => b.puntos - a.puntos);
+// });
 
 // USUARIOS.forEach((usuario, index) => {
 //   crearTablaTorneoPrin(usuario, "tabgeneral", index);
@@ -357,28 +279,22 @@ USUARIOS.forEach((usuario, index) => {
 
 //Carga tabla individual al inicio//
 
-let torind = new Promise((res, rej) => {
-  setTimeout(() => {
-    res(document.getElementsByClassName("fstselected")[0].innerText);
-    //document.getElementById(select).style.display = ''
-  }, 20);
-});
-torind.then((res) => (document.getElementById(res).style.display = ""));
+// let torind = new Promise((res, rej) => {
+//   setTimeout(() => {
+//     res(document.getElementsByClassName("fstselected")[0].innerText);
+//     //document.getElementById(select).style.display = ''
+//   }, 20);
+// });
+// torind.then((res) => (document.getElementById(res).style.display = ""));
 
 //////////AGREGAR JUGADORES TORNEOSIND///////////////////
 
-
-
-
-
-
-
 //////////EDITAR JUGADORES TORNEOSIND///////////////////
-let jugadoresTorneoInd = [
-  { nombre: "carlos", id: 1 },
-  { nombre: "julio", id: 2 },
-  { nombre: "feli", id: 3 },
-];
+// let jugadoresTorneoInd = [
+//   { nombre: "carlos", id: 1 },
+//   { nombre: "julio", id: 2 },
+//   { nombre: "feli", id: 3 },
+// ];
 
 const eliminarJugador = (id_torneo, id) => {
   Swal.fire({
@@ -389,6 +305,7 @@ const eliminarJugador = (id_torneo, id) => {
     confirmButtonText: "Borrar",
   }).then((result) => {
     if (result.isConfirmed) {
+      console.log(id_torneo)
       let request = {
         method: "POST",
         body: JSON.stringify({
@@ -398,7 +315,7 @@ const eliminarJugador = (id_torneo, id) => {
       fetch(API_URL + "delete_user", request)
         .then((res) => res.json())
         .then((data) => {
-          const result = arrJugadores.filter((jug) => jug.id !== id);
+          const result = arrJugadores.filter((jug) => jug.id !== id)
           arrJugadores = result;
           document.getElementById("tbodyJugadores").innerHTML = "";
           listaJugadoresTorneoInd(arrJugadores);
@@ -409,29 +326,30 @@ const eliminarJugador = (id_torneo, id) => {
   });
 };
 
-let table = document.createElement('table');
-let tbody = document.createElement('tbody');
-tbody.id = "tbodyJugadores"
+let table = document.createElement("table");
+let tbody = document.createElement("tbody");
+tbody.id = "tbodyJugadores";
 table.appendChild(tbody);
 
-document.getElementById('JugadoresTorneoIndEditar').appendChild(table);
+document.getElementById("JugadoresTorneoIndEditar").appendChild(table);
 
 function listaJugadoresTorneoInd(jugador) {
+  tbody.innerHTML = "";
+
   jugador.forEach((jugador) => {
-    console.log(jugador);
     let row_1 = document.createElement("tr");
     let row_1_data_1 = document.createElement("td");
-    row_1_data_1.innerHTML = jugador.nombre;
+    row_1_data_1.innerHTML = jugador.username;
     let row_1_data_2 = document.createElement("td");
-    row_1_data_2.innerHTML = `<i id="${jugador.id}" onclick="eliminarJugador(${jugador.id})" class="fa-regular fa-x"></i>`;
+    row_1_data_2.innerHTML = `<i id="${jugador.id}" onclick="eliminarJugador(${jugador.torneo_user_id}, ${jugador.id})" class="fa-regular fa-x"></i>`;
 
     row_1.appendChild(row_1_data_1);
     row_1.appendChild(row_1_data_2);
     tbody.appendChild(row_1);
-    })
-    };
+  });
+}
 
-listaJugadoresTorneoInd(jugadoresTorneoInd);
+// listaJugadoresTorneoInd(jugadoresTorneoInd);
 
 // function addItem(inputField) {
 
@@ -479,31 +397,22 @@ function agregarJugador(inputField) {
   return false;
 }
 
+const jugadoresTorneo = [];
 
-const jugadoresTorneo = []
-
-function agregarJugadorTorneo(nombre) {
-  console.log(nombre);
-  jugadoresTorneo.push(nombre);
-  console.log(jugadoresTorneo);
-}
 
 
 function agregarTorneo(inputField) {
   let request = {
-                method:'POST',
-                body: JSON.stringify({
-                  user_id: USER.id,
-                  nombre: inputField 
-                }) 
-            }
-
+    method: "POST",
+    body: JSON.stringify({
+      user_id: USER.id,
+      nombre: inputField,
+    }),
+  };
 
   fetch(API_URL + "torneo", request)
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data)
-      // cargaTorneosInd(data)
       location.reload();
     })
 

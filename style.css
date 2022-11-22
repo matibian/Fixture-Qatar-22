@@ -472,13 +472,15 @@ a .navbar-nav {
 
 .selects{
     text-align: center;
-    padding : 3%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 #campeon{
-    background-color: white;
+    background-color: rgb(192, 188, 188);
     color: #8f0b31;
-    text-align: center;
+    align-self: center;
     font-weight: bolder;
     padding: 5px;
     font-family: qatar;

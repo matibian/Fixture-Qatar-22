@@ -58,11 +58,11 @@ const EQUIPOS = [
 const GRUPOS = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
 const FASES = [
-  "Fase de grupos",
   "Octavos de final",
   "Cuartos de final",
   "Semifinal",
   "Final",
+  "3er puesto"
 ];
 
 const RANKING = [
@@ -326,10 +326,6 @@ tabla.addEventListener("change", (e) => {
     golLocal = document.getElementById(e.target.id.slice(0, -1) + "L").value;
   }
 
-  // localStorage.setItem('PartidoStorage', localstoPart)
-
-  // localStorage.setItem('GrupoStorage', localstoGru)
-
   const API_PRONOSTICOS = "pronosticos";
 
   let request = {
@@ -359,342 +355,305 @@ fetch("http://fprode.nachofernan.com/api/partidos_all")
   })
   .catch((error) => console.error("Error:", error));
 
-////////////////////////////////////////////////////// GUARDAR TABLAS //////////////////////////////////////////////////////////////
 
-// function funcenviar() {
-//     let enviar = document.getElementById('enviar')
-//     if (guardadas.length == 8) {
-//         enviar.style.display = 'block'
-//     }else{
-//         enviar.style.display = 'none'
-//     }
-// }
-
-// GRUPOS.forEach(grupo => {
-//     /////////////////// GUARDADO EN STORAGE ////////////////
-//     const block = guardadas.indexOf(`guardar${grupo}`);
-//     const c = document.getElementById(`guardar${grupo}`);
-//     if (block > -1) {
-//         let a = document.getElementsByClassName(`g${grupo}`);
-//         for (let index = 0; index < a.length; index++) {
-//             a[index].setAttribute("disabled","");
-//         }
-
-//         c.className += " active";
-//         document.getElementById(`guardar${grupo}`).innerText = "Editar"
-//     }
-//     /////////////////// EVENT LISTENER ////////////////
-//     // let boton = document.getElementById(`guardar${grupo}`);
-//     // boton.addEventListener('click', () =>{
-//     //     if (boton.classList.contains('active')){
-//     //         let b = document.getElementsByClassName(`g${grupo}`);
-//     //         for (let index = 0; index < b.length; index++) {
-//     //             b[index].removeAttribute("disabled");
-//     //             boton.classList.remove("active");
-//     //             document.getElementById(`guardar${grupo}`).innerText = "Guardar"
-
-//     //         }
-//     //         const bus = guardadas.indexOf(`guardar${grupo}`);
-//     //         guardadas.splice(bus, 1);
-
-//     //     } else {
-//     //         let b = document.getElementsByClassName(`g${grupo}`);
-//     //         for (let index = 0; index < b.length; index++) {
-//     //             b[index].setAttribute("disabled","");
-//     //         }
-//     //         boton.className += " active";
-//     //         document.getElementById(`guardar${grupo}`).innerText = "Editar"
-//     //         guardadas.push(`guardar${grupo}`);
-
-//     //         Swal.fire({
-//     //             icon: 'success',
-//     //             title: 'Guardado!',
-//     //             showConfirmButton: false,
-//     //             color : '#821a4b',
-//     //             timer: 1000
-//     //         })
-//     //     }
-
-//     //     // funcenviar()
-
-//     // const localstoGuar = JSON.stringify(guardadas)
-//     // localStorage.setItem('guardadasStorage', localstoGuar)
-
-//     // })
-
-//     // funcenviar()
-// });
 
 //////////////////////////// PLAYOFFS ///////////////////////////////////
 
-class PartidoPlayoff {
-  constructor(eq1, eq2, geq1, geq2, pen1, pen2, terminado, id) {
-    this.eq1 = eq1;
-    this.eq2 = eq2;
-    this.geq1 = geq1;
-    this.geq2 = geq2;
-    this.pen1 = pen1;
-    this.pen2 = pen2;
-    this.terminado = terminado;
-    this.id = id;
-  }
-}
 
-const PLAYOFFS = [
-  "1ºA",
-  "2ºB",
-  "1ºC",
-  "2ºD",
-  "1ºE",
-  "2ºF",
-  "1ºG",
-  "2ºH",
-  "2ºA",
-  "1ºB",
-  "2ºC",
-  "1ºD",
-  "2ºE",
-  "1ºF",
-  "2ºG",
-  "1ºH",
-  "Cuartos 1",
-  "Cuartos 2",
-  "Cuartos 3",
-  "Cuartos 4",
-  "Cuartos 5",
-  "Cuartos 6",
-  "Cuartos 7",
-  "Cuartos 8",
-  "Semifinal 1",
-  "Semifinal 2",
-  "Semifinal 3",
-  "Semifinal 4",
-  "Final 1",
-  "Final 2",
-];
 
-const PARTIDOPLAYOFF = [];
 
-let i = 0;
-for (let j = 0; j < 7; j++) {
-  id++;
-  const partido1 = new PartidoPlayoff(
-    PLAYOFFS[i],
-    PLAYOFFS[i + 1],
-    0,
-    0,
-    0,
-    0,
-    false,
-    id
-  );
-  PARTIDOPLAYOFF.push(partido1);
-  id++;
-  const partido2 = new PartidoPlayoff(
-    PLAYOFFS[i + 2],
-    PLAYOFFS[i + 3],
-    0,
-    0,
-    0,
-    0,
-    false,
-    id
-  );
-  PARTIDOPLAYOFF.push(partido2);
-  i += 4;
-}
-const partidoFin = new PartidoPlayoff(
-  PLAYOFFS[i],
-  PLAYOFFS[i + 1],
-  0,
-  0,
-  0,
-  0,
-  false,
-  id
-);
-PARTIDOPLAYOFF.push(partidoFin);
-id++;
 
 //////////////////////////// OCTAVOS ///////////////////////////////////
 
-let partidosOctavos = PARTIDOPLAYOFF.slice(0, 8);
 
-function crearTablaPartidosOctavos() {
-  let table = document.createElement("table");
-  let thead = document.createElement("thead");
-  let tbody = document.createElement("tbody");
 
-  table.appendChild(thead);
-  table.appendChild(tbody);
 
-  document.getElementById("partidosOctavos").appendChild(table);
 
-  partidosOctavos.forEach((partido) => {
-    let row_1 = document.createElement("tr");
-    let row_1_data_1 = document.createElement("td");
-    row_1_data_1.innerHTML = partido.eq1;
-    let row_1_data_2 = document.createElement("td");
-
-    const geq1 = partidosOctavos.findIndex((obj) => obj.id == partido.id);
-    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id= "${partido.id}L" class=" goles">`;
-    let row_1_data_3 = document.createElement("td");
-    const geq2 = partidosOctavos.findIndex((obj) => obj.id == partido.id);
-    row_1_data_3.innerHTML = `<input type="number" min="0" min="0" value= "" placeholder="-" id= "${partido.id}V" class=" goles">`;
-
-    let row_1_data_4 = document.createElement("td");
-    row_1_data_4.innerHTML = partido.eq2;
-
-    row_1.appendChild(row_1_data_1);
-    row_1.appendChild(row_1_data_2);
-    row_1.appendChild(row_1_data_3);
-    row_1.appendChild(row_1_data_4);
-    tbody.appendChild(row_1);
-  });
-}
 
 let tablaOctavos = document.getElementById("tablasPartidosPlayoffProde");
-tablaOctavos.innerHTML += `<div class="grupo" id="partidosOctavos"> <h3>${FASES[1]}</h3>`;
-crearTablaPartidosOctavos();
+
+tablaOctavos.innerHTML = `<div style="padding: 5%; ">
+<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+<span class="sr-only"></span>
+</div></div>`;
+
+
+
+// crearTablaPartidosOctavos();
+
+
 tablaOctavos.innerHTML += `</div>`;
+
+
+
+
+function pronosticosOct(grupo, index) {
+  fetch(URL + PRONOSTICOS)
+    .then((res) => res.json())
+    .then((data) => {
+
+      tablaOctavos.innerHTML += `<div class="grupo" id="PO${grupo.grupo_nombre}"> <h3> ${FASES[index]} </h3>`;
+
+      console.log(grupo)
+
+      // grupo.forEach((grupo) => {
+        // tablaOctavos.innerHTML += `<div class="grupo filterDiv Grupo ${grupo.grupo_nombre}" id="partidoGrupo${grupo.grupo_nombre}"> <h3>Grupo ${grupo.grupo_nombre}</h3>`;
+        crearTablaPartidosOctavos(grupo, data);
+        // tatablaOctavosbla.innerHTML += `</div>`;
+      // })
+  })
+    .catch((error) => console.error("Error:", error));
+}
 
 tablaOctavos.addEventListener("change", (e) => {
   let id = e.target.id.slice(0, -1);
-  const objIndex = partidosOctavos.findIndex((obj) => obj.id == id);
 
-  partidosOctavos[objIndex].terminado = true;
+  let golLocal = 0;
+  let golVisitante = 0;
 
   if (e.target.id.split("").pop() == "L") {
-    partidosOctavos[objIndex].geq1 = document.getElementById(e.target.id).value;
+    golLocal = parseInt(document.getElementById(e.target.id).value);
+    golVisitante = document.getElementById(
+      e.target.id.slice(0, -1) + "V"
+    ).value;
   } else {
-    partidosOctavos[objIndex].geq2 = document.getElementById(e.target.id).value;
+    golVisitante = parseInt(document.getElementById(e.target.id).value);
+    golLocal = document.getElementById(e.target.id.slice(0, -1) + "L").value;
   }
 
-  const localstoPartOff = JSON.stringify(partidosOctavos);
-  localStorage.setItem("PartidosOFFStorage", localstoPartOff);
+  const API_PRONOSTICOS = "pronosticos";
+
+  let request = {
+    method: "POST",
+    body: JSON.stringify({
+      user_id: USER.id,
+      api_key: USER.api_key,
+      partido_id: id,
+
+      local: golLocal,
+
+      visita: golVisitante,
+    }),
+  };
+
+  fetch(URL + API_PRONOSTICOS, request)
+    .then((res) => res.json())
+    .then((data) => {})
+    .catch((error) => console.error("Error:", error));
 });
+
+fetch("http://fprode.nachofernan.com/api/partidos_all")
+  .then((res) => res.json())
+  .then((data) => {
+    tablaOctavos.innerHTML = ""
+    fixture = data.slice(8, 13);
+    fixture = fixture.reverse()
+    console.log(fixture)
+    fixture.forEach((playoff, index )=> {
+
+    pronosticosOct(playoff, index);
+    })
+  })
+  .catch((error) => console.error("Error:", error));
+
+
+
+
+
+async function crearTablaPartidosOctavos(grupo, data) {
+  let table = document.createElement("table");
+  let thead = document.createElement("thead");
+  let tbody = document.createElement("tbody");
+
+  table.appendChild(thead);
+  table.appendChild(tbody);
+
+  document.getElementById(`PO${grupo.grupo_nombre}`).appendChild(table);
+
+
+  
+  await grupo.partidos.forEach((partido) => {
+  let row_1 = document.createElement("tr");
+  let row_1_data_1 = document.createElement("td");
+  row_1_data_1.className = "tablaequipo";
+  row_1_data_1.innerHTML = partido.local.nombre;
+  let row_1_data_2 = document.createElement("td");
+  const pronost_partido =
+    data.find((pronostico) => pronostico.partido_id == partido.partido_id) ??
+    false;
+  if (pronost_partido) {
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "${pronost_partido.local}" id="${partido.partido_id}L" class="goles">`;
+  } else {
+    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}L" class="goles">`; //partido.geq1 ;
+  }
+  let row_1_data_3 = document.createElement("td");
+  const geq2 = PARTIDO.findIndex((obj) => obj.id == partido.partido_id);
+
+  if (pronost_partido) {
+    row_1_data_3.innerHTML = `<input type="number" min="0" value= "${pronost_partido.visita}" id="${partido.partido_id}V" class="goles">`; //partido.geq2 ;
+  } else {
+    row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" id="${partido.partido_id}V" class="goles">`; //partido.geq1 ;
+  }
+
+  let row_1_data_4 = document.createElement("td");
+  row_1_data_4.className = "tablaequipo";
+  row_1_data_4.innerHTML = partido.visita.nombre;
+
+    row_1.appendChild(row_1_data_1);
+    row_1.appendChild(row_1_data_2);
+    row_1.appendChild(row_1_data_3);
+    row_1.appendChild(row_1_data_4);
+    tbody.appendChild(row_1);
+  });
+}
+
+
+
+// tablaOctavos.addEventListener("change", (e) => {
+//   let id = e.target.id.slice(0, -1);
+//   const objIndex = partidosOctavos.findIndex((obj) => obj.id == id);
+
+//   partidosOctavos[objIndex].terminado = true;
+
+//   if (e.target.id.split("").pop() == "L") {
+//     partidosOctavos[objIndex].geq1 = document.getElementById(e.target.id).value;
+//   } else {
+//     partidosOctavos[objIndex].geq2 = document.getElementById(e.target.id).value;
+//   }
+
+//   const localstoPartOff = JSON.stringify(partidosOctavos);
+//   localStorage.setItem("PartidosOFFStorage", localstoPartOff);
+// });
 
 //////////////////////////// CUARTOS ///////////////////////////////////
 
-const Cuartos = [];
+// const Cuartos = [];
 
-let partidosCuartos = PARTIDOPLAYOFF.slice(8, 12);
-const [a, b, c, d] = partidosCuartos;
+// let partidosCuartos = PARTIDOPLAYOFF.slice(8, 12);
+// const [a, b, c, d] = partidosCuartos;
 
-function crearTablaPartidosCuartos() {
-  let table = document.createElement("table");
-  let thead = document.createElement("thead");
-  let tbody = document.createElement("tbody");
+// function crearTablaPartidosCuartos() {
+//   let table = document.createElement("table");
+//   let thead = document.createElement("thead");
+//   let tbody = document.createElement("tbody");
 
-  table.appendChild(thead);
-  table.appendChild(tbody);
+//   table.appendChild(thead);
+//   table.appendChild(tbody);
 
-  document.getElementById("partidosCuartos").appendChild(table);
+//   document.getElementById("partidosCuartos").appendChild(table);
 
-  partidosCuartos.forEach((partido) => {
-    let row_1 = document.createElement("tr");
-    let row_1_data_1 = document.createElement("td");
-    row_1_data_1.innerHTML = partido.eq1;
-    let row_1_data_2 = document.createElement("td");
-    let row_1_data_3 = document.createElement("td");
+//   partidosCuartos.forEach((partido) => {
+//     let row_1 = document.createElement("tr");
+//     let row_1_data_1 = document.createElement("td");
+//     row_1_data_1.innerHTML = partido.eq1;
+//     let row_1_data_2 = document.createElement("td");
+//     let row_1_data_3 = document.createElement("td");
 
-    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq1">`; //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq2">`; //`<input type="number" class="goles">`;
+//     row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq1">`; //`<input type="number" class="goles">`;
+//     row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq2">`; //`<input type="number" class="goles">`;
 
-    let row_1_data_4 = document.createElement("td");
-    row_1_data_4.innerHTML = partido.eq2;
+//     let row_1_data_4 = document.createElement("td");
+//     row_1_data_4.innerHTML = partido.eq2;
 
-    row_1.appendChild(row_1_data_1);
-    row_1.appendChild(row_1_data_2);
-    row_1.appendChild(row_1_data_3);
-    row_1.appendChild(row_1_data_4);
-    tbody.appendChild(row_1);
-  });
-}
+//     row_1.appendChild(row_1_data_1);
+//     row_1.appendChild(row_1_data_2);
+//     row_1.appendChild(row_1_data_3);
+//     row_1.appendChild(row_1_data_4);
+//     tbody.appendChild(row_1);
+//   });
+// }
 
 //////////////////////////// SEMIFINAL ///////////////////////////////////
 
-const partidosSemi = PARTIDOPLAYOFF.slice(12, 14);
+// const partidosSemi = PARTIDOPLAYOFF.slice(12, 14);
 
-function crearTablaPartidosSemi() {
-  let table = document.createElement("table");
-  let thead = document.createElement("thead");
-  let tbody = document.createElement("tbody");
+// function crearTablaPartidosSemi() {
+//   let table = document.createElement("table");
+//   let thead = document.createElement("thead");
+//   let tbody = document.createElement("tbody");
 
-  table.appendChild(thead);
-  table.appendChild(tbody);
+//   table.appendChild(thead);
+//   table.appendChild(tbody);
 
-  document.getElementById("partidosSemi").appendChild(table);
+//   document.getElementById("partidosSemi").appendChild(table);
 
-  partidosSemi.forEach((partido) => {
-    let row_1 = document.createElement("tr");
-    let row_1_data_1 = document.createElement("td");
-    row_1_data_1.innerHTML = partido.eq1;
-    let row_1_data_2 = document.createElement("td");
-    let row_1_data_3 = document.createElement("td");
+//   partidosSemi.forEach((partido) => {
+//     let row_1 = document.createElement("tr");
+//     let row_1_data_1 = document.createElement("td");
+//     row_1_data_1.innerHTML = partido.eq1;
+//     let row_1_data_2 = document.createElement("td");
+//     let row_1_data_3 = document.createElement("td");
 
-    row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq1">`; //`<input type="number" class="goles">`;
-    row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq2">`; //`<input type="number" class="goles">`;
+//     row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq1">`; //`<input type="number" class="goles">`;
+//     row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partido.id}eq2">`; //`<input type="number" class="goles">`;
 
-    let row_1_data_4 = document.createElement("td");
-    row_1_data_4.innerHTML = partido.eq2;
+//     let row_1_data_4 = document.createElement("td");
+//     row_1_data_4.innerHTML = partido.eq2;
 
-    row_1.appendChild(row_1_data_1);
-    row_1.appendChild(row_1_data_2);
-    row_1.appendChild(row_1_data_3);
-    row_1.appendChild(row_1_data_4);
-    tbody.appendChild(row_1);
-  });
-}
+//     row_1.appendChild(row_1_data_1);
+//     row_1.appendChild(row_1_data_2);
+//     row_1.appendChild(row_1_data_3);
+//     row_1.appendChild(row_1_data_4);
+//     tbody.appendChild(row_1);
+//   });
+// }
 
 //////////////////////////// FINAL ///////////////////////////////////
 
-const partidoFinal = PARTIDOPLAYOFF[14];
+// const partidoFinal = PARTIDOPLAYOFF[14];
 
-function crearTablaPartidoFinal() {
-  let table = document.createElement("table");
-  let thead = document.createElement("thead");
-  let tbody = document.createElement("tbody");
+// function crearTablaPartidoFinal() {
+//   let table = document.createElement("table");
+//   let thead = document.createElement("thead");
+//   let tbody = document.createElement("tbody");
 
-  table.appendChild(thead);
-  table.appendChild(tbody);
+//   table.appendChild(thead);
+//   table.appendChild(tbody);
 
-  document.getElementById("partidoFinal").appendChild(table);
+//   document.getElementById("partidoFinal").appendChild(table);
 
-  let row_1 = document.createElement("tr");
-  let row_1_data_1 = document.createElement("td");
-  row_1_data_1.innerHTML = partidoFinal.eq1;
-  let row_1_data_2 = document.createElement("td");
-  let row_1_data_3 = document.createElement("td");
+//   let row_1 = document.createElement("tr");
+//   let row_1_data_1 = document.createElement("td");
+//   row_1_data_1.innerHTML = partidoFinal.eq1;
+//   let row_1_data_2 = document.createElement("td");
+//   let row_1_data_3 = document.createElement("td");
 
-  row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">`;
-  partidoFinal.geq1 = row_1_data_2.innerHTML;
-  row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">`; //`<input type="number" class="goles">`;
-  partidoFinal.geq2 = row_1_data_3.innerHTML;
-  let row_1_data_4 = document.createElement("td");
-  row_1_data_4.innerHTML = partidoFinal.eq2;
+//   row_1_data_2.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">`;
+//   partidoFinal.geq1 = row_1_data_2.innerHTML;
+//   row_1_data_3.innerHTML = `<input type="number" min="0" value= "" placeholder="-" class="goles" id="id${partidoFinal.id}eq1">`; //`<input type="number" class="goles">`;
+//   partidoFinal.geq2 = row_1_data_3.innerHTML;
+//   let row_1_data_4 = document.createElement("td");
+//   row_1_data_4.innerHTML = partidoFinal.eq2;
 
-  row_1.appendChild(row_1_data_1);
-  row_1.appendChild(row_1_data_2);
-  row_1.appendChild(row_1_data_3);
-  row_1.appendChild(row_1_data_4);
-  tbody.appendChild(row_1);
-}
+//   row_1.appendChild(row_1_data_1);
+//   row_1.appendChild(row_1_data_2);
+//   row_1.appendChild(row_1_data_3);
+//   row_1.appendChild(row_1_data_4);
+//   tbody.appendChild(row_1);
+// }
 
-let tablaCuartos = document.getElementById("tablasPartidosPlayoffProde");
-tablaCuartos.innerHTML += `<div class="grupo" id="partidosCuartos"> <h3>${FASES[2]}</h3>`;
-crearTablaPartidosCuartos();
-tablaCuartos.innerHTML += `</div>`;
+// let tablaCuartos = document.getElementById("tablasPartidosPlayoffProde");
+// tablaCuartos.innerHTML += `<div class="grupo" id="partidosCuartos"> <h3>${FASES[2]}</h3>`;
+// crearTablaPartidosCuartos();
+// tablaCuartos.innerHTML += `</div>`;
 
-let tablaSemi = document.getElementById("tablasPartidosPlayoffProde");
-tablaSemi.innerHTML += `<div class="grupo" id="partidosSemi"> <h3>${FASES[3]}</h3>`;
-crearTablaPartidosSemi();
-tablaSemi.innerHTML += `</div>`;
+// let tablaSemi = document.getElementById("tablasPartidosPlayoffProde");
+// tablaSemi.innerHTML += `<div class="grupo" id="partidosSemi"> <h3>${FASES[3]}</h3>`;
+// crearTablaPartidosSemi();
+// tablaSemi.innerHTML += `</div>`;
 
-let tablaFinal = document.getElementById("tablasPartidosPlayoffProde");
-tablaFinal.innerHTML += `<div class="grupo" id="partidoFinal"> <h3>${FASES[4]}</h3>`;
-crearTablaPartidoFinal();
-tablaFinal.innerHTML += `</div>`;
+// let tablaFinal = document.getElementById("tablasPartidosPlayoffProde");
+// tablaFinal.innerHTML += `<div class="grupo" id="partidoFinal"> <h3>${FASES[4]}</h3>`;
+// crearTablaPartidoFinal();
+// tablaFinal.innerHTML += `</div>`;
+
+
+
+
+
+
+
+
 
 ////////////////////// FUNCION TOGGLE ////////////////////////
 
@@ -744,141 +703,47 @@ function funcTogglePRO(tabla) {
   }
 }
 
-/////////////////////////////RANDOM CON RANKING///////////////////////////
 
-// Probabilidad sobre goles
-function weightedRandom(prob) {
-  let i,
-    sum = 0,
-    r = Math.random();
-  for (i in prob) {
-    sum += prob[i];
-    if (r <= sum) return i;
-  }
-}
 
-// Itero 5 veces la posibilidad de gol
-function randomG(w) {
-  var r = 0;
-  for (var i = 5; i > 0; i--) {
-    r += Math.round(weightedRandom(w));
-  }
-  return r;
-}
 
-// Funcion random sin probabilidad (para penales)
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// let botonRandom = document.getElementById('botonrandom')
-// // Probabilidad sobre partidos en funcion al ranking FIFA
-// botonRandom.addEventListener("click", (e) => {
-//     PARTIDO.forEach((partido) => {
-//         let guardado = document.getElementById(`guardar${partido.grupo}`);
-//         // Diferencia de ranking mayor(1838, brazil) y menor (1390, Ghana)dividido el 95% de que gane : 4.71
-//         if (partido.terminado==false && !guardado.classList.contains('active')) {
-//         let dif = (partido.eq1.ranking - partido.eq2.ranking) / 4.71
-//         let porceq1 = (50 + 0.5*dif)*.01
-//         let porceq2 = (50 - 0.5*dif)*.01
-//         partido.geq1 = randomG({0:porceq2, 1:porceq1})
-//         partido.geq2 = randomG({0:porceq1, 1:porceq2})
-//         partido.terminado = true
-
-//         const goles1 = document.getElementById(`${partido.id}L`)
-//         goles1.value = partido.geq1
-//         const goles2 = document.getElementById(`${partido.id}V`)
-//         goles2.value = partido.geq2
-
-//         const localstoPart = JSON.stringify(PARTIDO)
-//         localStorage.setItem('PartidoStorage', localstoPart)
-//     };
-// })
-
-// Toastify({
-//     text: "Partidos simulados",
-//     duration : 1500,
-//     stopOnFocus: false,
-//     className: "info",
-//     style: {
-//     color: "rgba(130,26,75,255)",
-//     background: "rgb(255, 255, 255, 0.9)",
-//     }
-// }).showToast();
-
-// })
-// /////////////////////////////RESETEO ///////////////////////////
-
-// let botonReset = document.getElementById('reset')
-
-// botonReset.addEventListener("click", (e) => {
-
-//     PARTIDO.forEach((partido) => {
-//         let guardado = document.getElementById(`guardar${partido.grupo}`);
-//         if (!guardado.classList.contains('active')){
-//         const goles1 = document.getElementById(`${partido.id}L`)
-//         goles1.value = "-"
-//         const goles2 = document.getElementById(`${partido.id}V`)
-//         goles2.value = "-"
-//         partido.geq1 = 0;
-//         partido.geq2 = 0;
-//         partido.terminado = false;
-//         }
-//     })
-
-//     const localstoPart = JSON.stringify(PARTIDO)
-//     localStorage.setItem('PartidoStorage', localstoPart)
-//     const localstoPartOct = JSON.stringify(partidosOctavos)
-//     localStorage.setItem('PartidosOFFStorage', localstoPartOct)
-
-//     Toastify({
-//         text: "Borrado",
-//         className: "info",
-//         style: {
-//         color: "rgba(130,26,75,255)",
-//         background: "rgb(255, 255, 255, 0.9)",
-//         }
-//     }).showToast();
-
-// })
 
 /////////////////////////////COUNTDOWN///////////////////////////
 
-let datetime = new Date("Nov 20, 2022 13:00:00").getTime() / 1000;
+// let datetime = new Date("Nov 20, 2022 13:00:00").getTime() / 1000;
 
-var flipdown = new FlipDown(datetime, {
-  theme: "light", // or dark
-});
-flipdown.start();
+// var flipdown = new FlipDown(datetime, {
+//   theme: "light", // or dark
+// });
+// flipdown.start();
 
-function cambiarNombreUsuario(inputField) {
-  Swal.fire({
-    text: "Estas seguro de cambiar tu nombre de usuario?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Cambiar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      let request = {
-        method: "POST",
-        body: JSON.stringify({
-          user_id: USER.id,
-          username: inputField,
-        }),
-      };
+// function cambiarNombreUsuario(inputField) {
+//   Swal.fire({
+//     text: "Estas seguro de cambiar tu nombre de usuario?",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#3085d6",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Cambiar",
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       let request = {
+//         method: "POST",
+//         body: JSON.stringify({
+//           user_id: USER.id,
+//           username: inputField,
+//         }),
+//       };
 
-      fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
-        .then((res) => res.json())
-        .then((data) => {
-          location.reload();
-        })
+//       fetch("http://fprode.nachofernan.com/api/editar_nombre_usuario", request)
+//         .then((res) => res.json())
+//         .then((data) => {
+//           location.reload();
+//         })
 
-        .catch((error) => console.error("Error:", error));
-    }
-  });
-}
+//         .catch((error) => console.error("Error:", error));
+//     }
+//   });
+// }
 
 
 

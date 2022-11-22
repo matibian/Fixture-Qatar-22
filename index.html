@@ -97,20 +97,38 @@
     </nav>
 
     <h1 class="titulo"><center>PRODE Mundial Qatar 2022</center></h1>
-    <section id="flip">
+    <!-- <section id="flip">
       <div id="flipdown" class="flipdown"></div>
-      <img src="./assets/logo.png" alt="logo" id="logo" />
-    </section>
-
-    <section id="gruposPrin"></section>
-
+      
+    </section> -->
+    <div class="selects container">
+      <div class="row">
+        <!-- <div class="col-sm-3" style="align-self: center">
+          Adivinar el campeón suma 20 puntos. 
+      <br> Tenés hasta el primer partido de Argentina para elegirlo.
+        </div> -->
+        <div class="col-sm" style="align-self: center">
+          <select name="campeon" id="campeon" disabled>
+            <option hidden selected  id="nombrePaisCampeon"></option>
+          </select>
+        </div>
+        <div class="col-sm" style="text-align: justify">
+          <img src="./assets/logo.png" alt="logo" id="logo" />        </div>
+      </div>
+    </div>
+<!--     
     <div class="selects">
-      Adivinar el campeón suma 20 puntos. -->
+      <div>
+       Adivinar el campeón suma 20 puntos. 
+      <br> Tenés hasta el primer partido de Argentina para elegirlo.
+      </div>
       <select name="campeon" id="campeon">
         <option hidden selected id="nombrePaisCampeon"></option>
       </select>
-      <-- Tenés hasta el primer partido de Argentina para elegirlo.
-    </div>
+      <img src="./assets/logo.png" alt="logo" id="logo" />
+    </div> -->
+    
+    <section id="gruposPrin"></section>
 
     <div id="zonaGrupos">
       <h2 class="titulo" id="tituloFG"><center>Fase de grupos</center></h2>
@@ -236,6 +254,9 @@
               seleccioná quién creés que va a ser el Campeón del Mundial de
               Qatar antes del inicio del partido de Argentina.
             </p>
+            <p>
+              Los partidos de octavos en adelante serán agregados cuando se clasifiquen los equipos. No te duermas!
+            </p>
             <p>¿Y los puntos?</p>
             <p>
               El sistema de puntos es el siguiente:
@@ -245,9 +266,8 @@
               <br>- Acertando la cantidad de
               goles de alguno de los equipos: 1 punto. 
               <br>- Partido acertado
-              perfecto: 7 puntos Partido acertando el ganador/empate: 3 puntos Y
-              en caso de haber acertado los goles de algún equipo sumás 1 punto
-              más. Ejemplo: En tu pronóstico pusiste que en partido inaugural
+              perfecto: 7 puntos. 
+              <br> Ejemplo: En tu pronóstico pusiste que en partido inaugural
               Qatar le gana a Ecuador por 3 a 1 En caso de que el resultado sea
               efectivamente 3 a 1, obtendrá 7 puntos por resultado exacto. En
               caso de que el partido haya terminado 2 a 1, obtendrá 3 puntos por
